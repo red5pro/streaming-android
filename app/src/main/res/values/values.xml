@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="domain">0.0.0.0</string>
+    <string name="context">live</string>
+    <integer name="port">8554</integer>
+    <string name="stream1">stream1</string>
+    <string name="stream2">stream2</string>
+    <integer name="bitrate">256</integer>
+</resources>
