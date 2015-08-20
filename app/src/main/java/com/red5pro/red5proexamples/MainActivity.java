@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import com.red5pro.red5proexamples.examples.publish.PublishExample;
 import com.red5pro.red5proexamples.examples.subscribe.SubscribeExample;
+import com.red5pro.red5proexamples.examples.twoway.TwoWayExample;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -86,6 +87,18 @@ public class MainActivity extends ActionBarActivity {
 
                     FragmentTransaction transaction = getFragmentManager().beginTransaction();
                     transaction.replace(R.id.container, (Fragment) new PublishExample(), "publish_frag");
+                    transaction.addToBackStack(null);
+                    transaction.commit();
+
+                }
+            });
+
+            rootView.findViewById(R.id.TwoWay).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                    transaction.replace(R.id.container, (Fragment) new TwoWayExample(), "twoway_frag");
                     transaction.addToBackStack(null);
                     transaction.commit();
 

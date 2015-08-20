@@ -67,6 +67,8 @@ public class PublishExample extends BaseExample {
 
         publish.setView(r5VideoView);
 
+
+
         publish.publish(getString(R.string.stream1), R5Stream.RecordType.Live);
 
         cam.startPreview();
