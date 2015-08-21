@@ -1,19 +1,21 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.red5pro.red5proexamples.examples.twoway.TwoWayExample">
-
-    <com.red5pro.streaming.view.R5VideoView
-        android:id="@+id/video"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true" />
+    tools:context="com.red5pro.red5proexamples.examples.twoway.TwoWayExample"
+    >
 
     <com.red5pro.streaming.view.R5VideoView
         android:id="@+id/video2"
-        android:layout_width="122dp"
-        android:layout_height="176dp"
+        android:layout_width="300dp"
+        android:layout_height="202dp"
         android:layout_centerHorizontal="true"
         android:layout_gravity="right|bottom" />
+    <com.red5pro.streaming.view.R5VideoView
+        android:id="@+id/video"
+        android:layout_width="300dp"
+        android:layout_height="372dp"
+        android:layout_centerHorizontal="true" />
+
+
 
 </FrameLayout>

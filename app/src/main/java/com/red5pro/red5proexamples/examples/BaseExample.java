@@ -79,14 +79,17 @@ public class BaseExample extends Fragment {
 
     @Override
     public void onStop(){
+
         super.onStop();
+
         if(publish != null)
             publish.stop();
 
         if(subscribe != null)
             subscribe.stop();
 
-        Log.d("releasing!!!", "relesaing!!!!");
+        publish = subscribe = null;
+
         if(cam != null) {
             cam.stopPreview();
             cam.release();
