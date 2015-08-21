@@ -61,10 +61,6 @@ public class TwoWayExample extends BaseExample implements R5ConnectionListener {
 
             publish.setView(r5PublishView);
 
-            for (Camera.Size size : cam.getParameters().getSupportedPreviewSizes()){
-                    System.out.println("Size: "+String.valueOf(size.width)+","+String.valueOf(size.height));
-            }
-
             publish.client = this;
             publish.setListener(this);
 
