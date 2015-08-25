@@ -21,6 +21,9 @@
         <Button android:text="Subscribe" android:id="@+id/Subscribe" android:layout_width="wrap_content"
         android:layout_height="wrap_content"></Button>
 
+        <Button android:text="Adaptive Bitrate" android:id="@+id/Adaptive" android:layout_width="wrap_content"
+            android:layout_height="wrap_content"></Button>
+
         <Button android:text="Publish" android:id="@+id/Publish" android:layout_width="wrap_content"
         android:layout_height="wrap_content"></Button>
 

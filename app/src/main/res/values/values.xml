@@ -6,4 +6,5 @@
     <string name="stream1">stream1</string>
     <string name="stream2">stream2</string>
     <integer name="bitrate">256</integer>
+    <integer name="highBitrate">768</integer>
 </resources>
