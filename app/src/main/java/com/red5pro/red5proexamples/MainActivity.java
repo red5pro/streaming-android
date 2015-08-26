@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import com.red5pro.red5proexamples.examples.adaptivebitrate.AdaptiveBitrateExample;
 import com.red5pro.red5proexamples.examples.publish.PublishExample;
+import com.red5pro.red5proexamples.examples.reconnect.ReconnectExample;
 import com.red5pro.red5proexamples.examples.subscribe.SubscribeExample;
 import com.red5pro.red5proexamples.examples.twoway.TwoWayExample;
 
@@ -100,6 +101,18 @@ public class MainActivity extends ActionBarActivity {
 
                     FragmentTransaction transaction = getFragmentManager().beginTransaction();
                     transaction.replace(R.id.container, (Fragment) new PublishExample(), "publish_frag");
+                    transaction.addToBackStack(null);
+                    transaction.commit();
+
+                }
+            });
+
+            rootView.findViewById(R.id.Reconnect).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                    transaction.replace(R.id.container, (Fragment) new ReconnectExample(), "reconnect_frag");
                     transaction.addToBackStack(null);
                     transaction.commit();
 

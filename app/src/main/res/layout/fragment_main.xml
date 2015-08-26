@@ -27,6 +27,9 @@
         <Button android:text="Publish" android:id="@+id/Publish" android:layout_width="wrap_content"
         android:layout_height="wrap_content"></Button>
 
+        <Button android:text="AutoReconnect" android:id="@+id/Reconnect" android:layout_width="wrap_content"
+            android:layout_height="wrap_content"></Button>
+
         <Button android:text="Two Way" android:id="@+id/TwoWay" android:layout_width="wrap_content"
             android:layout_height="wrap_content"></Button>
         </LinearLayout>
