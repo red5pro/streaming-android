@@ -17,6 +17,22 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    productFlavors {
+
+        armv7 {
+            ndk {
+                abiFilters "armeabi-v7a"
+            }
+        }
+
+        x86{
+            ndk{
+                abiFilters "x86"
+            }
+        }
+
+    }
 }
 
 dependencies {
