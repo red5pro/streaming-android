@@ -62,16 +62,12 @@ public class PublishExample extends BaseExample {
 
         publish.attachMic(mic);
 
-
         R5VideoView r5VideoView =(R5VideoView) view.findViewById(R.id.video2);
 
         publish.setView(r5VideoView);
 
-
-
         publish.publish(getString(R.string.stream1), R5Stream.RecordType.Live);
 
-        cam.startPreview();
 
         return view;
     }

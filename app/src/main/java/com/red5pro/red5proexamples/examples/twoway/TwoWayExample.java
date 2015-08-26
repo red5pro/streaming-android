@@ -66,7 +66,7 @@ public class TwoWayExample extends BaseExample implements R5ConnectionListener {
 
             publish.publish(getString(R.string.stream1), R5Stream.RecordType.Live);
 
-            cam.startPreview();
+            //cam.startPreview();
 
         }
 
