@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -66,7 +67,7 @@ public class AdaptiveBitrateExample extends BaseExample {
 
         publish.attachMic(mic);
 
-        R5VideoView r5VideoView =(R5VideoView) view.findViewById(R.id.video2);
+        SurfaceView r5VideoView =(SurfaceView) view.findViewById(R.id.video2);
 
         publish.setView(r5VideoView);
 
