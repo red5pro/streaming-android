@@ -55,7 +55,7 @@ public class ReconnectExample extends BaseExample implements R5ConnectionListene
             R5VideoView r5VideoView = (R5VideoView) view.findViewById(R.id.video);
             r5VideoView.attachStream(subscribe);
 
-            subscribe.play(getString(R.string.stream1));
+            subscribe.play(getSubscribeStreamName());
 
         }
 
@@ -75,7 +75,7 @@ public class ReconnectExample extends BaseExample implements R5ConnectionListene
                         Thread.sleep(2000);
 
                         subscribe.stop();
-                        subscribe.play(getString(R.string.stream1));
+                        subscribe.play(getSubscribeStreamName());
                     }catch(Exception e){
                         System.out.println("failed to reconnect");
                     }

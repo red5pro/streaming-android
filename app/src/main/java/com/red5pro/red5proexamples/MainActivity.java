@@ -10,10 +10,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 
+import com.red5pro.red5proexamples.examples.BaseExample;
 import com.red5pro.red5proexamples.examples.adaptivebitrate.AdaptiveBitrateExample;
 import com.red5pro.red5proexamples.examples.publish.PublishExample;
 import com.red5pro.red5proexamples.examples.reconnect.ReconnectExample;
+import com.red5pro.red5proexamples.examples.streamsend.StreamSendExample;
 import com.red5pro.red5proexamples.examples.subscribe.SubscribeExample;
 import com.red5pro.red5proexamples.examples.twoway.TwoWayExample;
 
@@ -67,9 +71,17 @@ public class MainActivity extends ActionBarActivity {
                                  Bundle savedInstanceState) {
 
 
-
-
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+
+            Switch swapper = (Switch)rootView.findViewById(R.id.Swap);
+            swapper.setChecked(BaseExample.swapped);
+
+            swapper.setOnCheckedChangeListener(new Switch.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    BaseExample.swapped = isChecked;
+                }
+            });
 
             rootView.findViewById(R.id.Subscribe).setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -101,6 +113,18 @@ public class MainActivity extends ActionBarActivity {
 
                     FragmentTransaction transaction = getFragmentManager().beginTransaction();
                     transaction.replace(R.id.container, (Fragment) new PublishExample(), "publish_frag");
+                    transaction.addToBackStack(null);
+                    transaction.commit();
+
+                }
+            });
+
+            rootView.findViewById(R.id.SteamSend).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                    transaction.replace(R.id.container, (Fragment) new StreamSendExample(), "streamsend_frag");
                     transaction.addToBackStack(null);
                     transaction.commit();
 

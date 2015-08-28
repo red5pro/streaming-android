@@ -67,11 +67,11 @@ public class AdaptiveBitrateExample extends BaseExample {
 
         publish.attachMic(mic);
 
-        SurfaceView r5VideoView =(SurfaceView) view.findViewById(R.id.video2);
+        SurfaceView r5VideoView = (SurfaceView) view.findViewById(R.id.video2);
 
         publish.setView(r5VideoView);
 
-        publish.publish(getString(R.string.stream1), R5Stream.RecordType.Live);
+        publish.publish(getPublishStreamName(), R5Stream.RecordType.Live);
 
         cam.startPreview();
 

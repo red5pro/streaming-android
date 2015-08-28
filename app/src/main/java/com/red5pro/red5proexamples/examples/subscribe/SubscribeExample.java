@@ -54,7 +54,7 @@ public class SubscribeExample extends BaseExample {
             R5VideoView r5VideoView = (R5VideoView) view.findViewById(R.id.video);
             r5VideoView.attachStream(subscribe);
 
-            subscribe.play(getString(R.string.stream1));
+            subscribe.play(getSubscribeStreamName());
 
         }
 

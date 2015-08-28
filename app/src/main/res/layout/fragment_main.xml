@@ -18,6 +18,9 @@
         android:layout_alignParentStart="true">
 
 
+        <Switch android:text="Swap Names" android:id="@+id/Swap" android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:layout_gravity="right" />
+
         <Button android:text="Subscribe" android:id="@+id/Subscribe" android:layout_width="wrap_content"
         android:layout_height="wrap_content"></Button>
 
@@ -25,7 +28,10 @@
             android:layout_height="wrap_content"></Button>
 
         <Button android:text="Publish" android:id="@+id/Publish" android:layout_width="wrap_content"
-        android:layout_height="wrap_content"></Button>
+            android:layout_height="wrap_content"></Button>
+
+        <Button android:text="Stream Send" android:id="@+id/SteamSend" android:layout_width="wrap_content"
+            android:layout_height="wrap_content"></Button>
 
         <Button android:text="AutoReconnect" android:id="@+id/Reconnect" android:layout_width="wrap_content"
             android:layout_height="wrap_content"></Button>

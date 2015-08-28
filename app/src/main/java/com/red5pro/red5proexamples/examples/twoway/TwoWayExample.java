@@ -53,7 +53,7 @@ public class TwoWayExample extends BaseExample implements R5ConnectionListener {
             //R5VideoView r5VideoView = (R5VideoView) view.findViewById(R.id.video);
            // r5VideoView.attachStream(subscribe);
 
-            //subscribe.play(getString(R.string.stream1));
+            //subscribe.play(getSubscribeStreamName());
 
             publish = getNewStream(1);
 
@@ -65,7 +65,7 @@ public class TwoWayExample extends BaseExample implements R5ConnectionListener {
             publish.client = this;
             publish.setListener(this);
 
-            publish.publish(getString(R.string.stream1), R5Stream.RecordType.Live);
+            publish.publish(getPublishStreamName(), R5Stream.RecordType.Live);
 
             cam.startPreview();
 
@@ -79,20 +79,19 @@ public class TwoWayExample extends BaseExample implements R5ConnectionListener {
         //System.out.println("Connection: "+r5ConnectionEvent.message+String.valueOf(r5ConnectionEvent.value()));
         if(r5ConnectionEvent == R5ConnectionEvent.CONNECTED){
 
-
             listThread = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    while(!Thread.interrupted() && publish != null){
+                while(!Thread.interrupted() && publish != null){
 
-                        try{
-                            Thread.sleep(4000);
+                    try{
+                        Thread.sleep(4000);
 
-                            publish.connection.call(new R5RemoteCallContainer("streams.getLiveStreams", "R5GetLiveStreams", null));
-                        }catch(Exception e){
-                            System.out.println("failed to get new streams");
-                        }
+                        publish.connection.call(new R5RemoteCallContainer("streams.getLiveStreams", "R5GetLiveStreams", null));
+                    }catch(Exception e){
+                        System.out.println("failed to get new streams");
                     }
+                }
                 }
             });
             listThread.start();
@@ -101,14 +100,6 @@ public class TwoWayExample extends BaseExample implements R5ConnectionListener {
 
     public void R5GetLiveStreams(String streams){
         System.out.println("Got the streams: "+streams);
-    }
-
-    @Override
-    public void onStop(){
-
-        super.onStop();
-
-
     }
 
 }

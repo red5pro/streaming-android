@@ -24,6 +24,17 @@ public class BaseExample extends Fragment {
     protected R5Stream subscribe;
     protected R5Stream publish;
 
+    public static boolean swapped = false;
+
+    protected String getPublishStreamName(){
+        if(!swapped) return getString(R.string.stream1);
+        else return getString(R.string.stream2);
+    }
+    protected String getSubscribeStreamName(){
+        if(!swapped) return getString(R.string.stream2);
+        else return getString(R.string.stream1);
+    }
+
     protected Camera cam;
 
     public BaseExample(){}
