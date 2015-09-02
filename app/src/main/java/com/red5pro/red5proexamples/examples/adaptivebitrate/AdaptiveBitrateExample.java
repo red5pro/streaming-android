@@ -71,7 +71,7 @@ public class AdaptiveBitrateExample extends BaseExample {
 
         publish.setView(r5VideoView);
 
-        publish.publish(getPublishStreamName(), R5Stream.RecordType.Live);
+        publish.publish(getStream1(), R5Stream.RecordType.Live);
 
         cam.startPreview();
 

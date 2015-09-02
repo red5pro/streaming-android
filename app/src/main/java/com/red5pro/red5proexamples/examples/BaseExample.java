@@ -26,11 +26,11 @@ public class BaseExample extends Fragment {
 
     public static boolean swapped = false;
 
-    protected String getPublishStreamName(){
+    protected String getStream1(){
         if(!swapped) return getString(R.string.stream1);
         else return getString(R.string.stream2);
     }
-    protected String getSubscribeStreamName(){
+    protected String getStream2(){
         if(!swapped) return getString(R.string.stream2);
         else return getString(R.string.stream1);
     }

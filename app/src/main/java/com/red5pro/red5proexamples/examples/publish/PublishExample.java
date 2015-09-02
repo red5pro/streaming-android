@@ -69,7 +69,7 @@ public class PublishExample extends BaseExample {
 
         publish.attachCamera(camera);
 
-        publish.publish(getPublishStreamName(), R5Stream.RecordType.Live);
+        publish.publish(getStream1(), R5Stream.RecordType.Live);
 
         cam.startPreview();
 

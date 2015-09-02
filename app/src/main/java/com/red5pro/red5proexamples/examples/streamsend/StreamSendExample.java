@@ -88,7 +88,7 @@ public class StreamSendExample extends BaseExample implements R5ConnectionListen
                 }
             });
 
-            publish.publish(getPublishStreamName(), R5Stream.RecordType.Live);
+            publish.publish(getStream1(), R5Stream.RecordType.Live);
 
             cam.startPreview();
 
@@ -108,7 +108,7 @@ public class StreamSendExample extends BaseExample implements R5ConnectionListen
             R5VideoView r5SubscribeView = (R5VideoView) view.findViewById(R.id.video2);
             r5SubscribeView.attachStream(subscribe);
 
-            subscribe.play(getSubscribeStreamName());
+            subscribe.play(getStream2());
 
         }
 
@@ -129,10 +129,9 @@ public class StreamSendExample extends BaseExample implements R5ConnectionListen
 
     public void onStreamSend( String received ) {
 
-        String[] parsedRecieve = received.split(";");
+        String[] parsedReceive = received.split(";");
         System.out.println("Received data from publisher:");
-        for (String s : parsedRecieve
-             ) {
+        for (String s : parsedReceive) {
             String key = s.split("=")[0];
             String value = s.split("=")[1];
             System.out.println("Received key: " + key + "; with value: " + value);
