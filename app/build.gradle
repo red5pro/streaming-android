@@ -38,4 +38,7 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:22.2.0'
+    compile files('libs/mina-core-2.0.7.jar')
+    compile files('libs/red5streaming.jar')
+    compile files('libs/secondscreen.jar')
 }

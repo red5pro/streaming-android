@@ -1,4 +1,4 @@
-package com.red5pro.red5proexamples.examples.publish;
+package com.red5pro.red5proexamples.examples.adaptivebitrate;
 
 
 import android.content.res.Resources;
@@ -16,6 +16,7 @@ import com.red5pro.streaming.R5Connection;
 import com.red5pro.streaming.R5Stream;
 import com.red5pro.streaming.R5StreamProtocol;
 import com.red5pro.streaming.config.R5Configuration;
+import com.red5pro.streaming.source.R5AdaptiveBitrateController;
 import com.red5pro.streaming.source.R5Camera;
 import com.red5pro.streaming.source.R5Microphone;
 import com.red5pro.streaming.view.R5VideoView;
@@ -23,10 +24,10 @@ import com.red5pro.streaming.view.R5VideoView;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PublishExample extends BaseExample {
+public class AdaptiveBitrateExample extends BaseExample {
 
 
-    public PublishExample() {
+    public AdaptiveBitrateExample() {
         // Required empty public constructor
     }
 
@@ -34,7 +35,7 @@ public class PublishExample extends BaseExample {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_publish_example, container, false);
+        View view = inflater.inflate(R.layout.fragment_adaptive_example, container, false);
 
         Resources res = getResources();
 
@@ -53,21 +54,22 @@ public class PublishExample extends BaseExample {
         cam.setDisplayOrientation(90);
 
         R5Camera camera  = new R5Camera(cam, 320, 240);
-        camera.setBitrate(res.getInteger(R.integer.bitrate));
+        camera.setBitrate(res.getInteger(R.integer.highBitrate));
         camera.setOrientation(-90);
 
+        R5AdaptiveBitrateController adaptor = new R5AdaptiveBitrateController();
+        adaptor.AttachStream(publish);
 
+        publish.attachCamera(camera);
 
         //attach a microphone
         R5Microphone mic = new R5Microphone();
 
         publish.attachMic(mic);
 
-        SurfaceView r5VideoView =(SurfaceView) view.findViewById(R.id.video2);
+        SurfaceView r5VideoView = (SurfaceView) view.findViewById(R.id.video2);
 
         publish.setView(r5VideoView);
-
-        publish.attachCamera(camera);
 
         publish.publish(getStream1(), R5Stream.RecordType.Live);
 
