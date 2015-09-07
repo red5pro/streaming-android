@@ -63,8 +63,8 @@ public class ReconnectExample extends BaseExample implements R5ConnectionListene
     }
 
     public void onConnectionEvent(R5ConnectionEvent r5ConnectionEvent) {
-
-        if ( r5ConnectionEvent == R5ConnectionEvent.ERROR )
+        
+        if ( r5ConnectionEvent == R5ConnectionEvent.CLOSE )
         {
             retryThread = new Thread(new Runnable() {
                 @Override
