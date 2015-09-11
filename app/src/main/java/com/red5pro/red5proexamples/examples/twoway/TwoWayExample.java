@@ -5,22 +5,27 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.red5pro.red5proexamples.R;
 import com.red5pro.red5proexamples.examples.BaseExample;
-import com.red5pro.streaming.R5Connection;
 import com.red5pro.streaming.R5Stream;
-import com.red5pro.streaming.R5StreamProtocol;
-import com.red5pro.streaming.config.R5Configuration;
+import com.red5pro.streaming.event.R5ConnectionEvent;
+import com.red5pro.streaming.event.R5ConnectionListener;
+import com.red5pro.streaming.event.R5RemoteCallContainer;
 import com.red5pro.streaming.view.R5VideoView;
+
+import org.json.JSONArray;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TwoWayExample extends BaseExample {
+public class TwoWayExample extends BaseExample implements R5ConnectionListener {
 
+    Thread listThread;
+    boolean hasPublished = false;
 
     public TwoWayExample() {
         // Required empty public constructor
@@ -35,24 +40,91 @@ public class TwoWayExample extends BaseExample {
 
         Resources res = getResources();
 
-        subscribe = getNewStream(0);
+        if(publish == null) {
 
-        //find the view and attach the stream
-        R5VideoView r5VideoView =(R5VideoView) view.findViewById(R.id.video);
-        r5VideoView.attachStream(subscribe);
+            subscribe = getNewStream(0);
 
-        subscribe.play(getString(R.string.stream1));
+            //find the view and attach the stream
+            R5VideoView r5VideoView = (R5VideoView) view.findViewById(R.id.video2);
+            r5VideoView.attachStream(subscribe);
 
-        publish = getNewStream(1);
+            subscribe.client = this;
+            subscribe.setListener(this);
 
-        //find the view and attach the stream
-        R5VideoView r5PublishView =(R5VideoView) view.findViewById(R.id.video2);
+            publish = getNewStream(1);
 
-        publish.setView(r5PublishView);
+            //find the view and attach the stream
+            SurfaceView r5PublishView = (SurfaceView) view.findViewById(R.id.video);
 
-        publish.publish(getString(R.string.stream1), R5Stream.RecordType.Live);
+            publish.setView(r5PublishView);
+
+            publish.client = this;
+            publish.setListener(this);
+
+            publish.publish(getStream1(), R5Stream.RecordType.Live);
+
+            cam.startPreview();
+
+        }
 
         return view;
+    }
+
+
+    public void onConnectionEvent(R5ConnectionEvent r5ConnectionEvent) {
+        //System.out.println("Connection: "+r5ConnectionEvent.message+String.valueOf(r5ConnectionEvent.value()));
+        if(r5ConnectionEvent == R5ConnectionEvent.CONNECTED){
+            if(!hasPublished) {
+
+                listThread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                    while (!Thread.interrupted() && publish != null) {
+
+                        try {
+                            Thread.sleep(4000);
+
+                            publish.connection.call(new R5RemoteCallContainer("streams.getLiveStreams", "R5GetLiveStreams", null));
+                        } catch (Exception e) {
+                            System.out.println("failed to get new streams");
+                        }
+                    }
+                    }
+                });
+                listThread.start();
+                hasPublished = true;
+            }
+            else {
+                System.out.println("Subscribed - two way active");
+            }
+        }
+    }
+
+
+    public void R5GetLiveStreams(String streams){
+        System.out.println("Got the streams: "+streams);
+
+        //parse string as JSON
+        JSONArray names;
+        try {
+            names = new JSONArray(streams);
+        } catch (Exception e) {
+            System.out.println("Failed to parse streams to JSONArray");
+            return;
+        }
+
+        //Look for the other stream, subscribe when available
+        for(int i  = 0; i < names.length(); i++){
+            try {
+                if(getStream2().equals(names.getString(i))){
+                    subscribe.play(getStream2());
+                    listThread.interrupt();
+                    return;
+                }
+            } catch (Exception e){
+                System.out.println("Item at index " + i + " cannot be retrieved as a String");
+            }
+        }
     }
 
 }

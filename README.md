@@ -18,12 +18,24 @@ Once you have modified your settings, you can run the application for simulator 
 ##Examples
 
 
-| [Publishing](/app/src/main/java/com/red5pro/red5proexamples/examples/publish)                 
+| **[Publishing](/app/src/main/java/com/red5pro/red5proexamples/examples/publish)**                 
 | :-----
 | *Starter example on publishing to a Red5 Pro stream* 
+|
+| **[Adaptive Bitrate Publishing](/app/src/main/java/com/red5pro/red5proexamples/examples/adaptivebitrate)**
+| *Utilize the AdaptiveBitrateController to dynamically adjust video bitrate with connection quality*
+| 
 | **[Subscribing](/app/src/main/java/com/red5pro/red5proexamples/examples/subscribe)**
 | *Starter example on subscribing to a Red5 Pro stream*  
 |
+| **[Stream Send](/app/src/main/java/com/red5pro/red5proexamples/examples/streamsend)**
+| *Broadcast messages to subscribers with R5Stream.send*  
+|
+| **[AutoReconnect](/app/src/main/java/com/red5pro/red5proexamples/examples/reconnect)**
+| *Wait for a publisher to start by monitoring connection events* 
+|
+| **[Two Way Video Chat](/app/src/main/java/com/red5pro/red5proexamples/examples/twoway)**
+| *Starter example that shows how to implement a two way video chat*
      
 ##Notes
 

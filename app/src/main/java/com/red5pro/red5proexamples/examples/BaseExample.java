@@ -24,6 +24,17 @@ public class BaseExample extends Fragment {
     protected R5Stream subscribe;
     protected R5Stream publish;
 
+    public static boolean swapped = false;
+
+    protected String getStream1(){
+        if(!swapped) return getString(R.string.stream1);
+        else return getString(R.string.stream2);
+    }
+    protected String getStream2(){
+        if(!swapped) return getString(R.string.stream2);
+        else return getString(R.string.stream1);
+    }
+
     protected Camera cam;
 
     public BaseExample(){}
@@ -79,14 +90,17 @@ public class BaseExample extends Fragment {
 
     @Override
     public void onStop(){
+
         super.onStop();
+
         if(publish != null)
             publish.stop();
 
         if(subscribe != null)
             subscribe.stop();
 
-        Log.d("releasing!!!", "relesaing!!!!");
+        publish = subscribe = null;
+
         if(cam != null) {
             cam.stopPreview();
             cam.release();
