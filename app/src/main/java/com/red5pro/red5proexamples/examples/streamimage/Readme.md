@@ -3,7 +3,7 @@
 `R5Stream.getStreamImage` allows the user to capture a screenshot of the stream at any time.  
 
 ###Example Code
-- ***[StreamImageExample.java](/StreamImageExample.java)***
+- ***[StreamImageExample.java](StreamImageExample.java)***
 
 ##Running the example
 Begin by publishing to **stream1** from a second device.  **stream1** is the default stream1 name that is used by this example. Select the **StreamImage** option to open a subscriber view. 
@@ -17,7 +17,7 @@ Touch the screen at any time while streaming to show an overlay containing the B
 Bitmap b = subscribe.getStreamImage();
 ```
 <sup>
-[StreamImageExample.java #65](/StreamImageExample.java#L65)
+[StreamImageExample.java #65](StreamImageExample.java#L65)
 </sup>
 
 The bitmap can be saved to disk, displayed with an ImageView (like the example), or processed in any way that is needed.
