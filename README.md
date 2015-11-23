@@ -36,6 +36,9 @@ Once you have modified your settings, you can run the application for simulator 
 |
 | **[Two Way Video Chat](/app/src/main/java/com/red5pro/red5proexamples/examples/twoway)**
 | *Starter example that shows how to implement a two way video chat*
+|
+| **[Stream Image](/app/src/main/java/com/red5pro/red5proexamples/examples/streamimage)**
+| *Capture Stream Image from a subscribing R5Stream*
      
 ##Notes
 
