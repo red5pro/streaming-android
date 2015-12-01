@@ -2,13 +2,18 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.red5pro.red5proexamples.fragment_roundrobin_example">
+    <TextView android:id="@+id/iptext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </TextView>
 
     <!-- TODO: Update blank fragment layout -->
-
+    <FrameLayout android:layout_width="240px" android:layout_height="320px" android:layout_gravity="bottom">
     <com.red5pro.streaming.view.R5VideoView
         android:id="@+id/video"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true" />
+    </FrameLayout>
 
 </FrameLayout>

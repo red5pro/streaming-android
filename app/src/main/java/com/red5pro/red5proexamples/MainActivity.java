@@ -17,7 +17,7 @@ import com.red5pro.red5proexamples.examples.BaseExample;
 import com.red5pro.red5proexamples.examples.adaptivebitrate.AdaptiveBitrateExample;
 import com.red5pro.red5proexamples.examples.adaptivebitrate.AdaptiveBitrateExample;
 import com.red5pro.red5proexamples.examples.clustering.ClusterSubscriber;
-import com.red5pro.red5proexamples.examples.publish.ClusteringPublisher;
+
 import com.red5pro.red5proexamples.examples.publish.PublishExample;
 import com.red5pro.red5proexamples.examples.reconnect.ReconnectExample;
 import com.red5pro.red5proexamples.examples.streamimage.StreamImageExample;
@@ -168,15 +168,7 @@ public class MainActivity extends ActionBarActivity {
                     transaction.commit();
                 }
             });
-            rootView.findViewById(R.id.RoundRobinPublish).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                    transaction.replace(R.id.container, (Fragment) new ClusteringPublisher(), "publish_frag");
-                    transaction.addToBackStack(null);
-                    transaction.commit();
-                }
-            });
+
           rootView.findViewById(R.id.StreamImage).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

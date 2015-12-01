@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.red5pro.red5proexamples.R;
 import com.red5pro.red5proexamples.examples.BaseExample;
@@ -62,12 +63,13 @@ public class ClusterSubscriber extends BaseExample {
                             final String toPost = ip = bits[0];
                             Log.i("cluster", "round robin ip: " + ip);
 
-//                            ed.post(new Runnable(){
-//                                public void run(){
-//                                    ed.setText(toPost);
-//                                }
-//
-//                            });
+                            view.post(new Runnable(){
+                                public void run(){
+
+                                    TextView tv = (TextView)view.findViewById(R.id.iptext);
+                                    tv.setText(toPost,null);
+                                };
+                            });
 
                         } else {
                             //Closes the connection.
@@ -77,6 +79,9 @@ public class ClusterSubscriber extends BaseExample {
                     }catch(Exception ioe){
                         ioe.printStackTrace();
                     }
+
+
+
                     //Create the configuration from the values.xml and the edge ip
                     config = new R5Configuration(R5StreamProtocol.RTSP, ip, res.getInteger(R.integer.port), res.getString(R.string.context), 0.5f);
                     R5Connection connection = new R5Connection(config);
