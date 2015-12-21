@@ -42,6 +42,9 @@
 
         <Button android:text="Stream Image Capture" android:id="@+id/StreamImage" android:layout_width="wrap_content"
             android:layout_height="wrap_content"></Button>
+
+        <Button android:text="Custom Publish" android:id="@+id/CustomPublish" android:layout_width="wrap_content"
+            android:layout_height="wrap_content"></Button>
         </LinearLayout>
 
 </RelativeLayout>

@@ -13,6 +13,11 @@
         <option name="ASSEMBLE_TASK_NAME" value="assembleArmv7Debug" />
         <option name="COMPILE_JAVA_TASK_NAME" value="compileArmv7DebugSources" />
         <option name="ASSEMBLE_TEST_TASK_NAME" value="assembleArmv7DebugAndroidTest" />
+        <option name="COMPILE_JAVA_TEST_TASK_NAME" value="compileArmv7DebugAndroidTestSources" />
+        <afterSyncTasks>
+          <task>generateArmv7DebugAndroidTestSources</task>
+          <task>generateArmv7DebugSources</task>
+        </afterSyncTasks>
         <option name="ALLOW_USER_CONFIGURATION" value="false" />
         <option name="MANIFEST_FILE_RELATIVE_PATH" value="/src/main/AndroidManifest.xml" />
         <option name="RES_FOLDER_RELATIVE_PATH" value="/src/main/res" />
@@ -112,4 +117,3 @@
     <orderEntry type="library" exported="" name="mina-core-2.0.7" level="project" />
   </component>
 </module>
-

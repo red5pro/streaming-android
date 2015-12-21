@@ -24,7 +24,7 @@ import com.red5pro.red5proexamples.examples.streamimage.StreamImageExample;
 import com.red5pro.red5proexamples.examples.streamsend.StreamSendExample;
 import com.red5pro.red5proexamples.examples.subscribe.SubscribeExample;
 import com.red5pro.red5proexamples.examples.twoway.TwoWayExample;
-
+import com.red5pro.red5proexamples.examples.custompublish.CustomPublishExample;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -176,6 +176,18 @@ public class MainActivity extends ActionBarActivity {
                    transaction.replace(R.id.container, (Fragment) new StreamImageExample(), "streamimage_frag");
                     transaction.addToBackStack(null);
                     transaction.commit();
+                }
+            });
+
+            rootView.findViewById(R.id.CustomPublish).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                    transaction.replace(R.id.container, (Fragment) new CustomPublishExample(), "publish_frag");
+                    transaction.addToBackStack(null);
+                    transaction.commit();
+
                 }
             });
 
