@@ -15,12 +15,16 @@ import android.widget.Switch;
 
 import com.red5pro.red5proexamples.examples.BaseExample;
 import com.red5pro.red5proexamples.examples.adaptivebitrate.AdaptiveBitrateExample;
+import com.red5pro.red5proexamples.examples.adaptivebitrate.AdaptiveBitrateExample;
+import com.red5pro.red5proexamples.examples.clustering.ClusterSubscriber;
+
 import com.red5pro.red5proexamples.examples.publish.PublishExample;
 import com.red5pro.red5proexamples.examples.reconnect.ReconnectExample;
+import com.red5pro.red5proexamples.examples.streamimage.StreamImageExample;
 import com.red5pro.red5proexamples.examples.streamsend.StreamSendExample;
 import com.red5pro.red5proexamples.examples.subscribe.SubscribeExample;
 import com.red5pro.red5proexamples.examples.twoway.TwoWayExample;
-
+import com.red5pro.red5proexamples.examples.custompublish.CustomPublishExample;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -155,6 +159,37 @@ public class MainActivity extends ActionBarActivity {
                 }
             });
 
+            rootView.findViewById(R.id.RoundRobin).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                    transaction.replace(R.id.container, (Fragment) new ClusterSubscriber(), "cluster_frag");
+                    transaction.addToBackStack(null);
+                    transaction.commit();
+                }
+            });
+
+          rootView.findViewById(R.id.StreamImage).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                   transaction.replace(R.id.container, (Fragment) new StreamImageExample(), "streamimage_frag");
+                    transaction.addToBackStack(null);
+                    transaction.commit();
+                }
+            });
+
+            rootView.findViewById(R.id.CustomPublish).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                    transaction.replace(R.id.container, (Fragment) new CustomPublishExample(), "publish_frag");
+                    transaction.addToBackStack(null);
+                    transaction.commit();
+
+                }
+            });
 
             return rootView;
         }
