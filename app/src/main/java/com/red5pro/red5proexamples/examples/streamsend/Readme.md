@@ -4,7 +4,7 @@
 
 
 ###Example Code
-- ***[StreamSendExample.java](./StreamSendExample.java)***
+- ***[StreamSendExample.java](StreamSendExample.java)***
 
 ##Running the example
 Two devices are required to run this example.  One as a publisher, and the other as a subscriber. 
@@ -25,7 +25,7 @@ Once the stream has connected you are able to dispatch messages to any connected
 
 ```
 <sup>
-[StreamSendExample.java #85](./SendStreamExample.java#L85)
+[StreamSendExample.java #85](SendStreamExample.java#L85)
 </sup>
 
 ###Send Message Format
@@ -49,7 +49,7 @@ subscribe.client = this;
 subscribe.setListener(this);
 ```
 <sup>
-[StreamSendExample.java #101](./SendStreamExample.java#L101)
+[StreamSendExample.java #101](SendStreamExample.java#L101)
 </sup>
 
 Because the publisher will be sending **onStreamSend**, the subscriber client delegate will need a matching method signature.  All methods receive a single string argument containing the variable map provided by the publisher.  This map can easily be parsed.
@@ -67,5 +67,5 @@ public void onStreamSend( String received ) {
 }
 ```
 <sup>
-[StreamSendExample.java #130](./SendStreamExample.java#L130)
+[StreamSendExample.java #130](SendStreamExample.java#L130)
 </sup>
