@@ -18,30 +18,29 @@ Once you have modified your settings, you can run the application for simulator 
 ##Examples
 
 
-| **[Publishing](/app/src/main/java/com/red5pro/red5proexamples/examples/publish)**                 
+###[Publishing](/app/src/main/java/com/red5pro/red5proexamples/examples/publish)
+
+| **[Adaptive Bitrate Publishing](/app/src/main/java/com/red5pro/red5proexamples/examples/adaptivebitrate)**      
 | :-----
-| *Starter example on publishing to a Red5 Pro stream* 
-|
-| **[Adaptive Bitrate Publishing](/app/src/main/java/com/red5pro/red5proexamples/examples/adaptivebitrate)**
 | *Utilize the AdaptiveBitrateController to dynamically adjust video bitrate with connection quality*
-| 
-| **[Subscribing](/app/src/main/java/com/red5pro/red5proexamples/examples/subscribe)**
-| *Starter example on subscribing to a Red5 Pro stream*  
+|
+| **[Custom Video Source](/app/src/main/java/com/red5pro/red5proexamples/examples/custompublish)**
+| *Publish custom data to a Red5 Pro stream in place of standard camera input*   
 |
 | **[Stream Send](/app/src/main/java/com/red5pro/red5proexamples/examples/streamsend)**
-| *Broadcast messages to subscribers with R5Stream.send*  
-|
-| **[AutoReconnect](/app/src/main/java/com/red5pro/red5proexamples/examples/reconnect)**
-| *Wait for a publisher to start by monitoring connection events* 
+| *Broadcast messages to subscribers with R5Stream.send - includes example for recieving as a subscriber*
 |
 | **[Two Way Video Chat](/app/src/main/java/com/red5pro/red5proexamples/examples/twoway)**
-| *Starter example that shows how to implement a two way video chat*
+| *Starter example that shows how to implement a two way video chat using each end as both publisher and subscriber*
+
+###[Subscribing](/app/src/main/java/com/red5pro/red5proexamples/examples/subscribe)
+
+| **[AutoReconnect](/app/src/main/java/com/red5pro/red5proexamples/examples/reconnect)**      
+| :-----
+| *Wait for a publisher to start by monitoring connection events*
 |
-| **[Stream Image](/app/src/main/java/com/red5pro/red5proexamples/examples/streamimage)**
-| *Capture Stream Image from a subscribing R5Stream*
- |
-| **[Custom Publish](/app/src/main/java/com/red5pro/red5proexamples/examples/custompublish)**
-| *Publish custom video data to a Red5 Pro stream*
+| **[Stream Image Capture](/app/src/main/java/com/red5pro/red5proexamples/examples/streamimage)**
+| *Capture an image from a subscribing R5Stream*
     
     
 ##Notes
