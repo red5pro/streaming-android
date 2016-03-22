@@ -24,7 +24,7 @@ public class BaseExample extends Fragment {
     protected R5Stream subscribe;
     protected R5Stream publish;
 
-    public static boolean swapped = false;
+    public static boolean swapped;
 
     protected String getStream1(){
         if(!swapped) return getString(R.string.stream1);
@@ -69,7 +69,7 @@ public class BaseExample extends Fragment {
     }
 
     protected Camera openFrontFacingCameraGingerbread() {
-        int cameraCount = 0;
+        int cameraCount;
         Camera cam = null;
         Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
         cameraCount = Camera.getNumberOfCameras();

@@ -25,7 +25,7 @@ import org.json.JSONArray;
 public class TwoWayExample extends BaseExample implements R5ConnectionListener {
 
     Thread listThread;
-    boolean hasPublished = false;
+    boolean hasPublished;
 
     public TwoWayExample() {
         // Required empty public constructor
