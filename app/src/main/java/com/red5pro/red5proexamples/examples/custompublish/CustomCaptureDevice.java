@@ -6,7 +6,7 @@ import android.graphics.ImageFormat;
 import android.graphics.Paint;
 import android.view.SurfaceHolder;
 
-import com.red5pro.streaming.media.AudioEngine;
+import com.red5pro.streaming.media.R5AudioController;
 import com.red5pro.streaming.source.R5VideoSource;
 
 /**
@@ -205,8 +205,8 @@ public class CustomCaptureDevice extends R5VideoSource {
 
 
 
-                   if(AudioEngine.getAudioSampleTime()*1000>streamTime)
-                        streamTime=AudioEngine.getAudioSampleTime()*1000;
+                   if(R5AudioController.getAudioSampleTime()*1000>streamTime)
+                        streamTime=R5AudioController.getAudioSampleTime()*1000;
                     else
                        streamTime=(long)timeStamp;
 
