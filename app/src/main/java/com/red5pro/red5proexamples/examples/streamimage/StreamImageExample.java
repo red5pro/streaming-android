@@ -69,7 +69,7 @@ public class StreamImageExample extends BaseExample {
             }
         });
 
-        subscribe.play(res.getString(R.string.stream1));
+        subscribe.play(getStream1());
 
         return view;
     }
