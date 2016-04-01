@@ -18,20 +18,20 @@ android {
         }
     }
 
-    productFlavors {
+   productFlavors {
 
         armv7 {
-            ndk {
-                abiFilters "armeabi-v7a"
-            }
-        }
-
-        x86{
-            ndk{
-                abiFilters "x86"
-            }
-        }
-
+             ndk {
+                 abiFilters "armeabi-v7a"
+             }
+         }
+//
+//        x86{
+//            ndk{
+//                abiFilters "x86"
+//            }
+//        }
+//
     }
 }
 
