@@ -57,11 +57,11 @@ public class StreamSendExample extends BaseExample implements R5ConnectionListen
 
             //attach a camera video source
             cam = openFrontFacingCameraGingerbread();
-            cam.setDisplayOrientation(90);
+            cam.setDisplayOrientation((cameraOrientation + 180)%360);
 
             R5Camera camera = new R5Camera(cam, 320, 240);
             camera.setBitrate(res.getInteger(R.integer.bitrate));
-            camera.setOrientation(-90);
+            camera.setOrientation(cameraOrientation);
 
             publish.attachCamera(camera);
 
