@@ -51,11 +51,11 @@ public class AdaptiveBitrateExample extends BaseExample {
 
         //attach a camera video source
         cam = openFrontFacingCameraGingerbread();
-        cam.setDisplayOrientation(90);
+        cam.setDisplayOrientation((cameraOrientation + 180)%360);
 
         R5Camera camera  = new R5Camera(cam, 320, 240);
         camera.setBitrate(res.getInteger(R.integer.highBitrate));
-        camera.setOrientation(-90);
+        camera.setOrientation(cameraOrientation);
 
         R5AdaptiveBitrateController adaptor = new R5AdaptiveBitrateController();
         adaptor.AttachStream(publish);
