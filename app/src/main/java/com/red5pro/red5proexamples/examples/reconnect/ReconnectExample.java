@@ -54,6 +54,7 @@ public class ReconnectExample extends BaseExample implements R5ConnectionListene
             //find the view and attach the stream
             R5VideoView r5VideoView = (R5VideoView) view.findViewById(R.id.video);
             r5VideoView.attachStream(subscribe);
+            r5VideoView.showDebugView(res.getBoolean(R.bool.debugView));
 
             subscribe.play(getStream1());
 

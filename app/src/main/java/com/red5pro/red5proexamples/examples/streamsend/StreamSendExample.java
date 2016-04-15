@@ -70,9 +70,9 @@ public class StreamSendExample extends BaseExample implements R5ConnectionListen
 
             publish.attachMic(mic);
 
-            SurfaceView r5PublishView = (SurfaceView) view.findViewById(R.id.video1);
-
-            publish.setView(r5PublishView);
+            R5VideoView r5PublishView = (R5VideoView) view.findViewById(R.id.video);
+            r5PublishView.attachStream(publish);
+            r5PublishView.showDebugView(res.getBoolean(R.bool.debugView));
 
             publish.client = this;
             publish.setListener(this);
@@ -105,11 +105,11 @@ public class StreamSendExample extends BaseExample implements R5ConnectionListen
             subscribe.setLogLevel(R5Stream.LOG_LEVEL_DEBUG);
 
             //find the view and attach the stream
-            R5VideoView r5SubscribeView = (R5VideoView) view.findViewById(R.id.video2);
+            R5VideoView r5SubscribeView = (R5VideoView) view.findViewById(R.id.video);
             r5SubscribeView.attachStream(subscribe);
+            r5SubscribeView.showDebugView(res.getBoolean(R.bool.debugView));
 
             subscribe.play(getStream2());
-
         }
 
         return view;

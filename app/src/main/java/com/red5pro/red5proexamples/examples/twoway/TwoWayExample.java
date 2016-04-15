@@ -47,6 +47,7 @@ public class TwoWayExample extends BaseExample implements R5ConnectionListener {
             //find the view and attach the stream
             R5VideoView r5VideoView = (R5VideoView) view.findViewById(R.id.video2);
             r5VideoView.attachStream(subscribe);
+            r5VideoView.showDebugView(res.getBoolean(R.bool.debugView));
 
             subscribe.client = this;
             subscribe.setListener(this);
@@ -54,9 +55,9 @@ public class TwoWayExample extends BaseExample implements R5ConnectionListener {
             publish = getNewStream(1);
 
             //find the view and attach the stream
-            SurfaceView r5PublishView = (SurfaceView) view.findViewById(R.id.video);
-
-            publish.setView(r5PublishView);
+            R5VideoView r5PublishView = (R5VideoView) view.findViewById(R.id.video);
+            r5PublishView.attachStream(publish);
+            r5PublishView.showDebugView(res.getBoolean(R.bool.debugView));
 
             publish.client = this;
             publish.setListener(this);

@@ -3,7 +3,7 @@
     android:layout_height="match_parent"
     tools:context="com.red5pro.red5proexamples.examples.adaptivebitrate.AdaptiveBitrateExample">
 
-    <SurfaceView
+    <com.red5pro.streaming.view.R5VideoView
         android:id="@+id/video2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
