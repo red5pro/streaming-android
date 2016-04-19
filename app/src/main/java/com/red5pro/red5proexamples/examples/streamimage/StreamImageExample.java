@@ -57,6 +57,7 @@ public class StreamImageExample extends BaseExample {
 
         R5VideoView r5VideoView = (R5VideoView) view.findViewById(R.id.video);
         r5VideoView.attachStream(subscribe);
+        r5VideoView.showDebugView(res.getBoolean(R.bool.debugView));
 
         r5VideoView.setOnTouchListener(new View.OnTouchListener() {
             public boolean onTouch(View v, MotionEvent e) {

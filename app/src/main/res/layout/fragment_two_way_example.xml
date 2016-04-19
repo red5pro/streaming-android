@@ -4,7 +4,7 @@
     tools:context="com.red5pro.red5proexamples.examples.twoway.TwoWayExample"
     >
 
-    <SurfaceView
+    <com.red5pro.streaming.view.R5VideoView
         android:id="@+id/video"
         android:layout_width="202dp"
         android:layout_height="300dp"
