@@ -166,7 +166,7 @@ public class MainActivity extends ActionBarActivity {
                 }
             });
 
-            rootView.findViewById(R.id.RoundRobin).setOnClickListener(new View.OnClickListener() {
+            rootView.findViewById(R.id.Cluster).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     FragmentTransaction transaction = getFragmentManager().beginTransaction();
@@ -176,7 +176,7 @@ public class MainActivity extends ActionBarActivity {
                 }
             });
 
-          rootView.findViewById(R.id.StreamImage).setOnClickListener(new View.OnClickListener() {
+            rootView.findViewById(R.id.StreamImage).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     FragmentTransaction transaction = getFragmentManager().beginTransaction();

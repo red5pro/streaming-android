@@ -39,6 +39,9 @@ Once you have modified your settings, you can run the application for simulator 
 | :-----
 | *Wait for a publisher to start by monitoring connection events*
 |
+| **[Cluster](/app/src/main/java/com/red5pro/red5proexamples/examples/clustering)**
+| *Connect to a stream that is published in a simple cluster server setup.*
+|
 | **[Stream Image Capture](/app/src/main/java/com/red5pro/red5proexamples/examples/streamimage)**
 | *Capture an image from a subscribing R5Stream*
     
