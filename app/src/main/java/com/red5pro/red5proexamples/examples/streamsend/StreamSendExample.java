@@ -82,7 +82,7 @@ public class StreamSendExample extends BaseExample implements R5ConnectionListen
                     Hashtable<String, String> map = new Hashtable<String, String>();
                     map.put("value", "A simple string");
 
-                    publish.send(new R5RemoteCallContainer("onStreamSend", map));
+                    publish.send("onStreamSend", map);
 
                     return true;
                 }

@@ -205,8 +205,8 @@ public class CustomCaptureDevice extends R5VideoSource {
 
 
 
-                   if(R5AudioController.getAudioSampleTime()*1000>streamTime)
-                        streamTime=R5AudioController.getAudioSampleTime()*1000;
+                   if(R5AudioController.getInstance().getAudioSampleTime()*1000>streamTime)
+                        streamTime=R5AudioController.getInstance().getAudioSampleTime()*1000;
                     else
                        streamTime=(long)timeStamp;
 
