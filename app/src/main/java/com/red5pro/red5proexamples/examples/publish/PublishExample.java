@@ -52,7 +52,7 @@ public class PublishExample extends BaseExample {
         cam = openFrontFacingCameraGingerbread();
         cam.setDisplayOrientation((cameraOrientation + 180)%360);
 
-        R5Camera camera  = new R5Camera(cam, 320, 240);
+        R5Camera camera  = new R5Camera(cam, 640, 360);
         camera.setBitrate(res.getInteger(R.integer.bitrate));
         camera.setOrientation(cameraOrientation);
 
