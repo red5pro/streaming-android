@@ -32,7 +32,7 @@ import java.io.IOException;
  * Created by Andy Shaules on 11/23/2015.
  */
 public class ClusterSubscriber extends BaseExample {
-    R5Configuration config =null;
+    R5Configuration config;
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 

@@ -25,10 +25,10 @@ public class CustomCaptureDevice extends R5VideoSource {
     byte bufferOut[] ;
     private Runnable engine;
     private volatile boolean doEncode=true;
-    private long streamTime = 0;
+    private long streamTime;
     private Bitmap bitmap;
     int[] pixels = new int[320 * 240];
-    boolean change = false;
+    boolean change;
 
 
     @Override
