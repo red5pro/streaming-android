@@ -1,4 +1,4 @@
-#Red5 Pro Android Streaming Examples
+# Red5 Pro Android Streaming Testbed
 
 This repository contains a simple project with a number of examples that can be used for testing and reference.  
 
@@ -10,49 +10,76 @@ For more information visit http://red5pro.com.
 
 ##Setup
 
-You will need to modify **/app/src/main/res/values/values.xml (the domain value)** to point to your server instance.  If you do not, the examples will not function when you build.
+You will need to modify **/app/src/main/res/raw/tests.xml (the domain value)** to point to your server instance.  If you do not, the examples will not function when you build.
 
-Once you have modified your settings, you can run the application for simulator or device. 
-
+Once you have modified your settings, you can run the application for simulator or device.
 
 ##Examples
 
+###[Publishing](app/src/main/java/red5pro/org/testandroidproject/tests/PublishTest)
 
-###[Publishing](/app/src/main/java/com/red5pro/red5proexamples/examples/publish)
-
-| **[Adaptive Bitrate Publishing](/app/src/main/java/com/red5pro/red5proexamples/examples/adaptivebitrate)**      
+| **[1080p](app/src/main/java/red5pro/org/testandroidproject/tests/PublishTest)**                 
 | :-----
-| *Utilize the AdaptiveBitrateController to dynamically adjust video bitrate with connection quality*
+| *A high quality publisher. Note that this is the publish test with a non-default 'bitrate' and camera size values set in tests.xml* 
 |
-| **[Custom Video Source](/app/src/main/java/com/red5pro/red5proexamples/examples/custompublish)**
-| *Publish custom data to a Red5 Pro stream in place of standard camera input*   
+| **[ABR](app/src/main/java/red5pro/org/testandroidproject/tests/PublishABRTest)**
+| *A high bitrate publisher with AdaptiveBitrateController*   
 |
-| **[Stream Send](/app/src/main/java/com/red5pro/red5proexamples/examples/streamsend)**
-| *Broadcast messages to subscribers with R5Stream.send - includes example for recieving as a subscriber*
+| **[Camera Swap](app/src/main/java/red5pro/org/testandroidproject/tests/PublishCameraSwapTest)**
+| *Touch the screen to swap which camera is being used! Verify using flash that camera is swapping properly and no rendering problems occur.*
 |
-| **[Two Way Video Chat](/app/src/main/java/com/red5pro/red5proexamples/examples/twoway)**
-| *Starter example that shows how to implement a two way video chat using each end as both publisher and subscriber*
+| **[Custom Video Source](app/src/main/java/red5pro/org/testandroidproject/tests/PublishCustomSourceTest)**
+| *Uses a custom controller to supply video data to the publisher.*
+|
+| **[Image Capture](app/src/main/java/red5pro/org/testandroidproject/tests/PublishImageTest)**
+| *Touch the publish stream to take a screen shot that is displayed!*  
+|
+| **[Orientation](app/src/main/java/red5pro/org/testandroidproject/tests/PublishOrientationTest)**
+| *Touch the screen to rotate the output video 90 degrees.  Verify with flash, iOS, or other android device running subscribe test.*   
+|
+| **[Record](app/src/main/java/red5pro/org/testandroidproject/tests/RecordedTest)**
+| *A publish example that records stream data on the server.*
+|
+| **[Remote Call](app/src/main/java/red5pro/org/testandroidproject/tests/PublishRemoteCallTest)**
+| *The publish portion of the remote call example - sends the remote call.*
+| 
+| **[Stream Manager](app/src/main/java/red5pro/org/testandroidproject/tests/PublishStreamManagerTest)**
+| *A publish example that connects with a server cluster using a Stream Manger*
+|
+| **[Two Way](app/src/main/java/red5pro/org/testandroidproject/tests/TwoWayTest)**
+| *An example of simultaneously publishing while subscribing - allowing a conversation. Includes stream detection and auto-connection.*
 
-###[Subscribing](/app/src/main/java/com/red5pro/red5proexamples/examples/subscribe)
+###[Subscribing](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeTest)
 
-| **[AutoReconnect](/app/src/main/java/com/red5pro/red5proexamples/examples/reconnect)**      
+| **[Aspect Ratio](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeAspectTest)**                
 | :-----
-| *Wait for a publisher to start by monitoring connection events*
+| *Change the fill mode of the stream.  scale to fill, scale to fit, scale fill.  Aspect ratio should be maintained on first 2.* 
 |
-| **[Cluster](/app/src/main/java/com/red5pro/red5proexamples/examples/clustering)**
-| *Connect to a stream that is published in a simple cluster server setup.*
+| **[Bandwidth Test](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeBandwidthTest)**
+| *Detect Insufficient and Sufficient BW flags.  Test on a poor network using a publisher that has high video quality. Video should become sporadic or stop altogether.  The screen will darken when no video is being received.*  
 |
-| **[Stream Image Capture](/app/src/main/java/com/red5pro/red5proexamples/examples/streamimage)**
-| *Capture an image from a subscribing R5Stream*
-    
-    
+| **[Cluster](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeCluster)** 
+| *An example of conecting to a cluster server.*
+|
+| **[Image Capture](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeImageTest)** 
+| *Touch the subscribe stream to take a screen shot that is displayed!*
+|
+| **[No View](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeNoViewTest)** 
+| *A proof of using an audio only stream without attaching it to a view.*
+|
+| **[Remote Call](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeRemoteCallTest)**
+| *The subscribe portion of the remote call example - receives the remote call.*
+| 
+| **[Stream Manager](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeStreamManagerTest)**
+| *A subscribe example that connects with a server cluster using a Stream Manger.*   
+|
+| **[Two Streams](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeTwoStreamTest)**
+| *An example of subscribing to multiple streams at once, useful for subscribing to a presentation hosted by two people using a Two Way connection.*
+     
 ##Notes
 
 1. For some of the above examples you will need two devices (a publisher, and a subscriber). You can also use a web browser to subscribe or publish via Flash.
 2. You can see a list of active streams by navigating to http://your_red5_pro_server_ip:5080/live/streams.jsp
 3. Click on the flash link (for example, flash_publisher) in the streams list displayed to view the published stream in your browser.
 
-## Additional Red5 Pro Examples Can be found at:  [android-streaming-testbed] (https://github.com/red5pro/android-streaming-testbed) and [ios-streaming-testbed] (https://github.com/red5pro/ios-streaming-testbed)
-
-
-[![Analytics](https://ga-beacon.appspot.com/UA-59819838-3/red5pro/streaming-android?pixel)](https://github.com/igrigorik/ga-beacon)
+[![Analytics](https://ga-beacon.appspot.com/UA-59819838-3/red5pro/streaming-ios?pixel)](https://github.com/igrigorik/ga-beacon)
