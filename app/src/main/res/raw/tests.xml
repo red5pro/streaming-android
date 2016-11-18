@@ -1,0 +1,270 @@
+<Testbed>
+    <Properties>
+        <bitrate>750</bitrate>
+        <host>0.0.0.0</host>
+        <buffer_time>1</buffer_time>
+        <port>8554</port>
+        <stream1>stream1</stream1>
+        <stream2>stream2</stream2>
+        <context>live</context>
+        <camera_width>640</camera_width>
+        <camera_height>360</camera_height>
+        <debug_view>true</debug_view>
+        <video_on>true</video_on>
+        <audio_on>true</audio_on>
+    </Properties>
+    <Tests>
+
+        <Test title="Home">
+
+            <description>Allows you to change stream names and host in-app</description>
+
+            <Properties>
+            </Properties>
+
+            <name>Home</name>
+            <class>Home</class>
+        </Test>
+
+        <Test title="Publish">
+
+            <description>Simple publish example!</description>
+
+            <Properties>
+            </Properties>
+
+            <name>Publish</name>
+            <class>PublishTest</class>
+        </Test>
+
+        <Test title="Publish - 1080p">
+
+            <description>A high quality publisher</description>
+
+            <Properties>
+                <camera_width>1920</camera_width>
+                <camera_height>1080</camera_height>
+                <bitrate>4500</bitrate>
+            </Properties>
+
+            <name>Publish - 1080p</name>
+            <class>PublishTest</class>
+        </Test>
+
+        <Test title="Publish - ABR">
+
+            <description>A high quality publisher with AdaptiveBitrateController</description>
+
+            <Properties>
+                <camera_width>1920</camera_width>
+                <camera_height>1080</camera_height>
+                <bitrate>4800</bitrate>
+            </Properties>
+
+            <name>Publish - ABR</name>
+            <class>PublishABRTest</class>
+        </Test>
+
+        <Test title="Publish - Camera Swap">
+
+            <description>Touch the screen to swap which camera is being used! Verify using flash that camera is swapping properly and no rendering problems occur.</description>
+
+            <Properties>
+            </Properties>
+
+            <name>Publish - Camera Swap</name>
+            <class>PublishCameraSwapTest</class>
+        </Test>
+
+        <Test title="Publish - Custom Video Source">
+
+            <description>Uses a custom controller to supply video data to the publisher.</description>
+
+            <Properties>
+            </Properties>
+
+            <name>Publish - Custom Video Source</name>
+            <class>PublishCustomSourceTest</class>
+        </Test>
+
+        <Test title="Publish - Image Capture">
+
+            <description>Touch the publish stream to take a screen shot that is displayed!</description>
+
+            <Properties>
+            </Properties>
+
+            <name>Publish - Image Capture</name>
+            <class>PublishImageTest</class>
+        </Test>
+
+        <Test title="Publish - Orientation">
+
+            <description>Touch the screen to rotate the output video 90 degrees.  Verify with flash, android, or other iOS device running subscribe test.</description>
+
+            <Properties>
+            </Properties>
+
+            <name>Publish - Orientation</name>
+            <class>PublishOrientationTest</class>
+        </Test>
+
+        <Test title="Publish - Record">
+
+            <description>A publish example that records stream data on the server.</description>
+
+            <Properties>
+            </Properties>
+
+            <name>Publish - Record</name>
+            <class>RecordedTest</class>
+        </Test>
+
+        <Test title="Publish - Remote Call">
+
+            <description>The publish portion of the remote call example - sends the remote call</description>
+
+            <Properties>
+            </Properties>
+
+            <name>Publish - Remote Call</name>
+            <class>PublishRemoteCallTest</class>
+        </Test>
+
+        <Test title="Publish - Stream Manager">
+
+            <description>A publish example that connects to a cluster server with the Stream Manager.</description>
+
+            <Properties>
+            </Properties>
+
+            <name>Publish - Stream Manager</name>
+            <class>PublishStreamManagerTest</class>
+        </Test>
+
+        <Test title="Subscribe">
+
+            <description>Simple Subscribe Test!</description>
+
+            <Properties>
+                <buffer_time>0</buffer_time>
+            </Properties>
+
+            <name>Subscribe</name>
+            <class>SubscribeTest</class>
+        </Test>
+
+        <Test title="Subscribe - Reconnect">
+
+            <description>Simple Subscribe Reconnection test.  Touch to disconnect and automatically reconnect</description>
+
+            <Properties>
+                <buffer_time>0</buffer_time>
+            </Properties>
+
+            <name>Subscribe - Reconnect</name>
+            <class>SubscribeReconnectTest</class>
+        </Test>
+
+        <Test title="Subscribe - Aspect Ratio">
+
+            <description>Change the fill mode of the stream.  scale to fill, scale to fit, scale fill.  Aspect ratio should be maintained on first 2.</description>
+
+            <Properties>
+            </Properties>
+
+            <name>Subscribe - Aspect Ratio</name>
+            <class>SubscribeAspectTest</class>
+        </Test>
+
+        <Test title="Subscribe - Bandwidth Test">
+
+            <description>Detect Insufficient and Sufficient BW flags.  Test on a poor network using a publisher that has high video quality. Video should become sporadic or stop altogether.  The screen will darken when no video is being received.</description>
+
+            <Properties>
+            </Properties>
+
+            <name>Subscribe - Bandwidth Test</name>
+            <class>SubscribeBandwidthTest</class>
+        </Test>
+
+        <Test title="Subscribe - Cluster">
+
+            <description>An example of conecting to a cluster server.</description>
+
+            <Properties>
+            </Properties>
+
+            <name>Subscribe - Cluster</name>
+            <class>SubscribeCluster</class>
+        </Test>
+
+        <Test title="Subscribe - Image Capture">
+
+            <description>Touch the subscribe stream to take a screen shot that is displayed</description>
+
+            <Properties>
+            </Properties>
+
+            <name>Subscribe - Image Capture</name>
+            <class>SubscribeImageTest</class>
+        </Test>
+
+        <Test title="Subscribe - No View">
+
+            <description>A proof of using an audio only stream without attaching it to a view.</description>
+
+            <Properties>
+            </Properties>
+
+            <name>Subscribe - No View</name>
+            <class>SubscribeNoViewTest</class>
+        </Test>
+
+        <Test title="Subscribe - Remote Call">
+
+            <description>The subscribe portion of the remote call example - receives the remote call</description>
+
+            <Properties>
+            </Properties>
+
+            <name>Subscribe - Remote Call</name>
+            <class>SubscribeRemoteCallTest</class>
+        </Test>
+
+        <Test title="Subscribe - Stream Manager">
+
+            <description>A subscribe example that connects to a cluster server with the Stream Manager.</description>
+
+            <Properties>
+            </Properties>
+
+            <name>Subscribe - Stream Manager</name>
+            <class>SubscribeStreamManagerTest</class>
+        </Test>
+
+        <Test title="Subscribe - Two Stream">
+
+            <description>Allows subscribing to two streams at one - allows user to watch presentation co-authored by two people using the two way example.</description>
+
+            <Properties>
+            </Properties>
+
+            <name>Subscribe - Two Stream</name>
+            <class>SubscribeTwoStreamTest</class>
+        </Test>
+
+        <Test title="Two Way">
+
+            <description>Publish and subscribe simultaneously to hold a conversation</description>
+
+            <Properties>
+            </Properties>
+
+            <name>Two Way</name>
+            <class>TwoWayTest</class>
+        </Test>
+
+    </Tests>
+
+</Testbed>
