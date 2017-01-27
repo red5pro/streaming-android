@@ -67,6 +67,9 @@ Once you have modified your settings, you can run the application for simulator 
 | **[No View](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeNoViewTest)** 
 | *A proof of using an audio only stream without attaching it to a view.*
 |
+| **[Reconnect](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeReconnectTest)**
+| *An example of reconnecting to a stream on a connection error.*
+|
 | **[Remote Call](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeRemoteCallTest)**
 | *The subscribe portion of the remote call example - receives the remote call.*
 | 
