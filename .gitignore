@@ -20,5 +20,3 @@ hs_err_pid*
 /.idea/libraries
 .DS_Store
 /build
-
-app/src/main/res/raw/tests.xml
