@@ -91,7 +91,7 @@
       <excludeFolder url="file://$MODULE_DIR$/build/outputs" />
       <excludeFolder url="file://$MODULE_DIR$/build/tmp" />
     </content>
-    <orderEntry type="jdk" jdkName="Android API 20 Platform" jdkType="Android SDK" />
+    <orderEntry type="jdk" jdkName="Android API 20 Platform (1)" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" scope="TEST" name="mockable-android-20" level="project" />
     <orderEntry type="library" exported="" name="logback-classic-1.1.2" level="project" />
@@ -99,8 +99,8 @@
     <orderEntry type="library" exported="" name="logback-core-1.1.2" level="project" />
     <orderEntry type="library" exported="" name="red5pro-1.0.2" level="project" />
     <orderEntry type="library" exported="" name="red5streaming" level="project" />
-    <orderEntry type="library" exported="" name="slf4j-api-1.7.6" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-23.1.1" level="project" />
+    <orderEntry type="library" exported="" name="slf4j-api-1.7.6" level="project" />
     <orderEntry type="library" exported="" name="mina-core-2.0.7" level="project" />
   </component>
 </module>
