@@ -47,9 +47,9 @@ public class SubscribeStreamManagerTest extends SubscribeTest {
             @Override
             public void run() {
                 try{
-                    //url format: https://{streammanagerhost}:{port}/streammanager/api/1.0/event/{scopeName}/{streamName}?action=subscribe
+                    //url format: https://{streammanagerhost}:{port}/streammanager/api/2.0/event/{scopeName}/{streamName}?action=subscribe
                     String url = "http://" +
-                            TestContent.GetPropertyString("host") + ":5080/streammanager/api/1.0/event/" +
+                            TestContent.GetPropertyString("host") + ":5080/streammanager/api/2.0/event/" +
                             TestContent.GetPropertyString("context") + "/" +
                             TestContent.GetPropertyString("stream1") + "?action=subscribe";
 
