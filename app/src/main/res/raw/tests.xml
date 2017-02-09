@@ -1,7 +1,7 @@
 <Testbed>
     <Properties>
         <bitrate>750</bitrate>
-        <host>0.0.0.0</host>
+        <host>10.0.0.10</host>
         <buffer_time>1</buffer_time>
         <port>8554</port>
         <stream1>stream1</stream1>
