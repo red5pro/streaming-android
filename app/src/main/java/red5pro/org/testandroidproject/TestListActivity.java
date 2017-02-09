@@ -1,8 +1,12 @@
 package red5pro.org.testandroidproject;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.app.Activity;
+import android.util.Log;
 import android.widget.Switch;
 
 import junit.framework.Test;
@@ -97,14 +101,14 @@ public class TestListActivity extends Activity
             // adding or replacing the detail fragment using a
             // fragment transaction.
             getFragmentManager().beginTransaction()
-                    .replace(R.id.test_detail_container, fragment)
+                    .replace(R.id.test_detail_container, fragment, "test")
                     .addToBackStack(null)
                     .commit();
 
         } else {
             // In single-pane mode, replace the list with the fragment
             getFragmentManager().beginTransaction()
-                    .replace(R.id.test_list_container, fragment)
+                    .replace(R.id.test_list_container, fragment, "test")
                     .addToBackStack(null)
                     .commit();
         }
@@ -122,5 +126,15 @@ public class TestListActivity extends Activity
         super.onBackPressed();
 
         fragment = null;
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration config) {
+        Log.d("TestListActivity", "config changed.");
+        Fragment test = getFragmentManager().findFragmentByTag("test");
+        if (test != null) {
+            test.onConfigurationChanged(config);
+        }
+        super.onConfigurationChanged(config);
     }
 }

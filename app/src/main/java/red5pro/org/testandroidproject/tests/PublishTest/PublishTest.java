@@ -1,5 +1,6 @@
 package red5pro.org.testandroidproject.tests.PublishTest;
 
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.hardware.Camera;
 import android.os.Bundle;
@@ -33,6 +34,15 @@ public class PublishTest extends TestDetailFragment {
 
     public PublishTest(){
 
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration config) {
+        Log.d("PublishTest", "config changed.");
+        super.onConfigurationChanged(config);
+        int orientation = config.orientation;
+        camOrientation = orientation == 1 ? 90 : 180;
+        cam.setDisplayOrientation(camOrientation);
     }
 
     @Override
