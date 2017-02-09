@@ -135,6 +135,7 @@ public class TestListActivity extends Activity
         if (test != null) {
             test.onConfigurationChanged(config);
         }
+
         super.onConfigurationChanged(config);
     }
 }

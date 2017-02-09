@@ -1,8 +1,11 @@
 package red5pro.org.testandroidproject.tests.PublishTest;
 
+import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.hardware.Camera;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,7 +33,12 @@ public class PublishTest extends TestDetailFragment {
     protected R5VideoView preview;
     protected R5Stream publish;
     protected Camera cam;
+    protected R5Camera camera;
     protected int camOrientation;
+
+    private SensorManager mSensorManager;
+    Sensor accelerometer;
+    Sensor magnetometer;
 
     public PublishTest(){
 
@@ -38,11 +46,7 @@ public class PublishTest extends TestDetailFragment {
 
     @Override
     public void onConfigurationChanged(Configuration config) {
-        Log.d("PublishTest", "config changed.");
         super.onConfigurationChanged(config);
-        int orientation = config.orientation;
-        camOrientation = orientation == 1 ? 90 : 180;
-        cam.setDisplayOrientation(camOrientation);
     }
 
     @Override
@@ -64,7 +68,7 @@ public class PublishTest extends TestDetailFragment {
         //show all logging
         publish.setLogLevel(R5Stream.LOG_LEVEL_DEBUG);
 
-        R5Camera camera = null;
+        camera = null;
         if(TestContent.GetPropertyBool("video_on")) {
             //attach a camera video source
             cam = openFrontFacingCameraGingerbread();
@@ -94,6 +98,10 @@ public class PublishTest extends TestDetailFragment {
 
         if(TestContent.GetPropertyBool("video_on"))
             cam.startPreview();
+
+        mSensorManager = (SensorManager)getActivity().getSystemService(Context.SENSOR_SERVICE);
+        accelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        magnetometer = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
 
         return rootView;
     }
