@@ -10,12 +10,14 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.OrientationEventListener;
 import android.view.Surface;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 
 import com.red5pro.streaming.R5Connection;
 import com.red5pro.streaming.R5Stream;
@@ -38,17 +40,25 @@ public class PublishDeviceOrientationTest extends PublishTest {
     protected int mOrigCamOrientation = 0;
     protected int mOrientation;
     OrientationEventListener mOrientationListener;
+    View.OnLayoutChangeListener mLayoutListener;
+    boolean mOrientationDirty;
 
     public PublishDeviceOrientationTest() {
 
+    }
+
+    protected void reorient() {
+        cam.setDisplayOrientation((camOrientation + 180) % 360);
+        camera.setOrientation(camOrientation);
+        mOrientationDirty = false;
     }
 
     @Override
     public void onConfigurationChanged(Configuration config) {
         super.onConfigurationChanged(config);
         int c_orientation = config.orientation;
-        Log.d("PublishDeviceOrientTest", "config changed: " + c_orientation);
-        Log.d("PublishDeviceOrientTest", "orientation: " + mOrientation);
+        Log.w("PublishDeviceOrientTest", "config changed: " + c_orientation);
+        Log.w("PublishDeviceOrientTest", "orientation: " + mOrientation);
         int value = mOrigCamOrientation;
         if (c_orientation == 2 && mOrientation >= 270 ) {
             value = 270;//(mOrigCamOrientation + 270) % 360;
@@ -62,20 +72,35 @@ public class PublishDeviceOrientationTest extends PublishTest {
         else {
             value = 0;//(mOrigCamOrientation + 180) % 360;
         }
-        camOrientation = value;
-        cam.setDisplayOrientation(camOrientation);
-        //camera.setOrientation(camOrientation);
+
+        int d_rotation = getActivity().getWindowManager().getDefaultDisplay().getRotation();
+        Log.w("PublishDeviceOrientTest", "d_rotation: " + d_rotation);
+        Log.w("PublishDeviceOrientTest", "value: " + value);
+
+        int degrees = 0;
+        switch (d_rotation) {
+            case Surface.ROTATION_0: degrees = 0; break;
+            case Surface.ROTATION_90: degrees = 90; break;
+            case Surface.ROTATION_180: degrees = 0; break;
+            case Surface.ROTATION_270: degrees = 90; break;
+        }
+
+        Log.w("PublishDeviceOrientTest", "degrees: " + degrees);
+        camOrientation = (mOrigCamOrientation + degrees) % 360;
+        mOrientationDirty = true;
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        preview.addOnLayoutChangeListener(mLayoutListener);
         mOrientationListener.enable();
     }
 
     @Override
     public void onPause() {
         super.onPause();
+        preview.removeOnLayoutChangeListener(mLayoutListener);
         mOrientationListener.disable();
     }
 
@@ -92,31 +117,21 @@ public class PublishDeviceOrientationTest extends PublishTest {
 
         };
 
+        mLayoutListener = new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft,
+                                       int oldTop, int oldRight, int oldBottom) {
+                Log.w("PublishDeviceOrientTest", "onLayoutChange");
+                if (mOrientationDirty) {
+                    Log.w("PublishDeviceOrientTest", "dirty orientation");
+                    reorient();
+                }
+            }
+        };
+
         return super.onCreateView(inflater, container, savedInstanceState);
 
     }
-
-//    protected Camera openFrontFacingCameraGingerbread() {
-//        int cameraCount = 0;
-//        Camera cam = null;
-//        Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
-//        cameraCount = Camera.getNumberOfCameras();
-//        for (int camIdx = 0; camIdx < cameraCount; camIdx++) {
-//            Camera.getCameraInfo(camIdx, cameraInfo);
-//            if (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
-//                try {
-//                    cam = Camera.open(camIdx);
-//                    camOrientation = cameraInfo.orientation;
-//                    applyDeviceRotation();
-//                    break;
-//                } catch (RuntimeException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }
-//
-//        return cam;
-//    }
 
     protected void applyDeviceRotation() {
         super.applyDeviceRotation();
