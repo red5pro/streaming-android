@@ -37,18 +37,18 @@ import red5pro.org.testandroidproject.tests.TestContent;
  */
 public class PublishDeviceOrientationTest extends PublishTest {
 
-    protected int mOrigCamOrientation = 0;
-    protected int mOrientation;
-    OrientationEventListener mOrientationListener;
-    View.OnLayoutChangeListener mLayoutListener;
     boolean mOrientationDirty;
+    protected int mOrigCamOrientation = 0;
+    View.OnLayoutChangeListener mLayoutListener;
+
+    protected int camDisplayOrientation;
 
     public PublishDeviceOrientationTest() {
 
     }
 
     protected void reorient() {
-        cam.setDisplayOrientation((camOrientation + 180) % 360);
+        cam.setDisplayOrientation((camDisplayOrientation + 180) % 360);
         camera.setOrientation(camOrientation);
         mOrientationDirty = false;
     }
@@ -56,37 +56,21 @@ public class PublishDeviceOrientationTest extends PublishTest {
     @Override
     public void onConfigurationChanged(Configuration config) {
         super.onConfigurationChanged(config);
-        int c_orientation = config.orientation;
-        Log.w("PublishDeviceOrientTest", "config changed: " + c_orientation);
-        Log.w("PublishDeviceOrientTest", "orientation: " + mOrientation);
-        int value = mOrigCamOrientation;
-        if (c_orientation == 2 && mOrientation >= 270 ) {
-            value = 270;//(mOrigCamOrientation + 270) % 360;
-        }
-        else if (c_orientation == 2 && mOrientation < 270) {
-            value = 180;// (mOrigCamOrientation + 90) % 360;
-        }
-        else if (c_orientation == 1 && mOrientation >= 90) {
-            value = 90;//(mOrigCamOrientation + 180) % 360;
-        }
-        else {
-            value = 0;//(mOrigCamOrientation + 180) % 360;
-        }
 
         int d_rotation = getActivity().getWindowManager().getDefaultDisplay().getRotation();
         Log.w("PublishDeviceOrientTest", "d_rotation: " + d_rotation);
-        Log.w("PublishDeviceOrientTest", "value: " + value);
 
         int degrees = 0;
         switch (d_rotation) {
             case Surface.ROTATION_0: degrees = 0; break;
-            case Surface.ROTATION_90: degrees = 90; break;
-            case Surface.ROTATION_180: degrees = 0; break;
+            case Surface.ROTATION_90: degrees = 270; break;
+            case Surface.ROTATION_180: degrees = 180; break;
             case Surface.ROTATION_270: degrees = 90; break;
         }
 
         Log.w("PublishDeviceOrientTest", "degrees: " + degrees);
-        camOrientation = (mOrigCamOrientation + degrees) % 360;
+        camDisplayOrientation = (mOrigCamOrientation + degrees) % 360;
+        camOrientation = d_rotation % 2 != 0 ? camDisplayOrientation - 180 : camDisplayOrientation;
         mOrientationDirty = true;
     }
 
@@ -94,28 +78,16 @@ public class PublishDeviceOrientationTest extends PublishTest {
     public void onResume() {
         super.onResume();
         preview.addOnLayoutChangeListener(mLayoutListener);
-        mOrientationListener.enable();
     }
 
     @Override
     public void onPause() {
         super.onPause();
         preview.removeOnLayoutChangeListener(mLayoutListener);
-        mOrientationListener.disable();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        mOrientationListener = new OrientationEventListener(getActivity(), SensorManager.SENSOR_DELAY_NORMAL ) {
-            @Override
-            public void onOrientationChanged(int orientation) {
-
-                mOrientation = orientation;
-
-            }
-
-        };
 
         mLayoutListener = new View.OnLayoutChangeListener() {
             @Override
