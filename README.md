@@ -34,8 +34,11 @@ Once you have modified your settings, you can run the application for simulator 
 | **[Image Capture](app/src/main/java/red5pro/org/testandroidproject/tests/PublishImageTest)**
 | *Touch the publish stream to take a screen shot that is displayed!*  
 |
+| **[Device Orientation](app/src/main/java/red5pro/org/testandroidproject/tests/PublishDeviceOrientationTest)**
+| *Rotate the device to update orientation of broadcast.  Verify with browser-based players (WebRTC, Flash, HLS), iOS, or other Android device running subscribe test.*   
+||
 | **[Orientation](app/src/main/java/red5pro/org/testandroidproject/tests/PublishOrientationTest)**
-| *Touch the screen to rotate the output video 90 degrees.  Verify with flash, iOS, or other android device running subscribe test.*   
+| *Touch the screen to rotate the output video 90 degrees.  Verify with browser-based players (WebRTC, Flash, HLS), iOS, or other Android device running subscribe test.*   
 |
 | **[Record](app/src/main/java/red5pro/org/testandroidproject/tests/RecordedTest)**
 | *A publish example that records stream data on the server.*
