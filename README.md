@@ -10,9 +10,9 @@ For more information visit http://red5pro.com.
 
 ##Setup
 
-You will need to modify **/app/src/main/res/raw/tests.xml (the domain value)** to point to your server instance.  If you do not, the examples will not function when you build.
+You will need to modify the **domain** value in **<u>/app/src/main/res/raw/tests.xml</u>** to point to your server instance.  If you do not, the examples will not function when you build.
 
-Once you have modified your settings, you can run the application for simulator or device.
+Once you have modified your settings, you can run the application for simulator or device.  **If prompted to upgrade gradle, you should ignore.**
 
 ##Examples
 
