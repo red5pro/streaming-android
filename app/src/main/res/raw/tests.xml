@@ -2,7 +2,7 @@
     <Properties>
         <bitrate>750</bitrate>
         <host>0.0.0.0</host>
-        <buffer_time>1</buffer_time>
+        <buffer_time>0.2</buffer_time>
         <port>8554</port>
         <stream1>stream1</stream1>
         <stream2>stream2</stream2>
@@ -147,7 +147,6 @@
             <description>Simple Subscribe Test!</description>
 
             <Properties>
-                <buffer_time>0</buffer_time>
             </Properties>
 
             <name>Subscribe</name>
@@ -159,7 +158,6 @@
             <description>Simple Subscribe Reconnection test.  Touch to disconnect and automatically reconnect</description>
 
             <Properties>
-                <buffer_time>0</buffer_time>
             </Properties>
 
             <name>Subscribe - Reconnect</name>
