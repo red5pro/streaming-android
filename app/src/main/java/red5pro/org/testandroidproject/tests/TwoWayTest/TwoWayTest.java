@@ -2,6 +2,8 @@ package red5pro.org.testandroidproject.tests.TwoWayTest;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,11 +33,9 @@ import red5pro.org.testandroidproject.tests.TestContent;
 public class TwoWayTest extends PublishTest {
     protected R5VideoView display;
     protected R5Stream subscribe;
-    protected Button subButton;
     protected Thread listThread;
     protected boolean isPublishing = false;
     protected boolean isSubscribing = false;
-    protected Activity parent = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -47,7 +47,7 @@ public class TwoWayTest extends PublishTest {
                 TestContent.GetPropertyString("host"),
                 TestContent.GetPropertyInt("port"),
                 TestContent.GetPropertyString("context"),
-                TestContent.GetPropertyFloat("buffer_time"));
+                TestContent.GetPropertyFloat("publish_buffer_time"));
         R5Connection connection = new R5Connection(config);
 
         //setup a new stream using the connection
@@ -86,8 +86,8 @@ public class TwoWayTest extends PublishTest {
             public void onConnectionEvent(R5ConnectionEvent r5ConnectionEvent) {
                 if(r5ConnectionEvent == R5ConnectionEvent.START_STREAMING){
 
-                        isPublishing = true;
-                        sendRemoteCall();
+                    isPublishing = true;
+                    sendRemoteCall();
 
                 }
 
@@ -124,7 +124,8 @@ public class TwoWayTest extends PublishTest {
                 try {
                     Thread.sleep(2500);
 
-                    publish.connection.call(new R5RemoteCallContainer("streams.getLiveStreams", "R5GetLiveStreams", null));
+                    if(!Thread.interrupted())
+                        publish.connection.call(new R5RemoteCallContainer("streams.getLiveStreams", "R5GetLiveStreams", null));
                 } catch (Exception e) {
                     if(e.toString().contains("InterruptedException"))
                         e.printStackTrace();
@@ -134,41 +135,6 @@ public class TwoWayTest extends PublishTest {
         });
         listThread.start();
 
-    }
-
-    private void checkFrameCount(){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try{
-                    Thread.sleep(2500);
-
-                    R5Stream.R5Stats subStats = subscribe.getStats();
-                    System.out.println("Subscribe stream is currently holding: " + subStats.subscribe_queue_size + " frames in queue");
-
-                    if(subStats.subscribe_queue_size <= 1){
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                subscribe.stop();
-                                subscribe = null;
-                            }
-                        });
-                        Thread.sleep(500);
-
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                onSubscribeReady();
-                            }
-                        });
-                    }
-
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-            }
-        }).start();
     }
 
     public void R5GetLiveStreams(String streams){
@@ -191,22 +157,21 @@ public class TwoWayTest extends PublishTest {
         for(int i  = 0; i < names.length(); i++){
             try {
                 if(TestContent.GetPropertyString("stream2").equals(names.getString(i))){
-                    new Thread(new Runnable() {
+                    listThread = new Thread(new Runnable() {
                         @Override
                         public void run() {
                             try {
                                 Thread.sleep(500);
-                                getActivity().runOnUiThread( new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        onSubscribeReady();
-                                    }
-                                });
+
+                                if(!Thread.interrupted())
+                                    onSubscribeReady();
+
                             }catch (Exception e) {
                                 e.printStackTrace();
                             }
                         }
-                    }).start();
+                    });
+                    listThread.start();
                     return;
                 }
             } catch (Exception e){
@@ -215,15 +180,21 @@ public class TwoWayTest extends PublishTest {
             }
         }
 
-        try{
-            //the target stream hasn't been found, try again
-            Thread.sleep(1500);
-            sendRemoteCall();
+        listThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
 
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+                try{
+                    //the target stream hasn't been found, try again
+                    Thread.sleep(1500);
+                    sendRemoteCall();
 
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
+        listThread.run();
 
     }
 
@@ -232,65 +203,77 @@ public class TwoWayTest extends PublishTest {
         if( subscribe != null )
             return;
 
-        System.out.println("Subscribing");
+        Handler r = new Handler(Looper.getMainLooper());
 
-        R5Configuration config = new R5Configuration(R5StreamProtocol.RTSP,
-                TestContent.GetPropertyString("host"),
-                TestContent.GetPropertyInt("port"),
-                TestContent.GetPropertyString("context"),
-                TestContent.GetPropertyFloat("buffer_time"));
-        R5Connection connection = new R5Connection(config);
-
-        //setup a new stream using the connection
-        subscribe = new R5Stream(connection);
-
-        //show all logging
-        subscribe.setLogLevel(R5Stream.LOG_LEVEL_DEBUG);
-
-        //find the view and attach the stream
-        display.attachStream(subscribe);
-
-        display.showDebugView(TestContent.GetPropertyBool("debug_view"));
-
-        R5ConnectionListener listener = new R5ConnectionListener() {
+        r.post(new Runnable() {
             @Override
-            public void onConnectionEvent(R5ConnectionEvent r5ConnectionEvent) {
+            public void run() {
+                System.out.println("Subscribing");
 
-                if(r5ConnectionEvent == R5ConnectionEvent.START_STREAMING){
+                R5Configuration config = new R5Configuration(R5StreamProtocol.RTSP,
+                        TestContent.GetPropertyString("host"),
+                        TestContent.GetPropertyInt("port"),
+                        TestContent.GetPropertyString("context"),
+                        TestContent.GetPropertyFloat("subscribe_buffer_time"));
+                R5Connection connection = new R5Connection(config);
 
-                    isSubscribing = true;
-                }
+                //setup a new stream using the connection
+                subscribe = new R5Stream(connection);
 
-                if(r5ConnectionEvent == R5ConnectionEvent.ERROR){
+                //show all logging
+                subscribe.setLogLevel(R5Stream.LOG_LEVEL_DEBUG);
 
-                    subscribe.stop();
-                    subscribe = null;
-                    isSubscribing = false;
-                    sendRemoteCall();
-                }
+                //find the view and attach the stream
+                display.attachStream(subscribe);
 
-                if(r5ConnectionEvent == R5ConnectionEvent.DISCONNECTED){
+                display.showDebugView(TestContent.GetPropertyBool("debug_view"));
 
-                    if(isSubscribing){
-                        subscribe.stop();
-                        subscribe = null;
-                        isSubscribing = false;
+                R5ConnectionListener listener = new R5ConnectionListener() {
+                    @Override
+                    public void onConnectionEvent(R5ConnectionEvent r5ConnectionEvent) {
+
+                        if(r5ConnectionEvent == R5ConnectionEvent.START_STREAMING){
+
+                            isSubscribing = true;
+                        }
+
+                        if(r5ConnectionEvent == R5ConnectionEvent.ERROR){
+
+                            subscribe.stop();
+                            subscribe = null;
+                            isSubscribing = false;
+                            sendRemoteCall();
+                        }
+
+                        if(r5ConnectionEvent == R5ConnectionEvent.DISCONNECTED){
+
+                            if(isSubscribing){
+                                subscribe.stop();
+                                subscribe = null;
+                                isSubscribing = false;
+                            }
+
+                            isSubscribing = false;
+                        }
                     }
+                };
+                subscribe.setListener(listener);
 
-                    isSubscribing = false;
-                }
+                subscribe.play(TestContent.GetPropertyString("stream2"));
             }
-        };
-        subscribe.setListener(listener);
+        });
 
-        subscribe.play(TestContent.GetPropertyString("stream2"));
     }
 
     @Override
     public void onStop() {
-
+        if(listThread != null){
+            listThread.interrupt();
+            listThread = null;
+        }
         if(subscribe != null){
             subscribe.stop();
+            subscribe = null;
         }
 
         super.onStop();
