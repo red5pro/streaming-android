@@ -14,7 +14,6 @@ import com.red5pro.streaming.R5Connection;
 import com.red5pro.streaming.R5Stream;
 import com.red5pro.streaming.R5StreamProtocol;
 import com.red5pro.streaming.config.R5Configuration;
-import com.red5pro.streaming.media.R5AudioController;
 import com.red5pro.streaming.source.R5Camera;
 import com.red5pro.streaming.source.R5Microphone;
 import com.red5pro.streaming.view.R5VideoView;
@@ -41,20 +40,16 @@ public class PublishTest extends TestDetailFragment {
 
         View rootView = inflater.inflate(R.layout.publish_test, container, false);
 
-
-
         //Create the configuration from the values.xml
         R5Configuration config = new R5Configuration(R5StreamProtocol.RTSP,
-                                                    TestContent.GetPropertyString("host"),
-                                                    TestContent.GetPropertyInt("port"),
-                                                    TestContent.GetPropertyString("context"),
-                                                    TestContent.GetPropertyFloat("publish_buffer_time"));
+                TestContent.GetPropertyString("host"),
+                TestContent.GetPropertyInt("port"),
+                TestContent.GetPropertyString("context"),
+                TestContent.GetPropertyFloat("buffer_time"));
         R5Connection connection = new R5Connection(config);
 
         //setup a new stream using the connection
         publish = new R5Stream(connection);
-
-        publish.audioController.sampleRate =  TestContent.GetPropertyInt("sample_rate");
 
         //show all logging
         publish.setLogLevel(R5Stream.LOG_LEVEL_DEBUG);

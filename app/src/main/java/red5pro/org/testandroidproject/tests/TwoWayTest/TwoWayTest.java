@@ -1,14 +1,9 @@
 package red5pro.org.testandroidproject.tests.TwoWayTest;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.red5pro.streaming.R5Connection;
 import com.red5pro.streaming.R5Stream;
@@ -47,7 +42,7 @@ public class TwoWayTest extends PublishTest {
                 TestContent.GetPropertyString("host"),
                 TestContent.GetPropertyInt("port"),
                 TestContent.GetPropertyString("context"),
-                TestContent.GetPropertyFloat("publish_buffer_time"));
+                TestContent.GetPropertyFloat("buffer_time"));
         R5Connection connection = new R5Connection(config);
 
         //setup a new stream using the connection
@@ -124,8 +119,7 @@ public class TwoWayTest extends PublishTest {
                 try {
                     Thread.sleep(2500);
 
-                    if(!Thread.interrupted())
-                        publish.connection.call(new R5RemoteCallContainer("streams.getLiveStreams", "R5GetLiveStreams", null));
+                    publish.connection.call(new R5RemoteCallContainer("streams.getLiveStreams", "R5GetLiveStreams", null));
                 } catch (Exception e) {
                     if(e.toString().contains("InterruptedException"))
                         e.printStackTrace();
@@ -157,21 +151,22 @@ public class TwoWayTest extends PublishTest {
         for(int i  = 0; i < names.length(); i++){
             try {
                 if(TestContent.GetPropertyString("stream2").equals(names.getString(i))){
-                    listThread = new Thread(new Runnable() {
+                    new Thread(new Runnable() {
                         @Override
                         public void run() {
                             try {
                                 Thread.sleep(500);
-
-                                if(!Thread.interrupted())
-                                    onSubscribeReady();
-
+                                getActivity().runOnUiThread( new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        onSubscribeReady();
+                                    }
+                                });
                             }catch (Exception e) {
                                 e.printStackTrace();
                             }
                         }
-                    });
-                    listThread.start();
+                    }).start();
                     return;
                 }
             } catch (Exception e){
@@ -180,21 +175,15 @@ public class TwoWayTest extends PublishTest {
             }
         }
 
-        listThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
+        try{
+            //the target stream hasn't been found, try again
+            Thread.sleep(1500);
+            sendRemoteCall();
 
-                try{
-                    //the target stream hasn't been found, try again
-                    Thread.sleep(1500);
-                    sendRemoteCall();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-            }
-        });
-        listThread.run();
 
     }
 
@@ -203,77 +192,67 @@ public class TwoWayTest extends PublishTest {
         if( subscribe != null )
             return;
 
-        Handler r = new Handler(Looper.getMainLooper());
+        System.out.println("Subscribing");
 
-        r.post(new Runnable() {
+        R5Configuration config = new R5Configuration(R5StreamProtocol.RTSP,
+                TestContent.GetPropertyString("host"),
+                TestContent.GetPropertyInt("port"),
+                TestContent.GetPropertyString("context"),
+                TestContent.GetPropertyFloat("buffer_time"));
+        R5Connection connection = new R5Connection(config);
+
+        //setup a new stream using the connection
+        subscribe = new R5Stream(connection);
+
+        //show all logging
+        subscribe.setLogLevel(R5Stream.LOG_LEVEL_DEBUG);
+
+        //find the view and attach the stream
+        display.attachStream(subscribe);
+
+        display.showDebugView(TestContent.GetPropertyBool("debug_view"));
+
+        R5ConnectionListener listener = new R5ConnectionListener() {
             @Override
-            public void run() {
-                System.out.println("Subscribing");
+            public void onConnectionEvent(R5ConnectionEvent r5ConnectionEvent) {
 
-                R5Configuration config = new R5Configuration(R5StreamProtocol.RTSP,
-                        TestContent.GetPropertyString("host"),
-                        TestContent.GetPropertyInt("port"),
-                        TestContent.GetPropertyString("context"),
-                        TestContent.GetPropertyFloat("subscribe_buffer_time"));
-                R5Connection connection = new R5Connection(config);
+                if(r5ConnectionEvent == R5ConnectionEvent.START_STREAMING){
 
-                //setup a new stream using the connection
-                subscribe = new R5Stream(connection);
+                    isSubscribing = true;
+                }
 
-                //show all logging
-                subscribe.setLogLevel(R5Stream.LOG_LEVEL_DEBUG);
+                if(r5ConnectionEvent == R5ConnectionEvent.ERROR){
 
-                //find the view and attach the stream
-                display.attachStream(subscribe);
+                    subscribe.stop();
+                    subscribe = null;
+                    isSubscribing = false;
+                    sendRemoteCall();
+                }
 
-                display.showDebugView(TestContent.GetPropertyBool("debug_view"));
+                if(r5ConnectionEvent == R5ConnectionEvent.DISCONNECTED){
 
-                R5ConnectionListener listener = new R5ConnectionListener() {
-                    @Override
-                    public void onConnectionEvent(R5ConnectionEvent r5ConnectionEvent) {
-
-                        if(r5ConnectionEvent == R5ConnectionEvent.START_STREAMING){
-
-                            isSubscribing = true;
-                        }
-
-                        if(r5ConnectionEvent == R5ConnectionEvent.ERROR){
-
-                            subscribe.stop();
-                            subscribe = null;
-                            isSubscribing = false;
-                            sendRemoteCall();
-                        }
-
-                        if(r5ConnectionEvent == R5ConnectionEvent.DISCONNECTED){
-
-                            if(isSubscribing){
-                                subscribe.stop();
-                                subscribe = null;
-                                isSubscribing = false;
-                            }
-
-                            isSubscribing = false;
-                        }
+                    if(isSubscribing){
+                        subscribe.stop();
+                        subscribe = null;
+                        isSubscribing = false;
                     }
-                };
-                subscribe.setListener(listener);
 
-                subscribe.play(TestContent.GetPropertyString("stream2"));
+                    isSubscribing = false;
+                }
             }
-        });
+        };
+        subscribe.setListener(listener);
 
+        subscribe.play(TestContent.GetPropertyString("stream2"));
     }
 
     @Override
     public void onStop() {
-        if(listThread != null){
-            listThread.interrupt();
-            listThread = null;
-        }
+
         if(subscribe != null){
             subscribe.stop();
             subscribe = null;
+            isSubscribing = false;
         }
 
         super.onStop();
