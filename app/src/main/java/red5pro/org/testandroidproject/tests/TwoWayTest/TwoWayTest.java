@@ -1,12 +1,9 @@
 package red5pro.org.testandroidproject.tests.TwoWayTest;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.red5pro.streaming.R5Connection;
 import com.red5pro.streaming.R5Stream;
@@ -31,11 +28,9 @@ import red5pro.org.testandroidproject.tests.TestContent;
 public class TwoWayTest extends PublishTest {
     protected R5VideoView display;
     protected R5Stream subscribe;
-    protected Button subButton;
     protected Thread listThread;
     protected boolean isPublishing = false;
     protected boolean isSubscribing = false;
-    protected Activity parent = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -86,8 +81,8 @@ public class TwoWayTest extends PublishTest {
             public void onConnectionEvent(R5ConnectionEvent r5ConnectionEvent) {
                 if(r5ConnectionEvent == R5ConnectionEvent.START_STREAMING){
 
-                        isPublishing = true;
-                        sendRemoteCall();
+                    isPublishing = true;
+                    sendRemoteCall();
 
                 }
 
@@ -134,41 +129,6 @@ public class TwoWayTest extends PublishTest {
         });
         listThread.start();
 
-    }
-
-    private void checkFrameCount(){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try{
-                    Thread.sleep(2500);
-
-                    R5Stream.R5Stats subStats = subscribe.getStats();
-                    System.out.println("Subscribe stream is currently holding: " + subStats.subscribe_queue_size + " frames in queue");
-
-                    if(subStats.subscribe_queue_size <= 1){
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                subscribe.stop();
-                                subscribe = null;
-                            }
-                        });
-                        Thread.sleep(500);
-
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                onSubscribeReady();
-                            }
-                        });
-                    }
-
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-            }
-        }).start();
     }
 
     public void R5GetLiveStreams(String streams){
@@ -291,6 +251,8 @@ public class TwoWayTest extends PublishTest {
 
         if(subscribe != null){
             subscribe.stop();
+            subscribe = null;
+            isSubscribing = false;
         }
 
         super.onStop();
