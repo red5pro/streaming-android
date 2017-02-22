@@ -42,10 +42,10 @@ public class PublishTest extends TestDetailFragment {
 
         //Create the configuration from the values.xml
         R5Configuration config = new R5Configuration(R5StreamProtocol.RTSP,
-                                                    TestContent.GetPropertyString("host"),
-                                                    TestContent.GetPropertyInt("port"),
-                                                    TestContent.GetPropertyString("context"),
-                                                    TestContent.GetPropertyFloat("buffer_time"));
+                TestContent.GetPropertyString("host"),
+                TestContent.GetPropertyInt("port"),
+                TestContent.GetPropertyString("context"),
+                TestContent.GetPropertyFloat("buffer_time"));
         R5Connection connection = new R5Connection(config);
 
         //setup a new stream using the connection
@@ -129,11 +129,14 @@ public class PublishTest extends TestDetailFragment {
     public void onStop() {
 
         if (publish != null){
-            Camera c = ((R5Camera) publish.getVideoSource()).getCamera();
-            c.stopPreview();
-            c.release();
-
             publish.stop();
+
+            if(publish.getVideoSource() != null) {
+                Camera c = ((R5Camera) publish.getVideoSource()).getCamera();
+                c.stopPreview();
+                c.release();
+            }
+            publish = null;
 
         }
 
