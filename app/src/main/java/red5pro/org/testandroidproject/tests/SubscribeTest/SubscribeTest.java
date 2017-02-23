@@ -63,6 +63,22 @@ public class SubscribeTest extends TestDetailFragment {
 
     }
 
+    protected void updateOrientation(int value) {
+        Log.d("SubscribeTest", "update orientation to: " + value);
+        display.setRotation(value);
+    }
+
+    public void onMetaData(String metadata) {
+        Log.d("SubscribeTest", "Metadata receieved: " + metadata);
+        String[] props = metadata.split(";");
+        for (String s: props) {
+            String[] kv = s.split("=");
+            if (kv[0].equalsIgnoreCase("orientation")) {
+                updateOrientation(Integer.parseInt(kv[1]));
+            }
+        }
+    }
+
     public void onStreamSend(String msg){
         Log.d("SubscribeTest", "GOT MSG");
     }
