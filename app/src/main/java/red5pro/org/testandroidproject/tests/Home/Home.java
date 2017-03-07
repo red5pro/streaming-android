@@ -20,6 +20,7 @@ import red5pro.org.testandroidproject.tests.TestContent;
  * Created by davidHeimann on 3/10/16.
  */
 public class Home extends TestDetailFragment {
+    EditText licenseText;
     EditText hostText;
     EditText stream1Text;
     EditText stream2Text;
@@ -32,13 +33,30 @@ public class Home extends TestDetailFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.home_screen, container, false);
 
+        licenseText = (EditText)rootView.findViewById(R.id.licenseText);
         hostText = (EditText)rootView.findViewById(R.id.hostText);
         stream1Text = (EditText)rootView.findViewById(R.id.stream1Text);
         stream2Text = (EditText)rootView.findViewById(R.id.stream2Text);
 
+        licenseText.setText(TestContent.GetPropertyString("license_key"));
         hostText.setText(TestContent.GetPropertyString("host"));
         stream1Text.setText(TestContent.GetPropertyString("stream1"));
         stream2Text.setText(TestContent.GetPropertyString("stream2"));
+
+        licenseText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                TestContent.SetPropertyString("license_key", licenseText.getText().toString());
+            }
+        });
 
         hostText.addTextChangedListener(new TextWatcher() {
             @Override

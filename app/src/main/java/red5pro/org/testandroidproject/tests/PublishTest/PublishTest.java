@@ -40,12 +40,16 @@ public class PublishTest extends TestDetailFragment {
 
         View rootView = inflater.inflate(R.layout.publish_test, container, false);
 
+        String b = getActivity().getPackageName();
         //Create the configuration from the values.xml
         R5Configuration config = new R5Configuration(R5StreamProtocol.RTSP,
                 TestContent.GetPropertyString("host"),
                 TestContent.GetPropertyInt("port"),
                 TestContent.GetPropertyString("context"),
                 TestContent.GetPropertyFloat("buffer_time"));
+        config.setLicenseKey(TestContent.GetPropertyString("license_key"));
+        config.setBundleID(b);
+
         R5Connection connection = new R5Connection(config);
 
         //setup a new stream using the connection

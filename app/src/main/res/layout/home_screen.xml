@@ -12,6 +12,32 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="License:"
+            android:id="@+id/licenseLabel"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/licenseText"
+            android:layout_margin="5dp" />
+
+        <EditText
+            android:text=""
+            android:hint="Enter SDK License..."
+            android:layout_width="240dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/licenseText"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="Host:"
             android:id="@+id/hostLabel"
             android:layout_centerVertical="true"
