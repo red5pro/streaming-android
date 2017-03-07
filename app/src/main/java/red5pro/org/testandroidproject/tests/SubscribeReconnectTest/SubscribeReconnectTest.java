@@ -56,12 +56,14 @@ public class SubscribeReconnectTest extends SubscribeTest  {
 
     public void SetupListener(){
 
+        final R5ConnectionListener additionalListener = this;
+
         subscribe.setListener(new R5ConnectionListener() {
             @Override
             public void onConnectionEvent(R5ConnectionEvent r5ConnectionEvent) {
 
-
                 final R5ConnectionListener me = this;
+                additionalListener.onConnectionEvent(r5ConnectionEvent);
 
                 if (r5ConnectionEvent == R5ConnectionEvent.CLOSE && !SubscribeReconnectTest.this.stopped) {
 
@@ -71,9 +73,10 @@ public class SubscribeReconnectTest extends SubscribeTest  {
                         @Override
                         public void run() {
 
-
-                            Subscribe();
-                            SetupListener();
+                            if(!stopped) {
+                                Subscribe();
+                                SetupListener();
+                            }
 
                         }
                     }, 5);

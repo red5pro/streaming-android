@@ -99,6 +99,17 @@
             <class>PublishImageTest</class>
         </Test>
 
+        <Test title="Publish - Device Orientation">
+
+            <description>Rotate the device for orientation changes.  Verify with flash, android, or other iOS device running subscribe test.</description>
+
+            <Properties>
+            </Properties>
+
+            <name>Publish - Device Orientation</name>
+            <class>PublishDeviceOrientationTest</class>
+        </Test>
+
         <Test title="Publish - Orientation">
 
             <description>Touch the screen to rotate the output video 90 degrees.  Verify with flash, android, or other iOS device running subscribe test.</description>
