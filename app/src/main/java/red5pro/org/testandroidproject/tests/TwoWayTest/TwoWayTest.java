@@ -1,9 +1,14 @@
 package red5pro.org.testandroidproject.tests.TwoWayTest;
 
+import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.red5pro.streaming.R5Connection;
 import com.red5pro.streaming.R5Stream;
@@ -43,6 +48,9 @@ public class TwoWayTest extends PublishTest {
                 TestContent.GetPropertyInt("port"),
                 TestContent.GetPropertyString("context"),
                 TestContent.GetPropertyFloat("buffer_time"));
+        config.setLicenseKey(TestContent.GetPropertyString("license_key"));
+        config.setBundleID(getActivity().getPackageName());
+
         R5Connection connection = new R5Connection(config);
 
         //setup a new stream using the connection
@@ -76,9 +84,14 @@ public class TwoWayTest extends PublishTest {
             publish.attachCamera(camera);
 
         publish.client = this;
+        final R5ConnectionListener additionalListener = this;
+
         publish.setListener(new R5ConnectionListener() {
             @Override
             public void onConnectionEvent(R5ConnectionEvent r5ConnectionEvent) {
+
+                additionalListener.onConnectionEvent(r5ConnectionEvent);
+
                 if(r5ConnectionEvent == R5ConnectionEvent.START_STREAMING){
 
                     isPublishing = true;
@@ -119,7 +132,9 @@ public class TwoWayTest extends PublishTest {
                 try {
                     Thread.sleep(2500);
 
-                    publish.connection.call(new R5RemoteCallContainer("streams.getLiveStreams", "R5GetLiveStreams", null));
+                    if(!Thread.interrupted()) {
+                        publish.connection.call(new R5RemoteCallContainer("streams.getLiveStreams", "R5GetLiveStreams", null));
+                    }
                 } catch (Exception e) {
                     if(e.toString().contains("InterruptedException"))
                         e.printStackTrace();
@@ -151,7 +166,7 @@ public class TwoWayTest extends PublishTest {
         for(int i  = 0; i < names.length(); i++){
             try {
                 if(TestContent.GetPropertyString("stream2").equals(names.getString(i))){
-                    new Thread(new Runnable() {
+                    listThread = new Thread(new Runnable() {
                         @Override
                         public void run() {
                             try {
@@ -159,14 +174,17 @@ public class TwoWayTest extends PublishTest {
                                 getActivity().runOnUiThread( new Runnable() {
                                     @Override
                                     public void run() {
-                                        onSubscribeReady();
+                                        if(!Thread.interrupted()) {
+                                            onSubscribeReady();
+                                        }
                                     }
                                 });
                             }catch (Exception e) {
                                 e.printStackTrace();
                             }
                         }
-                    }).start();
+                    });
+                    listThread.start();
                     return;
                 }
             } catch (Exception e){
@@ -175,15 +193,21 @@ public class TwoWayTest extends PublishTest {
             }
         }
 
-        try{
-            //the target stream hasn't been found, try again
-            Thread.sleep(1500);
-            sendRemoteCall();
+        listThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
 
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+                try{
+                    //the target stream hasn't been found, try again
+                    Thread.sleep(1500);
+                    sendRemoteCall();
 
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
+        listThread.run();
 
     }
 
@@ -192,63 +216,79 @@ public class TwoWayTest extends PublishTest {
         if( subscribe != null )
             return;
 
-        System.out.println("Subscribing");
+        Handler r = new Handler(Looper.getMainLooper());
+        final R5ConnectionListener additionalListener = this;
 
-        R5Configuration config = new R5Configuration(R5StreamProtocol.RTSP,
-                TestContent.GetPropertyString("host"),
-                TestContent.GetPropertyInt("port"),
-                TestContent.GetPropertyString("context"),
-                TestContent.GetPropertyFloat("buffer_time"));
-        R5Connection connection = new R5Connection(config);
-
-        //setup a new stream using the connection
-        subscribe = new R5Stream(connection);
-
-        //show all logging
-        subscribe.setLogLevel(R5Stream.LOG_LEVEL_DEBUG);
-
-        //find the view and attach the stream
-        display.attachStream(subscribe);
-
-        display.showDebugView(TestContent.GetPropertyBool("debug_view"));
-
-        R5ConnectionListener listener = new R5ConnectionListener() {
+        r.post(new Runnable() {
             @Override
-            public void onConnectionEvent(R5ConnectionEvent r5ConnectionEvent) {
+            public void run() {
+                System.out.println("Subscribing");
 
-                if(r5ConnectionEvent == R5ConnectionEvent.START_STREAMING){
+                R5Configuration config = new R5Configuration(R5StreamProtocol.RTSP,
+                        TestContent.GetPropertyString("host"),
+                        TestContent.GetPropertyInt("port"),
+                        TestContent.GetPropertyString("context"),
+                        TestContent.GetPropertyFloat("subscribe_buffer_time"));
+                config.setLicenseKey(TestContent.GetPropertyString("license_key"));
+                config.setBundleID(getActivity().getPackageName());
 
-                    isSubscribing = true;
-                }
+                R5Connection connection = new R5Connection(config);
 
-                if(r5ConnectionEvent == R5ConnectionEvent.ERROR){
+                //setup a new stream using the connection
+                subscribe = new R5Stream(connection);
 
-                    subscribe.stop();
-                    subscribe = null;
-                    isSubscribing = false;
-                    sendRemoteCall();
-                }
+                //show all logging
+                subscribe.setLogLevel(R5Stream.LOG_LEVEL_DEBUG);
 
-                if(r5ConnectionEvent == R5ConnectionEvent.DISCONNECTED){
+                //find the view and attach the stream
+                display.attachStream(subscribe);
 
-                    if(isSubscribing){
-                        subscribe.stop();
-                        subscribe = null;
-                        isSubscribing = false;
+                display.showDebugView(TestContent.GetPropertyBool("debug_view"));
+
+                R5ConnectionListener listener = new R5ConnectionListener() {
+                    @Override
+                    public void onConnectionEvent(R5ConnectionEvent r5ConnectionEvent) {
+
+                        additionalListener.onConnectionEvent(r5ConnectionEvent);
+
+                        if(r5ConnectionEvent == R5ConnectionEvent.START_STREAMING){
+
+                            isSubscribing = true;
+                        }
+
+                        if(r5ConnectionEvent == R5ConnectionEvent.ERROR){
+
+                            subscribe.stop();
+                            subscribe = null;
+                            isSubscribing = false;
+                            sendRemoteCall();
+                        }
+
+                        if(r5ConnectionEvent == R5ConnectionEvent.DISCONNECTED){
+
+                            if(isSubscribing){
+                                subscribe.stop();
+                                subscribe = null;
+                            }
+
+                            isSubscribing = false;
+                        }
                     }
+                };
+                subscribe.setListener(listener);
 
-                    isSubscribing = false;
-                }
+                subscribe.play(TestContent.GetPropertyString("stream2"));
             }
-        };
-        subscribe.setListener(listener);
+        });
 
-        subscribe.play(TestContent.GetPropertyString("stream2"));
     }
 
     @Override
     public void onStop() {
-
+        if(listThread != null){
+            listThread.interrupt();
+            listThread = null;
+        }
         if(subscribe != null){
             subscribe.stop();
             subscribe = null;

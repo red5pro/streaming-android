@@ -14,18 +14,12 @@ import red5pro.org.testandroidproject.tests.PublishTest.PublishTest;
 /**
  * Created by davidHeimann on 4/25/16.
  */
-public class PublishRemoteCallTest extends PublishTest implements R5ConnectionListener{
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        publish.setListener(this);
-    }
+public class PublishRemoteCallTest extends PublishTest {
 
     @Override
     public void onConnectionEvent(R5ConnectionEvent r5ConnectionEvent) {
 
+        super.onConnectionEvent(r5ConnectionEvent);
         if(r5ConnectionEvent == R5ConnectionEvent.START_STREAMING ) {
             preview.setOnTouchListener(new View.OnTouchListener() {
                 @Override
