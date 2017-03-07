@@ -12,7 +12,7 @@ import red5pro.org.testandroidproject.tests.SubscribeTest.SubscribeTest;
 /**
  * Created by davidHeimann on 2/10/16.
  */
-public class SubscribeBandwidthTest extends SubscribeTest implements R5ConnectionListener {
+public class SubscribeBandwidthTest extends SubscribeTest {
     private View overlay;
 
     @Override
@@ -34,6 +34,7 @@ public class SubscribeBandwidthTest extends SubscribeTest implements R5Connectio
 
     @Override
     public void onConnectionEvent(R5ConnectionEvent r5ConnectionEvent) {
+        super.onConnectionEvent(r5ConnectionEvent);
         if ( R5ConnectionEvent.NET_STATUS.value() == r5ConnectionEvent.value() ) {
             if( r5ConnectionEvent.message == "NetStream.Play.SufficientBW" ){
                 overlay.setAlpha( 0f );

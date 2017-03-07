@@ -1,11 +1,12 @@
 package red5pro.org.testandroidproject;
 
+import android.app.Fragment;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.app.Activity;
+import android.util.Log;
 import android.widget.Switch;
-
-import junit.framework.Test;
 
 import red5pro.org.testandroidproject.tests.*;
 
@@ -122,5 +123,16 @@ public class TestListActivity extends Activity
         super.onBackPressed();
 
         fragment = null;
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration config) {
+        Log.d("TestListActivity", "config changed.");
+        Fragment test = getFragmentManager().findFragmentByTag("test");
+        if (test != null) {
+            test.onConfigurationChanged(config);
+        }
+
+        super.onConfigurationChanged(config);
     }
 }
