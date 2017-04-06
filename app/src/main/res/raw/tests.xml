@@ -66,6 +66,18 @@
             <class>PublishABRTest</class>
         </Test>
 
+        <Test title="Publish - Authentication">
+            <description>An authenticated publish example.</description>
+
+            <Properties>
+                <username>testuser</username>
+                <password>testpass</password>
+            </Properties>
+
+            <name>Publish - Authentication</name>
+            <class>PublishAuthTest</class>
+        </Test>
+
         <Test title="Publish - Camera Swap">
 
             <description>Touch the screen to swap which camera is being used! Verify using flash that camera is swapping properly and no rendering problems occur.</description>
@@ -185,6 +197,18 @@
 
             <name>Subscribe - Aspect Ratio</name>
             <class>SubscribeAspectTest</class>
+        </Test>
+
+        <Test title="Subscribe - Authentication">
+            <description>An authenticated subscriber example.</description>
+
+            <Properties>
+                <username>testuser</username>
+                <password>testpass</password>
+            </Properties>
+
+            <name>Subscribe - Authentication</name>
+            <class>SubscribeAuthTest</class>
         </Test>
 
         <Test title="Subscribe - Bandwidth Test">
