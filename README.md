@@ -42,7 +42,7 @@ Once you have modified your settings, you can run the application for simulator 
 | *Touch the publish stream to take a screen shot that is displayed!*  
 |
 | **[Device Orientation](app/src/main/java/red5pro/org/testandroidproject/tests/PublishDeviceOrientationTest)**
-| *After starting a broadcast, rotate your device from portrait to landscape. You will notice that the view updates on the broadcasting device. Additionally, if you subscribe with mobile or the browser-based players, you will see their orientation update with the change to device orientation..*   
+| *After starting a broadcast, rotate your device from portrait to landscape. You will notice that the view updates on the broadcasting device. Additionally, if you subscribe with mobile or the browser-based players, you will see their orientation update with the change to device orientation.*   
 |
 | **[Record](app/src/main/java/red5pro/org/testandroidproject/tests/RecordedTest)**
 | *A publish example that records stream data on the server.*
