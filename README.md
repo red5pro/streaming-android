@@ -23,7 +23,7 @@ Once you have modified your settings, you can run the application for simulator 
 
 ##Examples
 
-###[Publishing](app/src/main/java/red5pro/org/testandroidproject/tests/PublishTest)
+### [Publishing](app/src/main/java/red5pro/org/testandroidproject/tests/PublishTest)
 
 | **[1080p](app/src/main/java/red5pro/org/testandroidproject/tests/PublishTest)**                 
 | :-----
@@ -56,7 +56,7 @@ Once you have modified your settings, you can run the application for simulator 
 | **[Two Way](app/src/main/java/red5pro/org/testandroidproject/tests/TwoWayTest)**
 | *An example of simultaneously publishing while subscribing - allowing a conversation. Includes stream detection and auto-connection.*
 
-###[Subscribing](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeTest)
+### [Subscribing](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeTest)
 
 | **[Aspect Ratio](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeAspectTest)**                
 | :-----
@@ -86,7 +86,7 @@ Once you have modified your settings, you can run the application for simulator 
 | **[Two Streams](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeTwoStreamTest)**
 | *An example of subscribing to multiple streams at once, useful for subscribing to a presentation hosted by two people using a Two Way connection.*
      
-##Notes
+## Notes
 
 1. For some of the above examples you will need two devices (a publisher, and a subscriber). You can also use a web browser to subscribe or publish via Flash.
 2. You can see a list of active streams by navigating to http://your_red5_pro_server_ip:5080/live/streams.jsp
