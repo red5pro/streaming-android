@@ -35,6 +35,9 @@ Once you have modified your settings, you can run the application for simulator 
 | **[Camera Swap](app/src/main/java/red5pro/org/testandroidproject/tests/PublishCameraSwapTest)**
 | *Touch the screen to swap which camera is being used! Verify using flash that camera is swapping properly and no rendering problems occur.*
 |
+| **[Mute/Unmute](app/src/main/java/red5pro/org/testandroidproject/tests/PublishPause)**
+| *Touch the screen to toggle between sending Audio & Video, sending just Video, sending just Audio, and sending no Audio or Video. Turning off and on the media sources is considered mute and unmute events, respecitively* 
+|
 | **[Custom Video Source](app/src/main/java/red5pro/org/testandroidproject/tests/PublishCustomSourceTest)**
 | *Uses a custom controller to supply video data to the publisher.*
 |
@@ -49,7 +52,7 @@ Once you have modified your settings, you can run the application for simulator 
 |
 | **[Remote Call](app/src/main/java/red5pro/org/testandroidproject/tests/PublishRemoteCallTest)**
 | *The publish portion of the remote call example - sends the remote call.*
-| 
+|
 | **[Stream Manager](app/src/main/java/red5pro/org/testandroidproject/tests/PublishStreamManagerTest)**
 | *A publish example that connects with a server cluster using a Stream Manger*
 |

@@ -121,6 +121,17 @@
             <class>PublishOrientationTest</class>
         </Test>
 
+        <Test title="Publish - Pause">
+
+            <description>Touch the screen to toggle mute/unmute of audio and video streams in real-time.  Verify with flash, android, or other iOS device running subscribe test.</description>
+
+            <Properties>
+            </Properties>
+
+            <name>Publish - Pause</name>
+            <class>PublishPauseTest</class>
+        </Test>
+
         <Test title="Publish - Record">
 
             <description>A publish example that records stream data on the server.</description>
