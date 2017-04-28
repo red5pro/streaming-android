@@ -289,6 +289,18 @@
             <class>SubscribeRemoteCallTest</class>
         </Test>
 
+        <Test title="Subscribe - Stream Send">
+
+            <description>A subscribe example that receives stream send events.</description>
+
+            <Properties>
+                <bitrate>512</bitrate>
+            </Properties>
+
+            <name>Subscribe - Stream Send</name>
+            <class>SubscribeReceiveSendTest</class>
+        </Test>
+
         <Test title="Subscribe - Stream Manager">
 
             <description>A subscribe example that connects to a cluster server with the Stream Manager.</description>
