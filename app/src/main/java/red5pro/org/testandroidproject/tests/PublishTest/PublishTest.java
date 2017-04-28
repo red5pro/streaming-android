@@ -82,6 +82,15 @@ public class PublishTest extends TestDetailFragment implements R5ConnectionListe
 
         View rootView = inflater.inflate(R.layout.publish_test, container, false);
 
+        preview = (R5VideoView)rootView.findViewById(R.id.videoPreview);
+
+        publish();
+
+        return rootView;
+    }
+
+    protected void publish() {
+
         String b = getActivity().getPackageName();
         //Create the configuration from the values.xml
         R5Configuration config = new R5Configuration(R5StreamProtocol.RTSP,
@@ -117,8 +126,6 @@ public class PublishTest extends TestDetailFragment implements R5ConnectionListe
             publish.attachMic(mic);
         }
 
-        preview = (R5VideoView)rootView.findViewById(R.id.videoPreview);
-
         preview.attachStream(publish);
 
         if(TestContent.GetPropertyBool("video_on"))
@@ -131,7 +138,6 @@ public class PublishTest extends TestDetailFragment implements R5ConnectionListe
         if(TestContent.GetPropertyBool("video_on"))
             cam.startPreview();
 
-        return rootView;
     }
 
     protected Camera openFrontFacingCameraGingerbread() {

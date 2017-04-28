@@ -66,6 +66,18 @@
             <class>PublishABRTest</class>
         </Test>
 
+        <Test title="Publish - Authentication">
+            <description>An authenticated publish example.</description>
+
+            <Properties>
+                <username>testuser</username>
+                <password>testpass</password>
+            </Properties>
+
+            <name>Publish - Authentication</name>
+            <class>PublishAuthTest</class>
+        </Test>
+
         <Test title="Publish - Camera Swap">
 
             <description>Touch the screen to swap which camera is being used! Verify using flash that camera is swapping properly and no rendering problems occur.</description>
@@ -154,6 +166,29 @@
             <class>PublishStreamManagerTest</class>
         </Test>
 
+        <Test title="Publish - Stream Send">
+
+            <description>A publish example that sends "onStreamSend" R5Stream.send messages on a loop.</description>
+
+            <Properties>
+                <bitrate>512</bitrate>
+            </Properties>
+
+            <name>Publish - Stream Send</name>
+            <class>PublishSendTest</class>
+        </Test>
+
+        <Test title="Shared Objects">
+
+            <description>Stream and chat example with shared objects.</description>
+
+            <Properties>
+            </Properties>
+
+            <name>Shared Objects</name>
+            <class>SharedObjectTest</class>
+        </Test>
+
         <Test title="Subscribe">
 
             <description>Simple Subscribe Test!</description>
@@ -185,6 +220,18 @@
 
             <name>Subscribe - Aspect Ratio</name>
             <class>SubscribeAspectTest</class>
+        </Test>
+
+        <Test title="Subscribe - Authentication">
+            <description>An authenticated subscriber example.</description>
+
+            <Properties>
+                <username>testuser</username>
+                <password>testpass</password>
+            </Properties>
+
+            <name>Subscribe - Authentication</name>
+            <class>SubscribeAuthTest</class>
         </Test>
 
         <Test title="Subscribe - Bandwidth Test">
@@ -240,6 +287,18 @@
 
             <name>Subscribe - Remote Call</name>
             <class>SubscribeRemoteCallTest</class>
+        </Test>
+
+        <Test title="Subscribe - Stream Send">
+
+            <description>A subscribe example that receives stream send events.</description>
+
+            <Properties>
+                <bitrate>512</bitrate>
+            </Properties>
+
+            <name>Subscribe - Stream Send</name>
+            <class>SubscribeReceiveSendTest</class>
         </Test>
 
         <Test title="Subscribe - Stream Manager">

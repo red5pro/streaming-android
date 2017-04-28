@@ -32,6 +32,9 @@ Once you have modified your settings, you can run the application for simulator 
 | **[ABR](app/src/main/java/red5pro/org/testandroidproject/tests/PublishABRTest)**
 | *A high bitrate publisher with AdaptiveBitrateController*
 | 
+| **[Authentication](app/src/main/java/red5pro/org/testandroidproject/tests/PublishAuthTest)**
+| *An example of publishing a stream as an authenticated user*   
+| 
 | **[Camera Swap](app/src/main/java/red5pro/org/testandroidproject/tests/PublishCameraSwapTest)**
 | *Touch the screen to swap which camera is being used! Verify using flash that camera is swapping properly and no rendering problems occur.*
 | 
@@ -50,17 +53,26 @@ Once you have modified your settings, you can run the application for simulator 
 | **[Remote Call](app/src/main/java/red5pro/org/testandroidproject/tests/PublishRemoteCallTest)**
 | *The publish portion of the remote call example - sends the remote call.*
 | 
+| **[Send](app/src/main/java/red5pro/org/testandroidproject/tests/PublishSendTest)**
+| *An example of sending data and messages from a Broadcaster to N-Subscribers.*
+| 
 | **[Stream Manager](app/src/main/java/red5pro/org/testandroidproject/tests/PublishStreamManagerTest)**
 | *A publish example that connects with a server cluster using a Stream Manger*
 | 
 | **[Two Way](app/src/main/java/red5pro/org/testandroidproject/tests/TwoWayTest)**
 | *An example of simultaneously publishing while subscribing - allowing a conversation. Includes stream detection and auto-connection.*
+| 
+| **[Shared Object](app/src/main/java/red5pro/org/testandroidproject/tests/SharedObjectTest)**
+| *An example of sending data and messages between clients through remote shared objects.*
 
 ### [Subscribing](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeTest)
 
 | **[Aspect Ratio](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeAspectTest)**
 | :-----
 | *Change the fill mode of the stream.  scale to fill, scale to fit, scale fill.  Aspect ratio should be maintained on first 2.*
+| 
+| **[Authentication]((app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeAuth)**
+| *An example of subscribing to a stream as an authenticated user*   
 | 
 | **[Bandwidth Test](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeBandwidthTest)**
 | *Detect Insufficient and Sufficient BW flags.  Test on a poor network using a publisher that has high video quality. Video should become sporadic or stop altogether.  The screen will darken when no video is being received.*
@@ -79,6 +91,9 @@ Once you have modified your settings, you can run the application for simulator 
 | 
 | **[Remote Call](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeRemoteCallTest)**
 | *The subscribe portion of the remote call example - receives the remote call.*
+| 
+| **[Send](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeReceiveSendTest)**
+| *An example of receiving data and messages from a Broadcaster using the `send` API.*
 | 
 | **[Stream Manager](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeStreamManagerTest)**
 | *A subscribe example that connects with a server cluster using a Stream Manger.*
