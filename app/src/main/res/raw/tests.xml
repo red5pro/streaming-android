@@ -13,6 +13,8 @@
         <debug_view>true</debug_view>
         <video_on>true</video_on>
         <audio_on>true</audio_on>
+        <sample_rate>44100</sample_rate>
+        <fps>15</fps>
     </Properties>
     <Tests>
 
@@ -35,6 +37,18 @@
             </Properties>
 
             <name>Publish</name>
+            <class>PublishTest</class>
+        </Test>
+
+        <Test title="Publish - High sample rate">
+
+            <description>Simple publish example with high sample rate</description>
+
+            <Properties>
+                <sample_rate>44100</sample_rate>
+            </Properties>
+
+            <name>Publish - High Sample Rate</name>
             <class>PublishTest</class>
         </Test>
 

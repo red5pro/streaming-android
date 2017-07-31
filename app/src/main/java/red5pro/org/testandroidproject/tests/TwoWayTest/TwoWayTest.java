@@ -55,6 +55,7 @@ public class TwoWayTest extends PublishTest {
 
         //setup a new stream using the connection
         publish = new R5Stream(connection);
+        publish.audioController.sampleRate =  TestContent.GetPropertyInt("sample_rate");
 
         //show all logging
         publish.setLogLevel(R5Stream.LOG_LEVEL_DEBUG);
@@ -68,6 +69,7 @@ public class TwoWayTest extends PublishTest {
             camera = new R5Camera(cam, TestContent.GetPropertyInt("camera_width"), TestContent.GetPropertyInt("camera_height"));
             camera.setBitrate(TestContent.GetPropertyInt("bitrate"));
             camera.setOrientation(camOrientation);
+            camera.setFramerate(TestContent.GetPropertyInt("fps"));
         }
 
         if(TestContent.GetPropertyBool("audio_on")) {
