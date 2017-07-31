@@ -341,7 +341,9 @@
 
             <description>Publish and subscribe simultaneously to hold a conversation</description>
 
+            <!-- This is required to be set to 8000 for two-way session. -->
             <Properties>
+                <sample_rate>8000</sample_rate>
             </Properties>
 
             <name>Two Way</name>
