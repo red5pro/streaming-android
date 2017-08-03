@@ -43,6 +43,7 @@ public class PublishAuthTest extends PublishTest {
 
         //setup a new stream using the connection
         publish = new R5Stream(connection);
+        publish.audioController.sampleRate =  TestContent.GetPropertyInt("sample_rate");
         publish.setListener(this);
 
         //show all logging
@@ -57,6 +58,7 @@ public class PublishAuthTest extends PublishTest {
             camera = new R5Camera(cam, TestContent.GetPropertyInt("camera_width"), TestContent.GetPropertyInt("camera_height"));
             camera.setBitrate(TestContent.GetPropertyInt("bitrate"));
             camera.setOrientation(camOrientation);
+            camera.setFramerate(TestContent.GetPropertyInt("fps"));
         }
 
         if (TestContent.GetPropertyBool("audio_on")) {

@@ -55,6 +55,8 @@ public class TwoWayTest extends PublishTest {
 
         //setup a new stream using the connection
         publish = new R5Stream(connection);
+        // This is required to be set to 8000 for two-way session.
+        publish.audioController.sampleRate = TestContent.GetPropertyInt("sample_rate");
 
         //show all logging
         publish.setLogLevel(R5Stream.LOG_LEVEL_DEBUG);
@@ -68,6 +70,7 @@ public class TwoWayTest extends PublishTest {
             camera = new R5Camera(cam, TestContent.GetPropertyInt("camera_width"), TestContent.GetPropertyInt("camera_height"));
             camera.setBitrate(TestContent.GetPropertyInt("bitrate"));
             camera.setOrientation(camOrientation);
+            camera.setFramerate(TestContent.GetPropertyInt("fps"));
         }
 
         if(TestContent.GetPropertyBool("audio_on")) {
@@ -170,7 +173,7 @@ public class TwoWayTest extends PublishTest {
                         @Override
                         public void run() {
                             try {
-                                Thread.sleep(500);
+                                Thread.sleep(2500);
                                 getActivity().runOnUiThread( new Runnable() {
                                     @Override
                                     public void run() {
@@ -278,17 +281,23 @@ public class TwoWayTest extends PublishTest {
                 subscribe.setListener(listener);
 
                 subscribe.play(TestContent.GetPropertyString("stream2"));
+
+                killListThread();
             }
         });
 
     }
 
-    @Override
-    public void onStop() {
+    protected void killListThread() {
         if(listThread != null){
             listThread.interrupt();
             listThread = null;
         }
+    }
+
+    @Override
+    public void onStop() {
+        killListThread();
         if(subscribe != null){
             subscribe.stop();
             subscribe = null;

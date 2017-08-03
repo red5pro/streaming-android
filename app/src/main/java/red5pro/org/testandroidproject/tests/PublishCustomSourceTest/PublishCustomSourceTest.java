@@ -40,6 +40,7 @@ public class PublishCustomSourceTest extends PublishTest {
 
         //setup a new stream using the connection
         publish = new R5Stream(connection);
+        publish.audioController.sampleRate =  TestContent.GetPropertyInt("sample_rate");
         publish.setListener(this);
 
         //show all logging
