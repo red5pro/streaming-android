@@ -97,7 +97,6 @@
     <orderEntry type="library" exported="" name="logback-classic-1.1.2" level="project" />
     <orderEntry type="library" exported="" name="support-v4-23.1.1" level="project" />
     <orderEntry type="library" exported="" name="logback-core-1.1.2" level="project" />
-    <orderEntry type="library" exported="" name="red5pro-1.0.2" level="project" />
     <orderEntry type="library" exported="" name="red5streaming" level="project" />
     <orderEntry type="library" exported="" name="slf4j-api-1.7.6" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-23.1.1" level="project" />
