@@ -136,6 +136,17 @@
             <class>PublishDeviceOrientationTest</class>
         </Test>
 
+        <Test title="Publish - Local Record">
+
+            <description>A publish example that saves a recording of the stream to the device.</description>
+
+            <Properties>
+            </Properties>
+
+            <name>Publish - Local Record</name>
+            <class>PublishLocalRecordTest</class>
+        </Test>
+
         <Test title="Publish - Orientation">
 
             <description>Touch the screen to rotate the output video 90 degrees.  Verify with flash, android, or other iOS device running subscribe test.</description>
