@@ -56,7 +56,7 @@ public class TwoWayTest extends PublishTest {
         //setup a new stream using the connection
         publish = new R5Stream(connection);
         // This is required to be set to 8000 for two-way session.
-        publish.audioController.sampleRate = TestContent.GetPropertyInt("sample_rate");
+        publish.audioController.sampleRate = 8000;
 
         //show all logging
         publish.setLogLevel(R5Stream.LOG_LEVEL_DEBUG);
