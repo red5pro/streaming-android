@@ -71,7 +71,7 @@ Once you have modified your settings, you can run the application for simulator 
 | :-----
 | *Change the fill mode of the stream.  scale to fill, scale to fit, scale fill.  Aspect ratio should be maintained on first 2.*
 | ---
-| **[Authentication]((app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeAuth)**
+| **[Authentication](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeAuth)**
 | *An example of subscribing to a stream as an authenticated user*   
 | ---
 | **[Bandwidth Test](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeBandwidthTest)**
