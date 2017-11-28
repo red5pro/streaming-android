@@ -190,7 +190,8 @@ public class SharedObjectTest extends PublishTest{
 
         addMessage("Retrieved list");
 
-        final String urlStr = "http://" + TestContent.GetPropertyString("host") + ":5080/" + TestContent.GetPropertyString("context") + "/streams.jsp";
+        final String port = TestContent.getFormattedPortSetting(TestContent.GetPropertyString("server_port"));
+        final String urlStr = "http://" + TestContent.GetPropertyString("host") + port + "/" + TestContent.GetPropertyString("context") + "/streams.jsp";
 
         if(callThread != null) {
             callThread.interrupt();
