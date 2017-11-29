@@ -50,8 +50,9 @@ public class PublishStreamManagerTest extends PublishTest {
             public void run() {
                 try{
                     //url format: https://{streammanagerhost}:{port}/streammanager/api/2.0/event/{scopeName}/{streamName}?action=broadcast
+                    String port = TestContent.getFormattedPortSetting(TestContent.GetPropertyString("server_port"));
                     String url = "http://" +
-                            TestContent.GetPropertyString("host") + ":5080/streammanager/api/2.0/event/" +
+                            TestContent.GetPropertyString("host") + port + "/streammanager/api/2.0/event/" +
                             TestContent.GetPropertyString("context") + "/" +
                             TestContent.GetPropertyString("stream1") + "?action=broadcast";
 

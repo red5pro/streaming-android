@@ -111,6 +111,13 @@ public class TestContent {
         return null;
     }
 
+    public static String getFormattedPortSetting(String port) {
+        if (port.equals("80") || port.equals("443") || port.length() == 0) {
+            return "";
+        }
+        return ":" + port;
+    }
+
     public static void SetPropertyString(String id, String value) {
 
         if( setProperties == null ){
