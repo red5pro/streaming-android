@@ -19,7 +19,6 @@ import com.red5pro.streaming.config.R5Configuration;
 import com.red5pro.streaming.event.R5ConnectionEvent;
 import com.red5pro.streaming.event.R5ConnectionListener;
 import com.red5pro.streaming.source.R5Camera;
-import com.red5pro.streaming.view.R5VideoView;
 
 import java.util.concurrent.ExecutionException;
 
@@ -33,7 +32,6 @@ public class SubscribeReconnectTest extends SubscribeTest  {
 
 
     public boolean stopped = false;
-    public int reconnectDelay = 5;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -55,30 +53,10 @@ public class SubscribeReconnectTest extends SubscribeTest  {
         return view;
     }
 
-    protected void reconnect () {
-        Subscribe();
-        SetupListener();
-    }
-
-    protected void delayReconnect (int delay) {
-
-        final SubscribeReconnectTest subscribeTest = this;
-        Handler h = new Handler(Looper.getMainLooper());
-        h.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                subscribeTest.reconnect();
-            }
-        }, delay);
-
-    }
 
     public void SetupListener(){
 
-        final SubscribeReconnectTest subscribeTest = this;
         final R5ConnectionListener additionalListener = this;
-        final R5Stream subscriber = this.subscribe;
-        final R5VideoView view = this.display;
 
         subscribe.setListener(new R5ConnectionListener() {
             @Override
@@ -89,36 +67,19 @@ public class SubscribeReconnectTest extends SubscribeTest  {
 
                 if (r5ConnectionEvent == R5ConnectionEvent.CLOSE && !SubscribeReconnectTest.this.stopped) {
 
+
                     Handler h = new Handler(Looper.getMainLooper());
                     h.postDelayed(new Runnable() {
                         @Override
                         public void run() {
 
                             if(!stopped) {
-                                reconnectDelay = 5;
-                                subscribeTest.reconnect();
+                                Subscribe();
+                                SetupListener();
                             }
 
                         }
-                    }, reconnectDelay);
-
-                }
-                else if (r5ConnectionEvent == R5ConnectionEvent.NET_STATUS && r5ConnectionEvent.message.equals("NetStream.Play.UnpublishNotify")) {
-
-                    reconnectDelay = 1000;
-                    Handler h = new Handler(Looper.getMainLooper());
-
-                    h.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-
-                            subscriber.setListener(null);
-                            subscriber.stop();
-                            view.attachStream(null);
-                            subscribeTest.delayReconnect(reconnectDelay);
-
-                        }
-                    }, reconnectDelay);
+                    }, 5);
 
                 }
             }
