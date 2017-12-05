@@ -87,8 +87,8 @@ public class TwoWayTest extends PublishTest {
             publish.attachCamera(camera);
 
         publish.client = this;
-        final R5ConnectionListener additionalListener = this;
 
+        final R5ConnectionListener additionalListener = this;
         publish.setListener(new R5ConnectionListener() {
             @Override
             public void onConnectionEvent(R5ConnectionEvent r5ConnectionEvent) {
@@ -105,9 +105,9 @@ public class TwoWayTest extends PublishTest {
                 if(r5ConnectionEvent == R5ConnectionEvent.DISCONNECTED){
 
                     if(isSubscribing){
+                        isSubscribing = false;
                         subscribe.stop();
                         subscribe = null;
-                        isSubscribing = false;
                     }
 
                     isPublishing = false;
@@ -133,14 +133,16 @@ public class TwoWayTest extends PublishTest {
             @Override
             public void run() {
                 try {
+
                     Thread.sleep(2500);
 
                     if(!Thread.interrupted()) {
                         publish.connection.call(new R5RemoteCallContainer("streams.getLiveStreams", "R5GetLiveStreams", null));
                     }
                 } catch (Exception e) {
-                    if(e.toString().contains("InterruptedException"))
+                    if(e.toString().contains("InterruptedException")) {
                         e.printStackTrace();
+                    }
                     System.out.println("failed to get new streams");
                 }
             }
@@ -174,14 +176,10 @@ public class TwoWayTest extends PublishTest {
                         public void run() {
                             try {
                                 Thread.sleep(2500);
-                                getActivity().runOnUiThread( new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        if(!Thread.interrupted()) {
-                                            onSubscribeReady();
-                                        }
-                                    }
-                                });
+
+                                if(!Thread.interrupted())
+                                    onSubscribeReady();
+
                             }catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -210,7 +208,7 @@ public class TwoWayTest extends PublishTest {
                 }
             }
         });
-        listThread.run();
+        listThread.start();
 
     }
 
@@ -252,7 +250,8 @@ public class TwoWayTest extends PublishTest {
                     @Override
                     public void onConnectionEvent(R5ConnectionEvent r5ConnectionEvent) {
 
-                        additionalListener.onConnectionEvent(r5ConnectionEvent);
+//                        additionalListener.onConnectionEvent(r5ConnectionEvent);
+                        Log.d("Subscriber", ":onConnectionEvent " + r5ConnectionEvent.name());
 
                         if(r5ConnectionEvent == R5ConnectionEvent.START_STREAMING){
 
@@ -269,12 +268,12 @@ public class TwoWayTest extends PublishTest {
 
                         if(r5ConnectionEvent == R5ConnectionEvent.DISCONNECTED){
 
-                            if(isSubscribing){
+                            if(isSubscribing) {
+                                isSubscribing = false;
                                 subscribe.stop();
                                 subscribe = null;
                             }
 
-                            isSubscribing = false;
                         }
                     }
                 };
@@ -298,12 +297,19 @@ public class TwoWayTest extends PublishTest {
     @Override
     public void onStop() {
         killListThread();
-        if(subscribe != null){
+        if(subscribe != null && isSubscribing) {
+            isSubscribing = false;
             subscribe.stop();
             subscribe = null;
-            isSubscribing = false;
         }
+        this.stopPublish(publishTestListener);
 
         super.onStop();
     }
+
+    @Override
+    public Boolean isPublisherTest () {
+        return false;
+    }
 }
+
