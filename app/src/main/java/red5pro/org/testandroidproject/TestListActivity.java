@@ -5,10 +5,12 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.app.Activity;
+import android.os.Message;
 import android.util.Log;
 import android.widget.Switch;
 
 import red5pro.org.testandroidproject.tests.*;
+import red5pro.org.testandroidproject.tests.PublishTest.PublishTest;
 
 
 /**
@@ -28,7 +30,7 @@ import red5pro.org.testandroidproject.tests.*;
  * to listen for item selections.
  */
 public class TestListActivity extends Activity
-        implements TestListFragment.Callbacks {
+        implements TestListFragment.Callbacks, PublishTestListener {
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -120,8 +122,12 @@ public class TestListActivity extends Activity
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        if (fragment != null && fragment.isPublisherTest()) {
+            PublishTest pFragment = (PublishTest)fragment;
+            pFragment.stopPublish(this);
+        }
 
+        super.onBackPressed();
         fragment = null;
     }
 
@@ -134,5 +140,15 @@ public class TestListActivity extends Activity
         }
 
         super.onConfigurationChanged(config);
+    }
+
+    @Override
+    public void onPublishFlushBufferStart() {
+        // show alert.
+    }
+
+    @Override
+    public void onPublishFlushBufferComplete() {
+        // remove alert.
     }
 }

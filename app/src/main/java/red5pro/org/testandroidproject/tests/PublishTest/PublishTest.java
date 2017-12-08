@@ -26,6 +26,7 @@ import com.red5pro.streaming.source.R5Camera;
 import com.red5pro.streaming.source.R5Microphone;
 import com.red5pro.streaming.view.R5VideoView;
 
+import red5pro.org.testandroidproject.PublishTestListener;
 import red5pro.org.testandroidproject.R;
 import red5pro.org.testandroidproject.TestDetailFragment;
 import red5pro.org.testandroidproject.tests.TestContent;
@@ -40,6 +41,8 @@ public class PublishTest extends TestDetailFragment implements R5ConnectionListe
     protected Camera cam;
     protected R5Camera camera;
     protected int camOrientation;
+
+    protected PublishTestListener publishTestListener;
 
     public PublishTest(){
 
@@ -179,10 +182,10 @@ public class PublishTest extends TestDetailFragment implements R5ConnectionListe
         camOrientation = camOrientation%360;
     }
 
-    @Override
-    public void onStop() {
+    public void stopPublish(PublishTestListener listener) {
 
-        if (publish != null){
+        publishTestListener = listener;
+        if (publish != null) {
             publish.stop();
 
             if(publish.getVideoSource() != null) {
@@ -191,9 +194,13 @@ public class PublishTest extends TestDetailFragment implements R5ConnectionListe
                 c.release();
             }
             publish = null;
-
         }
 
-        super.onStop();
     }
+
+    @Override
+    public Boolean isPublisherTest () {
+        return true;
+    }
+
 }
