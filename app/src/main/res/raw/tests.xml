@@ -4,7 +4,8 @@
         <host>0.0.0.0</host>
         <server_port>5080</server_port>
         <license_key></license_key>
-        <buffer_time>0.2</buffer_time>
+        <publish_buffer_time>0.5</publish_buffer_time>
+        <subscribe_buffer_time>0.5</subscribe_buffer_time>
         <port>8554</port>
         <stream1>stream1</stream1>
         <stream2>stream2</stream2>
@@ -12,8 +13,8 @@
         <camera_width>640</camera_width>
         <camera_height>360</camera_height>
         <debug_view>true</debug_view>
-        <video_on>true</video_on>
         <audio_on>true</audio_on>
+        <video_on>true</video_on>
         <sample_rate>44100</sample_rate>
         <fps>15</fps>
     </Properties>
@@ -93,6 +94,17 @@
             <class>PublishAuthTest</class>
         </Test>
 
+        <Test title="Publish - Camera2">
+
+            <description>Publish example for the camera2 api</description>
+
+            <Properties>
+            </Properties>
+
+            <name>Publish - Camera2</name>
+            <class>PublishCamera2Test</class>
+        </Test>
+
         <Test title="Publish - Camera Swap">
 
             <description>Touch the screen to swap which camera is being used! Verify using flash that camera is swapping properly and no rendering problems occur.</description>
@@ -115,17 +127,6 @@
             <class>PublishCustomSourceTest</class>
         </Test>
 
-        <Test title="Publish - Image Capture">
-
-            <description>Touch the publish stream to take a screen shot that is displayed!</description>
-
-            <Properties>
-            </Properties>
-
-            <name>Publish - Image Capture</name>
-            <class>PublishImageTest</class>
-        </Test>
-
         <Test title="Publish - Device Orientation">
 
             <description>Rotate the device for orientation changes.  Verify with flash, android, or other iOS device running subscribe test.</description>
@@ -135,6 +136,28 @@
 
             <name>Publish - Device Orientation</name>
             <class>PublishDeviceOrientationTest</class>
+        </Test>
+
+        <Test title="Publish - HQ Audio">
+
+            <description>A publish example with high quality audio</description>
+
+            <Properties>
+            </Properties>
+
+            <name>Publish - HQ Audio</name>
+            <class>PublishHQAudioTest</class>
+        </Test>
+
+        <Test title="Publish - Image Capture">
+
+            <description>Touch the publish stream to take a screen shot that is displayed!</description>
+
+            <Properties>
+            </Properties>
+
+            <name>Publish - Image Capture</name>
+            <class>PublishImageTest</class>
         </Test>
 
         <Test title="Publish - Local Record">
@@ -226,17 +249,6 @@
             <class>SubscribeTest</class>
         </Test>
 
-        <Test title="Subscribe - Reconnect">
-
-            <description>Simple Subscribe Reconnection test.  Touch to disconnect and automatically reconnect</description>
-
-            <Properties>
-            </Properties>
-
-            <name>Subscribe - Reconnect</name>
-            <class>SubscribeReconnectTest</class>
-        </Test>
-
         <Test title="Subscribe - Aspect Ratio">
 
             <description>Change the fill mode of the stream.  scale to fill, scale to fit, scale fill.  Aspect ratio should be maintained on first 2.</description>
@@ -304,6 +316,17 @@
             <class>SubscribeNoViewTest</class>
         </Test>
 
+        <Test title="Subscribe - Reconnect">
+
+            <description>Simple Subscribe Reconnection test.  Touch to disconnect and automatically reconnect</description>
+
+            <Properties>
+            </Properties>
+
+            <name>Subscribe - Reconnect</name>
+            <class>SubscribeReconnectTest</class>
+        </Test>
+
         <Test title="Subscribe - Remote Call">
 
             <description>The subscribe portion of the remote call example - receives the remote call</description>
@@ -315,18 +338,6 @@
             <class>SubscribeRemoteCallTest</class>
         </Test>
 
-        <Test title="Subscribe - Stream Send">
-
-            <description>A subscribe example that receives stream send events.</description>
-
-            <Properties>
-                <bitrate>512</bitrate>
-            </Properties>
-
-            <name>Subscribe - Stream Send</name>
-            <class>SubscribeReceiveSendTest</class>
-        </Test>
-
         <Test title="Subscribe - Stream Manager">
 
             <description>A subscribe example that connects to a cluster server with the Stream Manager.</description>
@@ -336,6 +347,17 @@
 
             <name>Subscribe - Stream Manager</name>
             <class>SubscribeStreamManagerTest</class>
+        </Test>
+
+        <Test title="Subscribe - Stream Send">
+
+            <description>A subscribe example that receives stream send events.</description>
+
+            <Properties>
+            </Properties>
+
+            <name>Subscribe - Stream Send</name>
+            <class>SubscribeReceiveSendTest</class>
         </Test>
 
         <Test title="Subscribe - Two Stream">

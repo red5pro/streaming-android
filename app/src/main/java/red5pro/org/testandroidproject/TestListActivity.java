@@ -1,14 +1,18 @@
 package red5pro.org.testandroidproject;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
-import android.content.Intent;
+import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.app.Activity;
+import android.os.Message;
+import android.os.Handler;
 import android.util.Log;
-import android.widget.Switch;
 
 import red5pro.org.testandroidproject.tests.*;
+import red5pro.org.testandroidproject.tests.PublishSendTest.PublishSendTest;
+import red5pro.org.testandroidproject.tests.PublishTest.PublishTest;
 
 
 /**
@@ -28,7 +32,7 @@ import red5pro.org.testandroidproject.tests.*;
  * to listen for item selections.
  */
 public class TestListActivity extends Activity
-        implements TestListFragment.Callbacks {
+        implements TestListFragment.Callbacks, PublishTestListener {
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -120,9 +124,58 @@ public class TestListActivity extends Activity
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        if (fragment != null && fragment.isPublisherTest()) {
+            PublishTest pFragment = (PublishTest)fragment;
+            pFragment.stopPublish(this);
+        }
 
+        super.onBackPressed();
         fragment = null;
+    }
+
+    private AlertDialog bufferDialog;
+    private boolean requiresBufferDialog = false;
+    private final int BUFFEREVT = 1000;
+    private Handler bufferHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case BUFFEREVT:
+                    if (!requiresBufferDialog) return;
+
+                    bufferDialog = new AlertDialog.Builder(TestListActivity.this).create();
+                    bufferDialog.setTitle("Alert");
+                    bufferDialog.setMessage("Publisher Is Finishing Broadcast.\nPlease wait to start another broadcast.");
+                    bufferDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                            new DialogInterface.OnClickListener()
+
+                            {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            }
+
+                    );
+                    bufferDialog.show();
+            }
+        }
+    };
+
+    @Override
+    public void onPublishFlushBufferStart() {
+        // show alert.
+        requiresBufferDialog = true;
+        Message msg = bufferHandler.obtainMessage(BUFFEREVT);
+        bufferHandler.sendMessageDelayed(msg, 500);
+    }
+
+    @Override
+    public void onPublishFlushBufferComplete() {
+        requiresBufferDialog = false;
+        if (bufferDialog != null) {
+            bufferDialog.dismiss();
+            bufferDialog = null;
+        }
     }
 
     @Override

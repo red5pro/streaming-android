@@ -30,14 +30,12 @@ public class PublishABRTest extends PublishTest {
 
         View rootView = inflater.inflate(R.layout.publish_test, container, false);
 
-        Resources res = getResources();
-
         //Create the configuration from the values.xml
         R5Configuration config = new R5Configuration(R5StreamProtocol.RTSP,
                 TestContent.GetPropertyString("host"),
                 TestContent.GetPropertyInt("port"),
                 TestContent.GetPropertyString("context"),
-                TestContent.GetPropertyFloat("buffer_time"));
+                TestContent.GetPropertyFloat("publish_buffer_time"));
         config.setLicenseKey(TestContent.GetPropertyString("license_key"));
         config.setBundleID(getActivity().getPackageName());
 
@@ -46,6 +44,7 @@ public class PublishABRTest extends PublishTest {
         //setup a new stream using the connection
         publish = new R5Stream(connection);
         publish.audioController.sampleRate =  TestContent.GetPropertyInt("sample_rate");
+
         publish.setListener(this);
 
         //show all logging
@@ -60,7 +59,6 @@ public class PublishABRTest extends PublishTest {
             camera = new R5Camera(cam, TestContent.GetPropertyInt("camera_width"), TestContent.GetPropertyInt("camera_height"));
             camera.setBitrate(TestContent.GetPropertyInt("bitrate"));
             camera.setOrientation(camOrientation);
-            camera.setFramerate(TestContent.GetPropertyInt("fps"));
         }
 
         R5AdaptiveBitrateController adaptor = new R5AdaptiveBitrateController();

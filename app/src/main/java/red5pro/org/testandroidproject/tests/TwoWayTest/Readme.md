@@ -1,19 +1,19 @@
-# Two Way Video Chat
+#Two Way Video Chat
 
 This example demonstrates two way communication using Red5 Pro.  It also demonstrates using Remote Procedure Calls (RPC) on the server.
 
 ## Notice
 It is _required_ for setting up Publishers in a Two-Way session that the `sample_rate` configuration property be a value of `8000`.
 
-### Example Code
+###Example Code
 - ***[TwoWayTest.java](TwoWayTest.java)***
 
-### Setup
-Two way communication simply requires setting up a publish stream and a subscribe stream at the same time.  You can test the example with two devices.  On the second device select the **Swap Names** toggle on the main screen before launching.
+###Setup
+Two way communication simply requires setting up a publish stream and a subscribe stream at the same time.  You can test the example with two devices.  On the second device select the **Swap Names** toggle on the main screen before launching. 
 
 The subscriber half will automatically connect when the second person begins streaming.
 
-### Getting Live Streams
+###Getting Live Streams
 You can make RPC calls to the server using `R5Connection.call`.  The call is similar to `R5Stream.send` but allows you to specify a return method name.
 
 `streams.getLiveStreams` is a built in RPC in all Red5 Pro servers.  This call will return a string value that contains a json array of all streams that are currently publishing.
