@@ -65,4 +65,8 @@ public class TestDetailFragment extends Fragment {
 
         return rootView;
     }
+
+    public Boolean isPublisherTest () {
+        return false;
+    }
 }
