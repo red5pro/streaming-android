@@ -69,12 +69,12 @@
 
         <Test title="Publish - ABR">
 
-            <description>A high quality publisher with AdaptiveBitrateController</description>
+            <description>Publisher with AdaptiveBitrateController</description>
 
             <Properties>
-                <camera_width>1920</camera_width>
-                <camera_height>1080</camera_height>
-                <bitrate>4800</bitrate>
+                <camera_width>640</camera_width>
+                <camera_height>480</camera_height>
+                <bitrate>1000</bitrate>
             </Properties>
 
             <name>Publish - ABR</name>
