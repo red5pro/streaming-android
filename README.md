@@ -35,6 +35,9 @@ Once you have modified your settings, you can run the application for simulator 
 | **[Authentication](app/src/main/java/red5pro/org/testandroidproject/tests/PublishAuthTest)**
 | *An example of publishing a stream as an authenticated user*   
 | ---
+| **[Mute/Unmute](app/src/main/java/red5pro/org/testandroidproject/tests/PublishPauseTest)**
+| *Touch the screen to toggle between sending Audio & Video, sending just Video, sending just Audio, and sending no Audio or Video. Turning off and on the media sources is considered mute and unmute events, respecitively*
+| ---
 | **[Camera Swap](app/src/main/java/red5pro/org/testandroidproject/tests/PublishCameraSwapTest)**
 | *Touch the screen to swap which camera is being used! Verify using flash that camera is swapping properly and no rendering problems occur.*
 | ---
