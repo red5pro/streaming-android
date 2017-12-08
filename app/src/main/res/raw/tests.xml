@@ -1,9 +1,9 @@
 <Testbed>
     <Properties>
         <bitrate>750</bitrate>
-        <host>0.0.0.0</host>
+        <host>50.56.81.179</host>
         <server_port>5080</server_port>
-        <license_key></license_key>
+        <license_key>ACGE-4UMR-UHM4-RVJR</license_key>
         <buffer_time>0.2</buffer_time>
         <port>8554</port>
         <stream1>stream1</stream1>
