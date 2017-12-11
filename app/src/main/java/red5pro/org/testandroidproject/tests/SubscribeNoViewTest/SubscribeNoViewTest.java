@@ -18,6 +18,7 @@ import com.red5pro.streaming.event.R5ConnectionEvent;
 import com.red5pro.streaming.event.R5ConnectionListener;
 
 import red5pro.org.testandroidproject.TestDetailFragment;
+import red5pro.org.testandroidproject.tests.PublishSendTest.PublishSendTest;
 import red5pro.org.testandroidproject.tests.TestContent;
 
 /**
@@ -61,7 +62,7 @@ public class SubscribeNoViewTest extends TestDetailFragment implements R5Connect
                 TestContent.GetPropertyString("host"),
                 TestContent.GetPropertyInt("port"),
                 TestContent.GetPropertyString("context"),
-                TestContent.GetPropertyFloat("buffer_time"));
+                TestContent.GetPropertyFloat("subscribe_buffer_time"));
         config.setLicenseKey(TestContent.GetPropertyString("license_key"));
         config.setBundleID(getActivity().getPackageName());
 

@@ -33,10 +33,10 @@ public class SubscribeTwoStreamTest extends SubscribeTest {
 
         //Create the configuration from the tests.xml
         R5Configuration config = new R5Configuration(R5StreamProtocol.RTSP,
-                                                     TestContent.GetPropertyString("host"),
-                                                     TestContent.GetPropertyInt("port"),
-                                                     TestContent.GetPropertyString("context"),
-                                                     TestContent.GetPropertyFloat("buffer_time"));
+                TestContent.GetPropertyString("host"),
+                TestContent.GetPropertyInt("port"),
+                TestContent.GetPropertyString("context"),
+                TestContent.GetPropertyFloat("subscribe_buffer_time"));
         config.setLicenseKey(TestContent.GetPropertyString("license_key"));
         config.setBundleID(getActivity().getPackageName());
 
@@ -77,10 +77,10 @@ public class SubscribeTwoStreamTest extends SubscribeTest {
                         @Override
                         public void run() {
                             R5Configuration config2 = new R5Configuration(R5StreamProtocol.RTSP,
-                                                                          TestContent.GetPropertyString("host"),
-                                                                          TestContent.GetPropertyInt("port"),
-                                                                          TestContent.GetPropertyString("context"),
-                                                                          TestContent.GetPropertyFloat("buffer_time"));
+                                    TestContent.GetPropertyString("host"),
+                                    TestContent.GetPropertyInt("port"),
+                                    TestContent.GetPropertyString("context"),
+                                    TestContent.GetPropertyFloat("subscribe_buffer_time"));
                             config2.setLicenseKey(TestContent.GetPropertyString("license_key"));
                             config2.setBundleID(getActivity().getPackageName());
 

@@ -17,7 +17,7 @@ R5Configuration config = new R5Configuration(R5StreamProtocol.RTSP,
 	TestContent.GetPropertyString("host"),
 	TestContent.GetPropertyInt("port"),
 	TestContent.GetPropertyString("context"),
-	TestContent.GetPropertyFloat("buffer_time"));
+	TestContent.GetPropertyFloat("subscribe_buffer_time"));
 R5Connection connection = new R5Connection(config);
 ```
 <sup>

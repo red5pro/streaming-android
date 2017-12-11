@@ -48,8 +48,9 @@ public class SubscribeStreamManagerTest extends SubscribeTest {
             public void run() {
                 try{
                     //url format: https://{streammanagerhost}:{port}/streammanager/api/2.0/event/{scopeName}/{streamName}?action=subscribe
+                    String port = TestContent.getFormattedPortSetting(TestContent.GetPropertyString("server_port"));
                     String url = "http://" +
-                            TestContent.GetPropertyString("host") + ":5080/streammanager/api/2.0/event/" +
+                            TestContent.GetPropertyString("host") + port + "/streammanager/api/2.0/event/" +
                             TestContent.GetPropertyString("context") + "/" +
                             TestContent.GetPropertyString("stream1") + "?action=subscribe";
 
@@ -99,7 +100,7 @@ public class SubscribeStreamManagerTest extends SubscribeTest {
                 url,
                 TestContent.GetPropertyInt("port"),
                 TestContent.GetPropertyString("context"),
-                TestContent.GetPropertyFloat("buffer_time"));
+                TestContent.GetPropertyFloat("subscribe_buffer_time"));
         config.setLicenseKey(TestContent.GetPropertyString("license_key"));
         config.setBundleID(getActivity().getPackageName());
 

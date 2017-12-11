@@ -1,36 +1,17 @@
 package red5pro.org.testandroidproject.tests.PublishDeviceOrientationTest;
 
-import android.content.Context;
 import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.hardware.Camera;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
+import android.graphics.Rect;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.OrientationEventListener;
 import android.view.Surface;
-import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 
-import com.red5pro.streaming.R5Connection;
-import com.red5pro.streaming.R5Stream;
-import com.red5pro.streaming.R5StreamProtocol;
-import com.red5pro.streaming.config.R5Configuration;
-import com.red5pro.streaming.source.R5Camera;
-import com.red5pro.streaming.source.R5Microphone;
-import com.red5pro.streaming.view.R5VideoView;
-
-import red5pro.org.testandroidproject.R;
-import red5pro.org.testandroidproject.TestDetailFragment;
 import red5pro.org.testandroidproject.tests.PublishTest.PublishTest;
-import red5pro.org.testandroidproject.tests.TestContent;
 
 /**
  * Created by davidHeimann on 2/9/16.
@@ -40,6 +21,7 @@ public class PublishDeviceOrientationTest extends PublishTest {
     boolean mOrientationDirty;
     protected int mOrigCamOrientation = 0;
     View.OnLayoutChangeListener mLayoutListener;
+    OrientationEventListener mOrientListener;
 
     protected int camDisplayOrientation;
 
@@ -67,6 +49,12 @@ public class PublishDeviceOrientationTest extends PublishTest {
             case Surface.ROTATION_180: degrees = 180; break;
             case Surface.ROTATION_270: degrees = 90; break;
         }
+
+        Rect screenSize = new Rect();
+        getActivity().getWindowManager().getDefaultDisplay().getRectSize(screenSize);
+        float screenAR = (screenSize.width()*1.0f) / (screenSize.height()*1.0f);
+        if( (screenAR > 1 && degrees%180 == 0) || (screenAR < 1 && degrees%180 > 0) )
+            degrees += 180;
 
         Log.w("PublishDeviceOrientTest", "degrees: " + degrees);
         camDisplayOrientation = (mOrigCamOrientation + degrees) % 360;
@@ -106,8 +94,8 @@ public class PublishDeviceOrientationTest extends PublishTest {
     }
 
     protected void applyDeviceRotation() {
-        super.applyDeviceRotation();
         mOrigCamOrientation = camOrientation;
+        super.applyDeviceRotation();
     }
 
 }

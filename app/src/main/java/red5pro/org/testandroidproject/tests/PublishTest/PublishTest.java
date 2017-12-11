@@ -3,7 +3,7 @@ package red5pro.org.testandroidproject.tests.PublishTest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
-import android.content.res.Resources;
+import android.graphics.Rect;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,7 +11,6 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Surface;
-import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -21,11 +20,11 @@ import com.red5pro.streaming.R5StreamProtocol;
 import com.red5pro.streaming.config.R5Configuration;
 import com.red5pro.streaming.event.R5ConnectionEvent;
 import com.red5pro.streaming.event.R5ConnectionListener;
-import com.red5pro.streaming.media.R5AudioController;
 import com.red5pro.streaming.source.R5Camera;
 import com.red5pro.streaming.source.R5Microphone;
 import com.red5pro.streaming.view.R5VideoView;
 
+import red5pro.org.testandroidproject.PublishTestListener;
 import red5pro.org.testandroidproject.R;
 import red5pro.org.testandroidproject.TestDetailFragment;
 import red5pro.org.testandroidproject.tests.TestContent;
@@ -34,12 +33,13 @@ import red5pro.org.testandroidproject.tests.TestContent;
  * Created by davidHeimann on 2/9/16.
  */
 public class PublishTest extends TestDetailFragment implements R5ConnectionListener {
-
     protected R5VideoView preview;
     protected R5Stream publish;
     protected Camera cam;
     protected R5Camera camera;
     protected int camOrientation;
+
+    protected PublishTestListener publishTestListener;
 
     public PublishTest(){
 
@@ -51,24 +51,44 @@ public class PublishTest extends TestDetailFragment implements R5ConnectionListe
         if (event.name() == R5ConnectionEvent.LICENSE_ERROR.name()) {
             Handler h = new Handler(Looper.getMainLooper());
             h.post(new Runnable() {
-                @Override
-                public void run() {
-                    AlertDialog alertDialog = new AlertDialog.Builder(PublishTest.this.getActivity()).create();
-                    alertDialog.setTitle("Error");
-                    alertDialog.setMessage("License is Invalid");
-                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL,"OK",
-                            new DialogInterface.OnClickListener()
+                       @Override
+                       public void run() {
+                           AlertDialog alertDialog = new AlertDialog.Builder(PublishTest.this.getActivity()).create();
+                           alertDialog.setTitle("Error");
+                           alertDialog.setMessage("License is Invalid");
+                           alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL,"OK",
+                                   new DialogInterface.OnClickListener()
 
-                            {
-                                public void onClick (DialogInterface dialog,int which){
-                                    dialog.dismiss();
-                                }
-                            }
+                                   {
+                                       public void onClick (DialogInterface dialog,int which){
+                                           dialog.dismiss();
+                                       }
+                                   }
 
-                    );
-                    alertDialog.show();
-                }
-            });
+                           );
+                           alertDialog.show();
+                       }
+                   });
+        }
+        if (event.name() == R5ConnectionEvent.START_STREAMING.name()){
+//            publish.setFrameListener(new R5FrameListener() {
+//                @Override
+//                public void onBytesReceived(byte[] bytes, int i, int i1) {
+//                    Uncomment for framelistener performance test
+//                }
+//            });
+        }
+        else if (event.name() == R5ConnectionEvent.BUFFER_FLUSH_START.name()) {
+            if (publishTestListener != null) {
+                publishTestListener.onPublishFlushBufferStart();
+            }
+        }
+        else if (event.name() == R5ConnectionEvent.BUFFER_FLUSH_EMPTY.name() ||
+                    event.name() == R5ConnectionEvent.DISCONNECTED.name()) {
+            if (publishTestListener != null) {
+                publishTestListener.onPublishFlushBufferComplete();;
+                publishTestListener = null;
+            }
         }
     }
 
@@ -88,16 +108,15 @@ public class PublishTest extends TestDetailFragment implements R5ConnectionListe
 
         return rootView;
     }
-
-    protected void publish() {
-
+    protected void publish(){
         String b = getActivity().getPackageName();
+
         //Create the configuration from the values.xml
         R5Configuration config = new R5Configuration(R5StreamProtocol.RTSP,
                 TestContent.GetPropertyString("host"),
                 TestContent.GetPropertyInt("port"),
                 TestContent.GetPropertyString("context"),
-                TestContent.GetPropertyFloat("buffer_time"));
+                TestContent.GetPropertyFloat("publish_buffer_time"));
         config.setLicenseKey(TestContent.GetPropertyString("license_key"));
         config.setBundleID(b);
 
@@ -105,8 +124,8 @@ public class PublishTest extends TestDetailFragment implements R5ConnectionListe
 
         //setup a new stream using the connection
         publish = new R5Stream(connection);
+
         publish.audioController.sampleRate =  TestContent.GetPropertyInt("sample_rate");
-        publish.setListener(this);
 
         //show all logging
         publish.setLogLevel(R5Stream.LOG_LEVEL_DEBUG);
@@ -135,10 +154,12 @@ public class PublishTest extends TestDetailFragment implements R5ConnectionListe
 
         preview.showDebugView(TestContent.GetPropertyBool("debug_view"));
 
+        publish.setListener(this);
         publish.publish(TestContent.GetPropertyString("stream1"), R5Stream.RecordType.Live);
 
-        if(TestContent.GetPropertyBool("video_on"))
+        if(TestContent.GetPropertyBool("video_on")) {
             cam.startPreview();
+        }
 
     }
 
@@ -169,20 +190,28 @@ public class PublishTest extends TestDetailFragment implements R5ConnectionListe
         int degrees = 0;
         switch (rotation) {
             case Surface.ROTATION_0: degrees = 0; break;
-            case Surface.ROTATION_90: degrees = 90; break;
+            case Surface.ROTATION_90: degrees = 270; break;
             case Surface.ROTATION_180: degrees = 180; break;
-            case Surface.ROTATION_270: degrees = 270; break;
+            case Surface.ROTATION_270: degrees = 90; break;
         }
+
+        Rect screenSize = new Rect();
+        getActivity().getWindowManager().getDefaultDisplay().getRectSize(screenSize);
+        float screenAR = (screenSize.width()*1.0f) / (screenSize.height()*1.0f);
+        if( (screenAR > 1 && degrees%180 == 0) || (screenAR < 1 && degrees%180 > 0) )
+            degrees += 180;
+
+        System.out.println("Apply Device Rotation: " + rotation + ", degrees: " + degrees);
 
         camOrientation += degrees;
 
         camOrientation = camOrientation%360;
     }
 
-    @Override
-    public void onStop() {
+    public void stopPublish(PublishTestListener listener) {
 
-        if (publish != null){
+        publishTestListener = listener;
+        if (publish != null) {
             publish.stop();
 
             if(publish.getVideoSource() != null) {
@@ -191,9 +220,13 @@ public class PublishTest extends TestDetailFragment implements R5ConnectionListe
                 c.release();
             }
             publish = null;
-
         }
 
-        super.onStop();
     }
+
+    @Override
+    public Boolean isPublisherTest () {
+        return true;
+    }
+
 }

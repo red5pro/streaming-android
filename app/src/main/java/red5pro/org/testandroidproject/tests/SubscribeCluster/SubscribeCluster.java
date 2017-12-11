@@ -51,7 +51,8 @@ public class SubscribeCluster extends SubscribeTest {
 
                 try{
                     HttpClient httpClient = new DefaultHttpClient();
-                    HttpResponse response = httpClient.execute(new HttpGet("http://" + TestContent.GetPropertyString("host") + ":5080/cluster"));
+                    String port = TestContent.getFormattedPortSetting(TestContent.GetPropertyString("server_port"));
+                    HttpResponse response = httpClient.execute(new HttpGet("http://" + TestContent.GetPropertyString("host") + port + "/cluster"));
                     StatusLine statusLine = response.getStatusLine();
                     if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
                         ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -91,7 +92,7 @@ public class SubscribeCluster extends SubscribeTest {
                 edgeIP,
                 TestContent.GetPropertyInt("port"),
                 TestContent.GetPropertyString("context"),
-                TestContent.GetPropertyFloat("buffer_time"));
+                TestContent.GetPropertyFloat("subscribe_buffer_time"));
         config.setLicenseKey(TestContent.GetPropertyString("license_key"));
         config.setBundleID(getActivity().getPackageName());
 

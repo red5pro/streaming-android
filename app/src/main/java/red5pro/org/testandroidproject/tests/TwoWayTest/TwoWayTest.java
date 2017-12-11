@@ -42,53 +42,13 @@ public class TwoWayTest extends PublishTest {
 
         View rootView = inflater.inflate(R.layout.twoway_test, container, false);
 
-        //Create the configuration from the values.xml
-        R5Configuration config = new R5Configuration(R5StreamProtocol.RTSP,
-                TestContent.GetPropertyString("host"),
-                TestContent.GetPropertyInt("port"),
-                TestContent.GetPropertyString("context"),
-                TestContent.GetPropertyFloat("buffer_time"));
-        config.setLicenseKey(TestContent.GetPropertyString("license_key"));
-        config.setBundleID(getActivity().getPackageName());
-
-        R5Connection connection = new R5Connection(config);
-
-        //setup a new stream using the connection
-        publish = new R5Stream(connection);
-        // This is required to be set to 8000 for two-way session.
-        publish.audioController.sampleRate = 8000;
-
-        //show all logging
-        publish.setLogLevel(R5Stream.LOG_LEVEL_DEBUG);
-
-        R5Camera camera = null;
-        if(TestContent.GetPropertyBool("video_on")) {
-            //attach a camera video source
-            cam = openFrontFacingCameraGingerbread();
-            cam.setDisplayOrientation((camOrientation + 180) % 360);
-
-            camera = new R5Camera(cam, TestContent.GetPropertyInt("camera_width"), TestContent.GetPropertyInt("camera_height"));
-            camera.setBitrate(TestContent.GetPropertyInt("bitrate"));
-            camera.setOrientation(camOrientation);
-            camera.setFramerate(TestContent.GetPropertyInt("fps"));
-        }
-
-        if(TestContent.GetPropertyBool("audio_on")) {
-            //attach a microphone
-            R5Microphone mic = new R5Microphone();
-            publish.attachMic(mic);
-        }
-
         preview = (R5VideoView)rootView.findViewById(R.id.videoPreview);
 
-        preview.attachStream(publish);
-
-        if(TestContent.GetPropertyBool("video_on"))
-            publish.attachCamera(camera);
+        publish();
 
         publish.client = this;
-        final R5ConnectionListener additionalListener = this;
 
+        final R5ConnectionListener additionalListener = this;
         publish.setListener(new R5ConnectionListener() {
             @Override
             public void onConnectionEvent(R5ConnectionEvent r5ConnectionEvent) {
@@ -105,22 +65,15 @@ public class TwoWayTest extends PublishTest {
                 if(r5ConnectionEvent == R5ConnectionEvent.DISCONNECTED){
 
                     if(isSubscribing){
+                        isSubscribing = false;
                         subscribe.stop();
                         subscribe = null;
-                        isSubscribing = false;
                     }
 
                     isPublishing = false;
                 }
             }
         });
-
-        preview.showDebugView(TestContent.GetPropertyBool("debug_view"));
-
-        publish.publish(TestContent.GetPropertyString("stream1"), R5Stream.RecordType.Live);
-
-        if(TestContent.GetPropertyBool("video_on"))
-            cam.startPreview();
 
         display = (R5VideoView)rootView.findViewById(R.id.videoView);
 
@@ -133,14 +86,16 @@ public class TwoWayTest extends PublishTest {
             @Override
             public void run() {
                 try {
+
                     Thread.sleep(2500);
 
                     if(!Thread.interrupted()) {
                         publish.connection.call(new R5RemoteCallContainer("streams.getLiveStreams", "R5GetLiveStreams", null));
                     }
                 } catch (Exception e) {
-                    if(e.toString().contains("InterruptedException"))
+                    if(e.toString().contains("InterruptedException")) {
                         e.printStackTrace();
+                    }
                     System.out.println("failed to get new streams");
                 }
             }
@@ -174,14 +129,10 @@ public class TwoWayTest extends PublishTest {
                         public void run() {
                             try {
                                 Thread.sleep(2500);
-                                getActivity().runOnUiThread( new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        if(!Thread.interrupted()) {
-                                            onSubscribeReady();
-                                        }
-                                    }
-                                });
+
+                                if(!Thread.interrupted())
+                                    onSubscribeReady();
+
                             }catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -210,7 +161,7 @@ public class TwoWayTest extends PublishTest {
                 }
             }
         });
-        listThread.run();
+        listThread.start();
 
     }
 
@@ -218,6 +169,8 @@ public class TwoWayTest extends PublishTest {
 
         if( subscribe != null )
             return;
+
+        System.out.println("bitrate - subscribe start");
 
         Handler r = new Handler(Looper.getMainLooper());
         final R5ConnectionListener additionalListener = this;
@@ -252,7 +205,8 @@ public class TwoWayTest extends PublishTest {
                     @Override
                     public void onConnectionEvent(R5ConnectionEvent r5ConnectionEvent) {
 
-                        additionalListener.onConnectionEvent(r5ConnectionEvent);
+//                        additionalListener.onConnectionEvent(r5ConnectionEvent);
+                        Log.d("Subscriber", ":onConnectionEvent " + r5ConnectionEvent.name());
 
                         if(r5ConnectionEvent == R5ConnectionEvent.START_STREAMING){
 
@@ -269,12 +223,12 @@ public class TwoWayTest extends PublishTest {
 
                         if(r5ConnectionEvent == R5ConnectionEvent.DISCONNECTED){
 
-                            if(isSubscribing){
+                            if(isSubscribing) {
+                                isSubscribing = false;
                                 subscribe.stop();
                                 subscribe = null;
                             }
 
-                            isSubscribing = false;
                         }
                     }
                 };
@@ -298,12 +252,18 @@ public class TwoWayTest extends PublishTest {
     @Override
     public void onStop() {
         killListThread();
-        if(subscribe != null){
+        if(subscribe != null && isSubscribing) {
+            isSubscribing = false;
             subscribe.stop();
             subscribe = null;
-            isSubscribing = false;
         }
+        this.stopPublish(publishTestListener);
 
         super.onStop();
+    }
+
+    @Override
+    public Boolean isPublisherTest () {
+        return false;
     }
 }

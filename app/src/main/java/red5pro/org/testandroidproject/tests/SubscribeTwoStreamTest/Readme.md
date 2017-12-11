@@ -35,7 +35,7 @@ new Thread(new Runnable() {
             	TestContent.GetPropertyString("host"),
             	TestContent.GetPropertyInt("port"),
             	TestContent.GetPropertyString("context"),
-            	TestContent.GetPropertyFloat("buffer_time"));
+            	TestContent.GetPropertyFloat("subscribe_buffer_time"));
 
 			R5Connection secondConnection = new R5Connection(config2);
 

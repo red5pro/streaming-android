@@ -9,10 +9,10 @@ import com.red5pro.streaming.R5Connection;
 import com.red5pro.streaming.R5Stream;
 import com.red5pro.streaming.R5StreamProtocol;
 import com.red5pro.streaming.config.R5Configuration;
-import com.red5pro.streaming.source.R5Camera;
 import com.red5pro.streaming.source.R5Microphone;
 import com.red5pro.streaming.view.R5VideoView;
 
+import red5pro.org.testandroidproject.PublishTestListener;
 import red5pro.org.testandroidproject.R;
 import red5pro.org.testandroidproject.tests.PublishTest.PublishTest;
 import red5pro.org.testandroidproject.tests.TestContent;
@@ -32,7 +32,7 @@ public class PublishCustomSourceTest extends PublishTest {
                 TestContent.GetPropertyString("host"),
                 TestContent.GetPropertyInt("port"),
                 TestContent.GetPropertyString("context"),
-                TestContent.GetPropertyFloat("buffer_time"));
+                TestContent.GetPropertyFloat("publish_buffer_time"));
         config.setLicenseKey(TestContent.GetPropertyString("license_key"));
         config.setBundleID(getActivity().getPackageName());
 
@@ -40,19 +40,19 @@ public class PublishCustomSourceTest extends PublishTest {
 
         //setup a new stream using the connection
         publish = new R5Stream(connection);
-        publish.audioController.sampleRate =  TestContent.GetPropertyInt("sample_rate");
+        publish.audioController.sampleRate = TestContent.GetPropertyInt("sample_rate");
         publish.setListener(this);
 
         //show all logging
         publish.setLogLevel(R5Stream.LOG_LEVEL_DEBUG);
 
-        if(TestContent.GetPropertyBool("audio_on")) {
+        if (TestContent.GetPropertyBool("audio_on")) {
             //attach a microphone
             R5Microphone mic = new R5Microphone();
             publish.attachMic(mic);
         }
 
-        preview = (R5VideoView)rootView.findViewById(R.id.videoPreview);
+        preview = (R5VideoView) rootView.findViewById(R.id.videoPreview);
 
         preview.attachStream(publish);
 
@@ -66,15 +66,13 @@ public class PublishCustomSourceTest extends PublishTest {
         return rootView;
     }
 
-    @Override
-    public void onStop() {
+    public void stopPublish(PublishTestListener listener) {
 
-        if (publish != null){
-
+        publishTestListener = listener;
+        if (publish != null) {
             publish.stop();
             publish = null;
         }
 
-        super.onStop();
     }
 }
