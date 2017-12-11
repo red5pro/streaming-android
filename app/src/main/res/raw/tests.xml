@@ -7,8 +7,8 @@
         <publish_buffer_time>0.5</publish_buffer_time>
         <subscribe_buffer_time>0.5</subscribe_buffer_time>
         <port>8554</port>
-        <stream1>stream1</stream1>
-        <stream2>stream2</stream2>
+        <stream1>jstream1</stream1>
+        <stream2>jstream2</stream2>
         <context>live</context>
         <camera_width>640</camera_width>
         <camera_height>360</camera_height>
@@ -92,17 +92,6 @@
 
             <name>Publish - Authentication</name>
             <class>PublishAuthTest</class>
-        </Test>
-
-        <Test title="Publish - Camera2">
-
-            <description>Publish example for the camera2 api</description>
-
-            <Properties>
-            </Properties>
-
-            <name>Publish - Camera2</name>
-            <class>PublishCamera2Test</class>
         </Test>
 
         <Test title="Publish - Camera Swap">

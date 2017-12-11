@@ -1,11 +1,11 @@
 apply plugin: 'com.android.application'
 android {
-    compileSdkVersion 22
-
+    compileSdkVersion 21
+    buildToolsVersion '19.1.0'
     defaultConfig {
         applicationId "red5pro.org.testandroidproject"
         minSdkVersion 16
-        targetSdkVersion 22
+        targetSdkVersion 20
         versionCode 10
         versionName "4.2.0"
     }
@@ -15,7 +15,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
 //    productFlavors {
 //
 //        armv7 {
@@ -31,10 +30,10 @@ android {
 ////        }
 //
 //    }
-
+    buildToolsVersion '26.0.2'
 }
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'ch.qos.logback:logback-classic:1.1.2'
     compile 'ch.qos.logback:logback-core:1.1.2'
     compile 'org.apache.mina:mina-core:2.0.16'
