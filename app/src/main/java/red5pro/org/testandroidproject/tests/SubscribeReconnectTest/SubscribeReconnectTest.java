@@ -30,6 +30,7 @@ public class SubscribeReconnectTest extends SubscribeTest  {
     public boolean stopped = false;
     public int reconnectDelay = 2000;
 
+
     private void findStreams() {
 
         final String port = TestContent.getFormattedPortSetting(TestContent.GetPropertyString("server_port"));
@@ -165,12 +166,10 @@ public class SubscribeReconnectTest extends SubscribeTest  {
 
     }
 
+
     public void SetupListener(){
 
-        final SubscribeReconnectTest subscribeTest = this;
         final R5ConnectionListener additionalListener = this;
-        final R5Stream subscriber = this.subscribe;
-        final R5VideoView view = this.display;
 
         subscribe.setListener(new R5ConnectionListener() {
             @Override
@@ -180,6 +179,7 @@ public class SubscribeReconnectTest extends SubscribeTest  {
                 additionalListener.onConnectionEvent(r5ConnectionEvent);
 
                 if (r5ConnectionEvent == R5ConnectionEvent.CLOSE && !SubscribeReconnectTest.this.stopped) {
+
 
                     Handler h = new Handler(Looper.getMainLooper());
                     h.postDelayed(new Runnable() {
@@ -209,6 +209,7 @@ public class SubscribeReconnectTest extends SubscribeTest  {
 
                         }
                     }, reconnectDelay);
+
 
                 }
             }
