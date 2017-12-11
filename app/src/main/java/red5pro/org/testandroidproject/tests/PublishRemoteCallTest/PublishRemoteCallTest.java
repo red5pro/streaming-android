@@ -17,6 +17,13 @@ import red5pro.org.testandroidproject.tests.PublishTest.PublishTest;
 public class PublishRemoteCallTest extends PublishTest {
 
     @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        publish.setListener(this);
+    }
+
+    @Override
     public void onConnectionEvent(R5ConnectionEvent r5ConnectionEvent) {
 
         super.onConnectionEvent(r5ConnectionEvent);

@@ -28,7 +28,7 @@ Local Record relies primarily on MediaMuxer - which was added in Android api 18 
     compile group: 'com.googlecode.mp4parser', name: 'isoparser', version: '1.1.22'
 ```
 <sub>
-[build.gradle #44](../../../../../../../build.gradle#L44)
+[build.gradle #56](../../../../../../../build.gradle#L56)
 </sub>
 
-Also note that due to the different muxing method, this form of recording can only use half of a device's remaining storage, where the full form can record a video file that takes up the entirety of the device.
+Also note that due to the different muxing method, this form of recording can only use half of a device's remaining storage, where the full form can record a video file that takes up the entirety of the device. 

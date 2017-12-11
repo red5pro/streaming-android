@@ -44,14 +44,20 @@ Once you have modified your settings, you can run the application for simulator 
 | **[Custom Video Source](app/src/main/java/red5pro/org/testandroidproject/tests/PublishCustomSourceTest)**
 | *Uses a custom controller to supply video data to the publisher.*
 | ---
-| **[Image Capture](app/src/main/java/red5pro/org/testandroidproject/tests/PublishImageTest)**
-| *Touch the publish stream to take a screen shot that is displayed!*
-| ---
 | **[Device Orientation](app/src/main/java/red5pro/org/testandroidproject/tests/PublishDeviceOrientationTest)**
 | *After starting a broadcast, rotate your device from portrait to landscape. You will notice that the view updates on the broadcasting device. Additionally, if you subscribe with mobile or the browser-based players, you will see their orientation update with the change to device orientation.*
 | ---
+| **[HQ Audio](app/src/main/java/red5pro/org/testandroidproject/tests/PublishHQAudioTest)**
+| *A publish example with high quality audio*
+| ---
+| **[Image Capture](app/src/main/java/red5pro/org/testandroidproject/tests/PublishImageTest)**
+| *Touch the publish stream to take a screen shot that is displayed!*
+| ---
 | **[LocalRecord](app/src/main/java/red5pro/org/testandroidproject/tests/PublishLocalRecordTest)**
 | *A publish example that records stream data locally on the device.*
+| ---
+| **[Orientation](app/src/main/java/red5pro/org/testandroidproject/tests/PublishOrientationTest)**
+| *Touch the screen to rotate the output video 90 degrees. Verify with flash, android, or other iOS device running subscribe test.*
 | ---
 | **[Record](app/src/main/java/red5pro/org/testandroidproject/tests/RecordedTest)**
 | *A publish example that records stream data on the server.*

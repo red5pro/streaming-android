@@ -73,12 +73,13 @@ public class SubscribeTest extends TestDetailFragment implements R5ConnectionLis
     }
 
     public void Subscribe(){
+
         //Create the configuration from the tests.xml
         R5Configuration config = new R5Configuration(R5StreamProtocol.RTSP,
                 TestContent.GetPropertyString("host"),
                 TestContent.GetPropertyInt("port"),
                 TestContent.GetPropertyString("context"),
-                TestContent.GetPropertyFloat("buffer_time"));
+                TestContent.GetPropertyFloat("subscribe_buffer_time"));
         config.setLicenseKey(TestContent.GetPropertyString("license_key"));
         config.setBundleID(getActivity().getPackageName());
 
@@ -86,9 +87,11 @@ public class SubscribeTest extends TestDetailFragment implements R5ConnectionLis
 
         //setup a new stream using the connection
         subscribe = new R5Stream(connection);
-        subscribe.setListener(this);
+
+        subscribe.audioController.sampleRate = TestContent.GetPropertyInt("sample_rate");
 
         subscribe.client = this;
+        subscribe.setListener(this);
 
         //show all logging
         subscribe.setLogLevel(R5Stream.LOG_LEVEL_DEBUG);
@@ -97,6 +100,8 @@ public class SubscribeTest extends TestDetailFragment implements R5ConnectionLis
         display.attachStream(subscribe);
 
         display.showDebugView(TestContent.GetPropertyBool("debug_view"));
+
+        subscribe.audioController = new R5AudioController();
 
         subscribe.play(TestContent.GetPropertyString("stream1"));
 
