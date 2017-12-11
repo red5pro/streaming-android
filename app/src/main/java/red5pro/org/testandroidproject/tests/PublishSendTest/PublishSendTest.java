@@ -198,15 +198,22 @@ public class PublishSendTest extends TestDetailFragment implements R5ConnectionL
     @Override
     public void onStop() {
 
-        if (publish != null){
-            Camera c = ((R5Camera) publish.getVideoSource()).getCamera();
-            c.stopPreview();
-            c.release();
-
+        if (publish != null) {
             publish.stop();
+
+            if(publish.getVideoSource() != null) {
+                Camera c = ((R5Camera) publish.getVideoSource()).getCamera();
+                c.stopPreview();
+                c.release();
+            }
+            publish = null;
 
         }
 
-        super.onStop();
+        // This is offloaded to "flush" events.
+        // The publisher has to finish flushing and network packet queues to the server before it can be deallocated.
+//        super.onStop();
+
     }
+
 }
