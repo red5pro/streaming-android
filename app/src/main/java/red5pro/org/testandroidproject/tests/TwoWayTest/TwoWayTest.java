@@ -170,6 +170,8 @@ public class TwoWayTest extends PublishTest {
         if( subscribe != null )
             return;
 
+        System.out.println("bitrate - subscribe start");
+
         Handler r = new Handler(Looper.getMainLooper());
         final R5ConnectionListener additionalListener = this;
 

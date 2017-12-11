@@ -8,12 +8,8 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.os.Message;
 import android.os.Handler;
-import android.util.Log;
-
 import red5pro.org.testandroidproject.tests.*;
 import red5pro.org.testandroidproject.tests.PublishSendTest.PublishSendTest;
-import red5pro.org.testandroidproject.tests.PublishTest.PublishTest;
-
 
 /**
  * An activity representing a list of Tests. This activity
@@ -187,5 +183,15 @@ public class TestListActivity extends Activity
         }
 
         super.onConfigurationChanged(config);
+    }
+
+    @Override
+    public void onPublishFlushBufferStart() {
+        // show alert.
+    }
+
+    @Override
+    public void onPublishFlushBufferComplete() {
+        // remove alert.
     }
 }
