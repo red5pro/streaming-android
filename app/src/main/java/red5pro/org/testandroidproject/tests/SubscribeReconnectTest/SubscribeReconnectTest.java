@@ -170,6 +170,9 @@ public class SubscribeReconnectTest extends SubscribeTest  {
     public void SetupListener(){
 
         final R5ConnectionListener additionalListener = this;
+        final SubscribeReconnectTest subscribeTest = this;
+        final R5Stream subscriber = this.subscribe;
+        final R5VideoView view = this.display;
 
         subscribe.setListener(new R5ConnectionListener() {
             @Override
