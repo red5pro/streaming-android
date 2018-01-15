@@ -14,6 +14,7 @@ import red5pro.org.testandroidproject.tests.*;
 import red5pro.org.testandroidproject.tests.PublishSendTest.PublishSendTest;
 import red5pro.org.testandroidproject.tests.PublishTest.PublishTest;
 
+
 /**
  * An activity representing a list of Tests. This activity
  * has different presentations for handset and tablet-size devices. On
@@ -128,8 +129,10 @@ public class TestListActivity extends Activity
             pFragment.stopPublish(this);
         }
 
-        super.onBackPressed();
-        fragment = null;
+        if(fragment == null || fragment.shouldClean()) {
+            super.onBackPressed();
+            fragment = null;
+        }
     }
 
     private AlertDialog bufferDialog;
@@ -187,5 +190,4 @@ public class TestListActivity extends Activity
 
         super.onConfigurationChanged(config);
     }
-
 }

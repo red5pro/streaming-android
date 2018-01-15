@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 android {
-    compileSdkVersion 21
-    buildToolsVersion '19.1.0'
+    compileSdkVersion 20
+    buildToolsVersion '20.0.0'
     defaultConfig {
         applicationId "red5pro.org.testandroidproject"
         minSdkVersion 16
-        targetSdkVersion 20
+        targetSdkVersion 22
         versionCode 10
-        versionName "4.2.0"
+        versionName "4.4.0"
     }
     buildTypes {
         release {
@@ -40,6 +40,5 @@ dependencies {
     compile 'org.slf4j:slf4j-api:1.7.21'
     compile 'com.android.support:support-v4:22.2.1'
     compile 'com.googlecode.mp4parser:isoparser:1.1.22'
-    compile files('libs/red5streaming.jar')
 }
 

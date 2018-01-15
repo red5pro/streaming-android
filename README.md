@@ -19,8 +19,6 @@ You will need to modify **app/src/res/raw/test.xml (the domain value)** to point
 
 Once you have modified your settings, you can run the application for simulator or device.
 
-> **If prompted to upgrade gradle, you should ignore.**
-
 ## Examples
 
 ### [Publishing](app/src/main/java/red5pro/org/testandroidproject/tests/PublishTest)
@@ -32,11 +30,11 @@ Once you have modified your settings, you can run the application for simulator 
 | **[ABR](app/src/main/java/red5pro/org/testandroidproject/tests/PublishABRTest)**
 | *A high bitrate publisher with AdaptiveBitrateController*
 | ---
+| **[Aspect Ratio](app/src/main/java/red5pro/org/testandroidproject/tests/PublishAspectTest)**
+| *Publish example that includes manipulation of the preview display's aspect ratio*
+| ---
 | **[Authentication](app/src/main/java/red5pro/org/testandroidproject/tests/PublishAuthTest)**
 | *An example of publishing a stream as an authenticated user*   
-| ---
-| **[Mute/Unmute](app/src/main/java/red5pro/org/testandroidproject/tests/PublishPauseTest)**
-| *Touch the screen to toggle between sending Audio & Video, sending just Video, sending just Audio, and sending no Audio or Video. Turning off and on the media sources is considered mute and unmute events, respecitively*
 | ---
 | **[Camera Swap](app/src/main/java/red5pro/org/testandroidproject/tests/PublishCameraSwapTest)**
 | *Touch the screen to swap which camera is being used! Verify using flash that camera is swapping properly and no rendering problems occur.*
@@ -58,6 +56,9 @@ Once you have modified your settings, you can run the application for simulator 
 | ---
 | **[Orientation](app/src/main/java/red5pro/org/testandroidproject/tests/PublishOrientationTest)**
 | *Touch the screen to rotate the output video 90 degrees. Verify with flash, android, or other iOS device running subscribe test.*
+| ---
+| **[Mute/Unmute](app/src/main/java/red5pro/org/testandroidproject/tests/PublishPauseTest)**
+| *Touch the screen to toggle between sending Audio & Video, sending just Video, sending just Audio, and sending no Audio or Video. Turning off and on the media sources is considered mute and unmute events, respecitively*
 | ---
 | **[Record](app/src/main/java/red5pro/org/testandroidproject/tests/RecordedTest)**
 | *A publish example that records stream data on the server.*
@@ -88,6 +89,9 @@ Once you have modified your settings, you can run the application for simulator 
 | ---
 | **[Bandwidth Test](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeBandwidthTest)**
 | *Detect Insufficient and Sufficient BW flags.  Test on a poor network using a publisher that has high video quality. Video should become sporadic or stop altogether.  The screen will darken when no video is being received.*
+| ---
+| **[Background Test](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeBandwidthTest)**
+| *An example of running a subscribe example in a separate process so that it can continue when the application loses focus.*
 | ---
 | **[Cluster](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeCluster)**
 | *An example of conecting to a cluster server.*

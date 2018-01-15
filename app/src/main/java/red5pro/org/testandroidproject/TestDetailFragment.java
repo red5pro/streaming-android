@@ -69,4 +69,7 @@ public class TestDetailFragment extends Fragment {
     public Boolean isPublisherTest () {
         return false;
     }
+    public Boolean shouldClean() {
+        return true;
+    }
 }
