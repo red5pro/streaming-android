@@ -7,8 +7,8 @@
         <publish_buffer_time>0.5</publish_buffer_time>
         <subscribe_buffer_time>0.5</subscribe_buffer_time>
         <port>8554</port>
-        <stream1>jstream1</stream1>
-        <stream2>jstream2</stream2>
+        <stream1>stream1</stream1>
+        <stream2>stream2</stream2>
         <context>live</context>
         <camera_width>640</camera_width>
         <camera_height>360</camera_height>
@@ -80,6 +80,17 @@
 
             <name>Publish - ABR</name>
             <class>PublishABRTest</class>
+        </Test>
+
+        <Test title="Publish - Aspect Ratio">
+
+            <description>Publish example that includes manipulation of the preview display's aspect ratio</description>
+
+            <Properties>
+            </Properties>
+
+            <name>Publish - Aspect Ratio</name>
+            <class>PublishAspectTest</class>
         </Test>
 
         <Test title="Publish - Authentication">
@@ -259,6 +270,17 @@
 
             <name>Subscribe - Authentication</name>
             <class>SubscribeAuthTest</class>
+        </Test>
+
+        <Test title="Subscribe - Background">
+
+            <description>An example of running a subscribe example in a separate process so that it can continue when the application loses focus</description>
+
+            <Properties>
+            </Properties>
+
+            <name>Subscribe - Background</name>
+            <class>SubscribeBackgroundTest</class>
         </Test>
 
         <Test title="Subscribe - Bandwidth Test">
