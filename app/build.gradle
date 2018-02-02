@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
 android {
-    compileSdkVersion 20
+    compileSdkVersion 22
     buildToolsVersion '20.0.0'
     defaultConfig {
         applicationId "red5pro.org.testandroidproject"
