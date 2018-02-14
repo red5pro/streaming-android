@@ -44,7 +44,6 @@ public class PublishCamera2Test extends TestDetailFragment implements R5Connecti
     private CameraDevice camera;
     private CameraCharacteristics camInfo;
     protected int camOrientation;
-    ImageView screenShot;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -89,6 +88,7 @@ public class PublishCamera2Test extends TestDetailFragment implements R5Connecti
             for(String id : camList){
                 CameraCharacteristics info = manager.getCameraCharacteristics(id);
                 if(info.get(CameraCharacteristics.LENS_FACING) == CameraCharacteristics.LENS_FACING_FRONT){
+                    camOrientation = info.get(CameraCharacteristics.SENSOR_ORIENTATION);
                     camInfo = info;
                     manager.openCamera(id, new CameraDevice.StateCallback() {
                         @Override
@@ -121,7 +121,7 @@ public class PublishCamera2Test extends TestDetailFragment implements R5Connecti
 
         camera2 = new R5Camera2(camera, camInfo, TestContent.GetPropertyInt("camera_width"), TestContent.GetPropertyInt("camera_height"));
         camera2.setBitrate(TestContent.GetPropertyInt("bitrate"));
-        camera2.setOrientation(90);
+        camera2.setOrientation(camOrientation);
         camera2.setFramerate(TestContent.GetPropertyInt("fps"));
 
         publish.attachCamera(camera2);
