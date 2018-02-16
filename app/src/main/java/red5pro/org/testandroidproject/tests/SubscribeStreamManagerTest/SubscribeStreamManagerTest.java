@@ -13,6 +13,7 @@ import com.red5pro.streaming.R5Connection;
 import com.red5pro.streaming.R5Stream;
 import com.red5pro.streaming.R5StreamProtocol;
 import com.red5pro.streaming.config.R5Configuration;
+import com.red5pro.streaming.media.R5AudioController;
 import com.red5pro.streaming.view.R5VideoView;
 
 import org.apache.http.HttpResponse;
@@ -109,6 +110,9 @@ public class SubscribeStreamManagerTest extends SubscribeTest {
         //setup a new stream using the connection
         subscribe = new R5Stream(connection);
         subscribe.setListener(this);
+
+        subscribe.audioController = new R5AudioController();
+        subscribe.audioController.sampleRate = TestContent.GetPropertyInt("sample_rate");
 
         //show all logging
         subscribe.setLogLevel(R5Stream.LOG_LEVEL_DEBUG);

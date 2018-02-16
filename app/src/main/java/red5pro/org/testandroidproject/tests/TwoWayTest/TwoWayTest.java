@@ -234,6 +234,8 @@ public class TwoWayTest extends PublishTest {
                 };
                 subscribe.setListener(listener);
 
+                //Unlike basic subscription, two-way needs echo cancellation, which needs the subscriber and publisher
+                //to use the same Audio Controller - instead of recreating it for stability, we delay the subscriber
                 subscribe.play(TestContent.GetPropertyString("stream2"));
 
                 killListThread();

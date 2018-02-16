@@ -46,6 +46,9 @@ public class SubscribeTwoStreamTest extends SubscribeTest {
         subscribe = new R5Stream(connection);
         subscribe.setListener(this);
 
+        subscribe.audioController = new R5AudioController();
+        subscribe.audioController.sampleRate = TestContent.GetPropertyInt("sample_rate");
+
         //show all logging
         subscribe.setLogLevel(R5Stream.LOG_LEVEL_DEBUG);
 
@@ -93,6 +96,7 @@ public class SubscribeTwoStreamTest extends SubscribeTest {
                             secondDisplay.showDebugView(TestContent.GetPropertyString("debug_view").equals("true"));
 
                             secondSubscribe.audioController = new R5AudioController();
+                            secondSubscribe.audioController.sampleRate = TestContent.GetPropertyInt("sample_rate");
                             secondSubscribe.play(TestContent.GetPropertyString("stream2"));
                         }
                     });
