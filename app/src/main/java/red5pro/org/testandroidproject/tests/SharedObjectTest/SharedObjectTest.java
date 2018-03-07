@@ -96,6 +96,7 @@ public class SharedObjectTest extends PublishTest{
         //setup a new stream using the connection
         stream = new R5Stream(connection);
 
+        stream.audioController = new R5AudioController();
         stream.audioController.sampleRate = TestContent.GetPropertyInt("sample_rate");
 
         stream.client = this;
@@ -108,8 +109,6 @@ public class SharedObjectTest extends PublishTest{
         preview.attachStream(stream);
 
         preview.showDebugView(TestContent.GetPropertyBool("debug_view"));
-
-        stream.audioController = new R5AudioController();
 
         stream.play(TestContent.GetPropertyString("stream1"));
     }

@@ -88,6 +88,9 @@ public class SubscribeTest extends TestDetailFragment implements R5ConnectionLis
         //setup a new stream using the connection
         subscribe = new R5Stream(connection);
 
+        //Some devices can't handle rapid reuse of the audio controller, and will crash
+        //Recreation of the controller assures that the example will always be stable
+        subscribe.audioController = new R5AudioController();
         subscribe.audioController.sampleRate = TestContent.GetPropertyInt("sample_rate");
 
         subscribe.client = this;
@@ -100,8 +103,6 @@ public class SubscribeTest extends TestDetailFragment implements R5ConnectionLis
         display.attachStream(subscribe);
 
         display.showDebugView(TestContent.GetPropertyBool("debug_view"));
-
-        subscribe.audioController = new R5AudioController();
 
         subscribe.play(TestContent.GetPropertyString("stream1"));
 
