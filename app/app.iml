@@ -113,5 +113,6 @@
     <orderEntry type="library" name="org.apache.mina:mina-core:2.0.16@jar" level="project" />
     <orderEntry type="library" name="ch.qos.logback:logback-classic:1.1.2@jar" level="project" />
     <orderEntry type="library" name="com.googlecode.mp4parser:isoparser:1.1.22@jar" level="project" />
+    <orderEntry type="library" name="android-android-20" level="project" />
   </component>
 </module>
