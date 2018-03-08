@@ -39,6 +39,9 @@ Once you have modified your settings, you can run the application for simulator 
 | **[Camera Swap](app/src/main/java/red5pro/org/testandroidproject/tests/PublishCameraSwapTest)**
 | *Touch the screen to swap which camera is being used! Verify using flash that camera is swapping properly and no rendering problems occur.*
 | ---
+| **[Camera2](app/src/main/java/red5pro/org/testandroidproject/tests/PublishCameraSwapTest)**
+| *Publish example for the camera2 api.*
+| ---
 | **[Custom Video Source](app/src/main/java/red5pro/org/testandroidproject/tests/PublishCustomSourceTest)**
 | *Uses a custom controller to supply video data to the publisher.*
 | ---

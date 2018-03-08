@@ -16,6 +16,7 @@ import com.red5pro.streaming.R5StreamProtocol;
 import com.red5pro.streaming.config.R5Configuration;
 import com.red5pro.streaming.event.R5ConnectionEvent;
 import com.red5pro.streaming.event.R5ConnectionListener;
+import com.red5pro.streaming.media.R5AudioController;
 
 import red5pro.org.testandroidproject.TestDetailFragment;
 import red5pro.org.testandroidproject.tests.PublishSendTest.PublishSendTest;
@@ -71,6 +72,9 @@ public class SubscribeNoViewTest extends TestDetailFragment implements R5Connect
         //setup a new stream using the connection
         subscribe = new R5Stream(connection);
         subscribe.setListener(this);
+
+        subscribe.audioController = new R5AudioController();
+        subscribe.audioController.sampleRate = TestContent.GetPropertyInt("sample_rate");
 
         //show all logging
         subscribe.setLogLevel(R5Stream.LOG_LEVEL_DEBUG);

@@ -116,6 +116,17 @@
             <class>PublishCameraSwapTest</class>
         </Test>
 
+        <Test title="Publish - Camera2">
+
+            <description>Publish example for the camera2 api</description>
+
+            <Properties>
+            </Properties>
+
+            <name>Publish - Camera2</name>
+            <class>PublishCamera2Test</class>
+        </Test>
+
         <Test title="Publish - Custom Video Source">
 
             <description>Uses a custom controller to supply video data to the publisher.</description>

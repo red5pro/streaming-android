@@ -35,6 +35,7 @@ public class SubscribeAuthTest extends SubscribeTest {
         //setup a new stream using the connection
         subscribe = new R5Stream(connection);
 
+        subscribe.audioController = new R5AudioController();
         subscribe.audioController.sampleRate = TestContent.GetPropertyInt("sample_rate");
 
         subscribe.client = this;
@@ -47,8 +48,6 @@ public class SubscribeAuthTest extends SubscribeTest {
         display.attachStream(subscribe);
 
         display.showDebugView(TestContent.GetPropertyBool("debug_view"));
-
-        subscribe.audioController = new R5AudioController();
 
         subscribe.play(TestContent.GetPropertyString("stream1"));
 
