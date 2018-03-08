@@ -33,6 +33,8 @@ public class PublishDeviceOrientationTest extends PublishTest {
         cam.setDisplayOrientation((camDisplayOrientation + 180) % 360);
         camera.setOrientation(camOrientation);
         mOrientationDirty = false;
+        //call for a redraw to fix the aspect
+        publish.setScaleMode(0);
     }
 
     @Override

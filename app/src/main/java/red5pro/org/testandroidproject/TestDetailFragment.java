@@ -7,8 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.red5pro.streaming.event.R5StreamEvent;
-import com.red5pro.streaming.event.R5StreamListener;
+// import com.red5pro.streaming.event.R5StreamEvent;
+// import com.red5pro.streaming.event.R5StreamListener;
 
 import red5pro.org.testandroidproject.tests.TestContent;
 
