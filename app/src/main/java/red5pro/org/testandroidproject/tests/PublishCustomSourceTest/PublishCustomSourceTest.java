@@ -57,6 +57,7 @@ public class PublishCustomSourceTest extends PublishTest {
         preview.attachStream(publish);
 
         CustomVideoSource source = new CustomVideoSource();
+        source.setBitrate(TestContent.GetPropertyInt("bitrate"));
         publish.attachCamera(source);
 
         preview.showDebugView(TestContent.GetPropertyBool("debug_view"));
