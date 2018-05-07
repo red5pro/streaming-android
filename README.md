@@ -36,6 +36,9 @@ Once you have modified your settings, you can run the application for simulator 
 | **[Authentication](app/src/main/java/red5pro/org/testandroidproject/tests/PublishAuthTest)**
 | *An example of publishing a stream as an authenticated user*   
 | ---
+| **[Background](app/src/main/java/red5pro/org/testandroidproject/tests/PublishBackgroundTest)**
+| *An example that continues publishing audio from the background.*   
+| ---
 | **[Camera Swap](app/src/main/java/red5pro/org/testandroidproject/tests/PublishCameraSwapTest)**
 | *Touch the screen to swap which camera is being used! Verify using flash that camera is swapping properly and no rendering problems occur.*
 | ---
