@@ -93,7 +93,7 @@ Once you have modified your settings, you can run the application for simulator 
 | **[Bandwidth Test](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeBandwidthTest)**
 | *Detect Insufficient and Sufficient BW flags.  Test on a poor network using a publisher that has high video quality. Video should become sporadic or stop altogether.  The screen will darken when no video is being received.*
 | ---
-| **[Background Test](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeBandwidthTest)**
+| **[Background Test](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeBackgroundTest)**
 | *An example of running a subscribe example in a separate process so that it can continue when the application loses focus.*
 | ---
 | **[Cluster](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeCluster)**
