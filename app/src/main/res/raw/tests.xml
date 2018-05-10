@@ -105,6 +105,16 @@
             <class>PublishAuthTest</class>
         </Test>
 
+        <Test title="Publish - Background">
+            <description>An example that continues publishing from the background.</description>
+
+            <Properties>
+            </Properties>
+
+            <name>Publish - Background</name>
+            <class>PublishBackgroundTest</class>
+        </Test>
+
         <Test title="Publish - Camera Swap">
 
             <description>Touch the screen to swap which camera is being used! Verify using flash that camera is swapping properly and no rendering problems occur.</description>

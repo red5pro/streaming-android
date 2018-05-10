@@ -36,6 +36,9 @@
         <service
             android:name=".tests.SubscribeBackgroundTest.SubscribeService"
             />
+        <service
+            android:name=".tests.PublishBackgroundTest.PublishService"
+            />
     </application>
 
 </manifest>
