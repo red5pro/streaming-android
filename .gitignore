@@ -20,3 +20,5 @@ hs_err_pid*
 /.idea/libraries
 .DS_Store
 /build
+/.idea/caches
+/.idea/codeStyles
