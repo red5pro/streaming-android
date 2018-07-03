@@ -13,6 +13,8 @@ import com.red5pro.streaming.R5Connection;
 import com.red5pro.streaming.R5Stream;
 import com.red5pro.streaming.R5StreamProtocol;
 import com.red5pro.streaming.config.R5Configuration;
+import com.red5pro.streaming.source.R5Camera;
+import com.red5pro.streaming.source.R5Microphone;
 import com.red5pro.streaming.view.R5VideoView;
 
 import org.apache.http.HttpResponse;
@@ -50,7 +52,7 @@ public class TwoWayStreamManagerTest extends TwoWayTest {
         preview = (R5VideoView)rootView.findViewById(R.id.videoPreview);
         display = (R5VideoView)rootView.findViewById(R.id.videoView);
 
-        callForServer("broadcast", new StreamStarter() {
+        callForServer(TestContent.GetPropertyString("stream1"),"broadcast", new StreamStarter() {
             @Override
             public void passURL(String url) {
                 publishToManager(url);
@@ -61,7 +63,7 @@ public class TwoWayStreamManagerTest extends TwoWayTest {
         return rootView;
     }
 
-    private void callForServer(final String action, final StreamStarter starter){
+    private void callForServer(final String streamName, final String action, final StreamStarter starter){
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -75,8 +77,7 @@ public class TwoWayStreamManagerTest extends TwoWayTest {
                     String port = TestContent.getFormattedPortSetting(TestContent.GetPropertyString("server_port"));
                     String url = "http://" +
                             TestContent.GetPropertyString("host") + port + "/streammanager/api/2.0/event/" +
-                            TestContent.GetPropertyString("context") + "/" +
-                            TestContent.GetPropertyString("stream1") + "?action=" + action;
+                            TestContent.GetPropertyString("context") + "/" + streamName + "?action=" + action;
 
                     HttpClient httpClient = new DefaultHttpClient();
                     HttpResponse response = httpClient.execute(new HttpGet(url));
@@ -138,13 +139,23 @@ public class TwoWayStreamManagerTest extends TwoWayTest {
 
         if(TestContent.GetPropertyBool("audio_on")) {
             //attach a microphone
-            attachMic();
+            R5Microphone mic = new R5Microphone();
+            publish.attachMic(mic);
         }
 
         preview.attachStream(publish);
 
-        if(TestContent.GetPropertyBool("video_on"))
-            attachCamera();
+        if(TestContent.GetPropertyBool("video_on")) {
+            cam = openFrontFacingCameraGingerbread();
+            cam.setDisplayOrientation((camOrientation + 180) % 360);
+
+            camera = new R5Camera(cam, TestContent.GetPropertyInt("camera_width"), TestContent.GetPropertyInt("camera_height"));
+            camera.setBitrate(TestContent.GetPropertyInt("bitrate"));
+            camera.setOrientation(camOrientation);
+            camera.setFramerate(TestContent.GetPropertyInt("fps"));
+
+            publish.attachCamera(camera);
+        }
 
         preview.showDebugView(TestContent.GetPropertyBool("debug_view"));
 
@@ -210,7 +221,7 @@ public class TwoWayStreamManagerTest extends TwoWayTest {
 
                                 for (int i = 0; i < list.length(); i++) {
                                     if (list.getJSONObject(i).getString("name").equals(TestContent.GetPropertyString("stream2"))) {
-                                        callForServer("subscribe", new StreamStarter() {
+                                        callForServer(TestContent.GetPropertyString("stream2"), "subscribe", new StreamStarter() {
                                             @Override
                                             public void passURL(String url) {
                                                 subscribeToManager(url);

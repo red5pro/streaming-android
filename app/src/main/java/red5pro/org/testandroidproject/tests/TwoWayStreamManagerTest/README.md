@@ -17,15 +17,14 @@ In order to stream, you first need to connect to the origin server's Stream Mana
 ```Java
 String url = "http://" +
         TestContent.GetPropertyString("host") + port + "/streammanager/api/2.0/event/" +
-        TestContent.GetPropertyString("context") + "/" +
-        TestContent.GetPropertyString("stream1") + "?action=" + action;
+        TestContent.GetPropertyString("context") + "/" + streamName + "?action=" + action;
 
 HttpClient httpClient = new DefaultHttpClient();
 HttpResponse response = httpClient.execute(new HttpGet(url));
 StatusLine statusLine = response.getStatusLine();
 ```
 <sup>
-[TwoWayStreamManagerTest.java #76](TwoWayStreamManagerTest.java#L76)
+[TwoWayStreamManagerTest.java #78](TwoWayStreamManagerTest.java#L78)
 </sup>
 
 The service returns a json object with the information needed to connect to publish.
@@ -40,7 +39,7 @@ JSONObject data = new JSONObject(responseString);
 final String outURL = data.getString("serverAddress");
 ```
 <sup>
-[TwoWayStreamManagerTest.java #86](TwoWayStreamManagerTest.java#L86)
+[TwoWayStreamManagerTest.java #87](TwoWayStreamManagerTest.java#L87)
 </sup>
 
 ###Knowing When to Subscribe
@@ -53,7 +52,7 @@ URL url = new URL(urlStr);
 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
 ```
 <sup>
-[TwoWayStreamManagerTest.java #183](TwoWayStreamManagerTest.java#L183)
+[TwoWayStreamManagerTest.java #194](TwoWayStreamManagerTest.java#L194)
 </sup>
 
 Like using `streams.jsp` on a solo server, on success this returns a JSON array of dictionaries. For our purposes, the only property we care about in the dictionary is `name` - as we need to compare it against the name we've set up to subscribe to.
@@ -65,7 +64,7 @@ for (int i = 0; i < list.length(); i++) {
     if (list.getJSONObject(i).getString("name").equals(TestContent.GetPropertyString("stream2"))) {
 ```
 <sup>
-[TwoWayStreamManagerTest.java #209](TwoWayStreamManagerTest.java#L209)
+[TwoWayStreamManagerTest.java #220](TwoWayStreamManagerTest.java#L220)
 </sup>
 
 For more information on this and other parts of the Stream Manager API, see our dcumentation [here](https://www.red5pro.com/docs/autoscale/streammanagerapi-v2.html)
