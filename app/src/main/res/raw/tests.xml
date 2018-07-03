@@ -416,6 +416,19 @@
             <class>TwoWayTest</class>
         </Test>
 
+        <Test title="Two Way - Stream Manager">
+
+            <description>Publish and subscribe simultaneously through a stream manager</description>
+
+            <!-- This is required to be set to 8000 for two-way session. -->
+            <Properties>
+                <sample_rate>8000</sample_rate>
+            </Properties>
+
+            <name>Two Way - Stream Manager</name>
+            <class>TwoWayStreamManagerTest</class>
+        </Test>
+
     </Tests>
 
 </Testbed>
