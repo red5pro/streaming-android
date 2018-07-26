@@ -78,7 +78,7 @@ Once you have modified your settings, you can run the application for simulator 
 | **[Stream Manager](app/src/main/java/red5pro/org/testandroidproject/tests/PublishStreamManagerTest)**
 | *A publish example that connects with a server cluster using a Stream Manger*
 | ---
-| **[Stream Manager Transcoder](R5ProTestbed/Tests/PublishStreamManagerTranscode)**
+| **[Stream Manager Transcoder](app/src/main/java/red5pro/org/testandroidproject/tests/PublishStreamManagerTranscodeTest)**
 | *A publish example that uses transcoding broadcast over Stream Manager.*
 | ---
 | **[Two Way](app/src/main/java/red5pro/org/testandroidproject/tests/TwoWayTest)**
