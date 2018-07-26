@@ -78,6 +78,9 @@ Once you have modified your settings, you can run the application for simulator 
 | **[Stream Manager](app/src/main/java/red5pro/org/testandroidproject/tests/PublishStreamManagerTest)**
 | *A publish example that connects with a server cluster using a Stream Manger*
 | ---
+| **[Stream Manager Transcoder](R5ProTestbed/Tests/PublishStreamManagerTranscode)**
+| *A publish example that uses transcoding broadcast over Stream Manager.*
+| ---
 | **[Two Way](app/src/main/java/red5pro/org/testandroidproject/tests/TwoWayTest)**
 | *An example of simultaneously publishing while subscribing - allowing a conversation. Includes stream detection and auto-connection.*
 | ---
@@ -119,9 +122,6 @@ Once you have modified your settings, you can run the application for simulator 
 | ---
 | **[Stream Manager](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeStreamManagerTest)**
 | *A subscribe example that connects with a server cluster using a Stream Manger.*
-| ---
-| **[Stream Manager Transcoder](R5ProTestbed/Tests/PublishStreamManagerTranscode)**
-| *A publish example that uses transcoding broadcast over Stream Manager.*
 | ---
 | **[Two Streams](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeTwoStreamTest)**
 | *An example of subscribing to multiple streams at once, useful for subscribing to a presentation hosted by two people using a Two Way connection.*
