@@ -236,6 +236,18 @@
             <class>PublishStreamManagerTest</class>
         </Test>
 
+        <Test title="Publish - Stream Manager Transcoder">
+
+            <description>A publish example that uses transcoding broadcast over Stream Manager.</description>
+
+            <Properties>
+            </Properties>
+
+            <name>Publish - Stream Manager Transcoder</name>
+            <class>PublishStreamManagerTranscodeTest</class>
+
+        </Test>
+
         <Test title="Publish - Stream Send">
 
             <description>A publish example that sends "onStreamSend" R5Stream.send messages on a loop.</description>
