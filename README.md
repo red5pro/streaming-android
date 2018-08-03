@@ -130,3 +130,20 @@ Once you have modified your settings, you can run the application for simulator 
 3. Click on the flash link (for example, flash_publisher) in the streams list displayed to view the published stream in your browser.
 
 [![Analytics](https://ga-beacon.appspot.com/UA-59819838-3/red5pro/streaming-ios?pixel)](https://github.com/igrigorik/ga-beacon)
+
+# Android Release and Proguard
+
+The following Proguard Rules may be required when deploying an Android App Release with minification:
+
+```sh
+-keepattributes *Annotation*,Signature,EnclosingMethod
+-keep class com.red5pro.** { *; }
+-keep interface com.red5pro.** { *; }
+-keep public class com.red5pro.streaming.** { *; }
+-dontwarn com.red5pro.**
+
+-keep, includedescriptorclasses class com.red5pro.streaming.R5Stream { *; }
+-keep, includedescriptorclasses class com.android.webrtc.audio.** { *; }
+```
+
+Informative Documentation: https://medium.com/google-developers/practical-proguard-rules-examples-5640a3907dc9
