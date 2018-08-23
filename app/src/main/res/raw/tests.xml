@@ -115,6 +115,16 @@
             <class>PublishBackgroundTest</class>
         </Test>
 
+        <Test title="Publish - Bandwidth Upload Detection">
+            <description>An example that tests the upload speed between the device and server before publishing</description>
+
+            <Properties>
+            </Properties>
+
+            <name>Publish - Bandwidth Upload Detection</name>
+            <class>BandwidthDetectionUploadOnlyTest</class>
+        </Test>
+
         <Test title="Publish - Camera Swap">
 
             <description>Touch the screen to swap which camera is being used! Verify using flash that camera is swapping properly and no rendering problems occur.</description>
@@ -313,6 +323,28 @@
 
             <name>Subscribe - Bandwidth Test</name>
             <class>SubscribeBandwidthTest</class>
+        </Test>
+
+        <Test title="Subscribe - Bandwidth Download Detection">
+
+            <description>An example that tests the download speed between the device and server before subscribing.</description>
+
+            <Properties>
+            </Properties>
+
+            <name>Subscribe - Bandwidth Test</name>
+            <class>BandwidthDetectionDownloadOnlyTest</class>
+        </Test>
+
+        <Test title="Subscribe - Bandwidth Dual Detection">
+
+            <description>An example that tests both the upload and download speeds between the device and server before subscribing.</description>
+
+            <Properties>
+            </Properties>
+
+            <name>Subscribe - Bandwidth Test</name>
+            <class>BandwidthDetectionTest</class>
         </Test>
 
         <Test title="Subscribe - Cluster">
