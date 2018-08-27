@@ -45,6 +45,9 @@ Once you have modified your settings, you can run the application for simulator 
 | **[Camera2](app/src/main/java/red5pro/org/testandroidproject/tests/PublishCameraSwapTest)**
 | *Publish example for the camera2 api.*
 | ---
+| **[Custom Mic Source](app/src/main/java/red5pro/org/testandroidproject/tests/PublishCustomMicTest)**
+| *Uses a custom controller to supply audio data to the publisher.*
+| ---
 | **[Custom Video Source](app/src/main/java/red5pro/org/testandroidproject/tests/PublishCustomSourceTest)**
 | *Uses a custom controller to supply video data to the publisher.*
 | ---
