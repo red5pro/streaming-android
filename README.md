@@ -81,6 +81,9 @@ Once you have modified your settings, you can run the application for simulator 
 | **[Two Way](app/src/main/java/red5pro/org/testandroidproject/tests/TwoWayTest)**
 | *An example of simultaneously publishing while subscribing - allowing a conversation. Includes stream detection and auto-connection.*
 | ---
+| **[Two Way - Stream Manager](app/src/main/java/red5pro/org/testandroidproject/tests/TwoWayStreamManagerTest)**
+| *The two way example, modified to work with a stream manager. Includes stream detection and auto-connection.*
+| ---
 | **[Shared Object](app/src/main/java/red5pro/org/testandroidproject/tests/SharedObjectTest)**
 | *An example of sending data and messages between clients through remote shared objects.*
 
