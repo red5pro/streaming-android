@@ -108,6 +108,7 @@ public class PublishTest extends TestDetailFragment implements R5ConnectionListe
 
         return rootView;
     }
+
     protected void publish(){
         String b = getActivity().getPackageName();
 
