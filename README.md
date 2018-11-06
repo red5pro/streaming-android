@@ -39,6 +39,9 @@ Once you have modified your settings, you can run the application for simulator 
 | **[Background](app/src/main/java/red5pro/org/testandroidproject/tests/PublishBackgroundTest)**
 | *An example that continues publishing audio from the background.*   
 | ---
+| **[Bandwidth Detection - Upload](app/src/main/java/red5pro/org/testandroidproject/tests/BandwidthDetectionUploadOnlyTest)**
+| *An example that tests the upload speed between the device and server before publishing.*   
+| ---
 | **[Camera Swap](app/src/main/java/red5pro/org/testandroidproject/tests/PublishCameraSwapTest)**
 | *Touch the screen to swap which camera is being used! Verify using flash that camera is swapping properly and no rendering problems occur.*
 | ---
@@ -94,13 +97,19 @@ Once you have modified your settings, you can run the application for simulator 
 | *Change the fill mode of the stream.  scale to fill, scale to fit, scale fill.  Aspect ratio should be maintained on first 2.*
 | ---
 | **[Authentication](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeAuth)**
-| *An example of subscribing to a stream as an authenticated user*   
-| ---
-| **[Bandwidth Test](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeBandwidthTest)**
-| *Detect Insufficient and Sufficient BW flags.  Test on a poor network using a publisher that has high video quality. Video should become sporadic or stop altogether.  The screen will darken when no video is being received.*
+| *An example of subscribing to a stream as an authenticated user*  
 | ---
 | **[Background Test](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeBackgroundTest)**
 | *An example of running a subscribe example in a separate process so that it can continue when the application loses focus.*
+| ---
+| **[Bandwidth Test](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeBandwidthTest)**
+| *Detect Insufficient and Sufficient BW flags.  Test on a poor network using a publisher that has high video quality. Video should become sporadic or stop altogether.  The screen will darken when no video is being received.*   
+| ---
+| **[Bandwidth Detection - Download](app/src/main/java/red5pro/org/testandroidproject/tests/BandwidthDetectionDownloadOnlyTest)**
+| *An example that tests the download speed between the device and server before subscribing.*  
+| ---
+| **[Bandwidth Detection - Dual](app/src/main/java/red5pro/org/testandroidproject/tests/BandwidthDetectionTest)**
+| *An example that tests both the upload and download speeds between the device and server before subscribing.*
 | ---
 | **[Cluster](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeCluster)**
 | *An example of conecting to a cluster server.*
