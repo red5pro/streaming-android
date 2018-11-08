@@ -101,6 +101,7 @@ public class PublishService extends Service {
     }
 
     private void attachDisplay(){
+
         preview.attachStream(publish);
         preview.showDebugView(TestContent.GetPropertyBool("debug_view"));
     }
@@ -108,6 +109,9 @@ public class PublishService extends Service {
     public void setDisplay(R5VideoView view ){
         if(view == null){
             return;
+        }
+        else if(holderNote != null){
+            setDisplayOn(true);
         }
         else {
 
@@ -125,6 +129,7 @@ public class PublishService extends Service {
             publish.restrainVideo(true);
             cam.stopPreview();
             cam.release();
+            camera.setCamera(null);
             cam = null;
 
             if(holderNote == null){
