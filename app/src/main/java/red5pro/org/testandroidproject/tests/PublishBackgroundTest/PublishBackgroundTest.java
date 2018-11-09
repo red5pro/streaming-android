@@ -86,23 +86,26 @@ public class PublishBackgroundTest extends TestDetailFragment {
     @Override
     public void onResume() {
         if(pubService != null)
-        {
             pubService.setDisplayOn(true);
-        }
+        else
+            detectToStartService();
+
         super.onResume();
     }
 
     @Override
     public void onStop() {
 
-        if(pubService != null) {
-            pubService.setDisplayOn(false);
+        if(shouldClean()) {
+            if(pubService != null) {
+                getActivity().unbindService(pubServiceConnection);
+                pubService = null;
+            }
+            getActivity().stopService(pubIntent);
         }
 
-        if(shouldClean()) {
-            getActivity().unbindService(pubServiceConnection);
-            getActivity().stopService(pubIntent);
-            pubService = null;
+        if(pubService != null) {
+            pubService.setDisplayOn(false);
         }
 
         super.onStop();
@@ -112,9 +115,9 @@ public class PublishBackgroundTest extends TestDetailFragment {
     public void onDestroy() {
         if(pubService != null){
             getActivity().unbindService(pubServiceConnection);
-            getActivity().stopService(pubIntent);
             pubService = null;
         }
+        getActivity().stopService(pubIntent);
 
         super.onDestroy();
     }

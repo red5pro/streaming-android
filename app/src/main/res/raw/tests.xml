@@ -147,6 +147,17 @@
             <class>PublishCamera2Test</class>
         </Test>
 
+        <Test title="Publish - Custom Audio Source">
+
+            <description>Uses a custom controller to supply audio data to the publisher.</description>
+
+            <Properties>
+            </Properties>
+
+            <name>Publish - Custom Audio Source</name>
+            <class>PublishCustomMicTest</class>
+        </Test>
+
         <Test title="Publish - Custom Video Source">
 
             <description>Uses a custom controller to supply video data to the publisher.</description>
