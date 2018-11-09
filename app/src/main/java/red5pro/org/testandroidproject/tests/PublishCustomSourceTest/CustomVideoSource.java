@@ -22,12 +22,12 @@ public class CustomVideoSource extends R5VideoSource {
     int width = 320;
     int height = 240;
     int bpp = 12;
-    byte bufferIn[] ;
-    byte bufferOut[] ;
-    private Runnable engine;
+    byte bufferIn[];
+    byte bufferOut[];
+    Thread manip;
+    Thread engine;
     private volatile boolean doEncode=true;
     private long streamTime = 0;
-    private Bitmap bitmap;
     int[] pixels = new int[320 * 240];
     boolean change = false;
 
@@ -101,17 +101,24 @@ public class CustomVideoSource extends R5VideoSource {
 
         isEncoding = true;
 
-        new Thread(new Runnable() {
+        manip = new Thread(new Runnable() {
             @Override
             public void run() {
 
                 while(doEncode) {
                     long start = System.currentTimeMillis();
-                    while(change){
-                        //wait so that there isn't fighting over the pixels array
+                    while (change) {
+                        try {
+
+                            Thread.sleep(10);
+                        } catch (Exception e) { return; }
+                    }
+                    if(Thread.interrupted()){
+                        return;
                     }
 
-                    double scaledTime = start *0.01;
+
+                    double scaledTime = start * 0.01;
                     int cursor = 0;
                     float scale = 0.04f;
 
@@ -133,7 +140,7 @@ public class CustomVideoSource extends R5VideoSource {
 
                             v += Math.sin(Math.sqrt(cx * cx + cy * cy + 1.0) + scaledTime);
 
-                            pixels[(y*width)+x] = ((int) (Math.sin(v * Math.PI) * 255.0)) << 16 |  //r
+                            pixels[(y * width) + x] = ((int) (Math.sin(v * Math.PI) * 255.0)) << 16 |  //r
                                     ((int) (Math.cos(v * Math.PI) * 255.0)) << 8;  //g
                             //( 0 );  //b
 
@@ -142,18 +149,18 @@ public class CustomVideoSource extends R5VideoSource {
 
                     change = true;
                     long elapsed = System.currentTimeMillis() - start;
-                    if(elapsed < 100) {
+                    if (elapsed < 100) {
                         try {
 
                             Thread.sleep(100 - elapsed);
-                        } catch (Exception e) {
-                        }
+                        } catch (Exception e) { return; }
                     }
                 }
             }
-        }).start();
+        });
+        manip.start();
 
-        engine=new Runnable() {
+        engine = new Thread( new Runnable() {
             @Override
             public void run() {
                 int sizeInBits = (int) ((width * height) * bpp);
@@ -177,10 +184,13 @@ public class CustomVideoSource extends R5VideoSource {
                 while(doEncode){
 
                     while (!change && doEncode){
-                        //wait for a new frame
+                        try {
+                            Thread.sleep(10);
+                        }catch (Exception e){return;}
                     }
-                    if(!doEncode)
-                        break;
+                    if(!doEncode || Thread.interrupted()) {
+                        return;
+                    }
 
                     encodeYUV420(bufferIn, pixels, 320, 240);
                     change = false;
@@ -198,8 +208,8 @@ public class CustomVideoSource extends R5VideoSource {
                     encode(bufferOut,streamTime,false);
                 }
             }
-        };
-        new Thread(engine,"video input").start();
+        });
+        engine.start();
     }
 
     @Override
@@ -211,6 +221,9 @@ public class CustomVideoSource extends R5VideoSource {
     public void stopEncoding() {
 
         doEncode=false;
-        engine=null;
+        if(manip != null)
+            manip.interrupt();
+        if(engine != null)
+            engine.interrupt();
     }
 }
