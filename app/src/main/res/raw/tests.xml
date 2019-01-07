@@ -17,6 +17,7 @@
         <video_on>true</video_on>
         <sample_rate>44100</sample_rate>
         <fps>15</fps>
+        <sm_version>3.1</sm_version>
     </Properties>
     <Tests>
 
@@ -115,6 +116,16 @@
             <class>PublishBackgroundTest</class>
         </Test>
 
+        <Test title="Publish - Bandwidth Upload Detection">
+            <description>An example that tests the upload speed between the device and server before publishing</description>
+
+            <Properties>
+            </Properties>
+
+            <name>Publish - Bandwidth Upload Detection</name>
+            <class>BandwidthDetectionUploadOnlyTest</class>
+        </Test>
+
         <Test title="Publish - Camera Swap">
 
             <description>Touch the screen to swap which camera is being used! Verify using flash that camera is swapping properly and no rendering problems occur.</description>
@@ -135,6 +146,17 @@
 
             <name>Publish - Camera2</name>
             <class>PublishCamera2Test</class>
+        </Test>
+
+        <Test title="Publish - Custom Audio Source">
+
+            <description>Uses a custom controller to supply audio data to the publisher.</description>
+
+            <Properties>
+            </Properties>
+
+            <name>Publish - Custom Audio Source</name>
+            <class>PublishCustomMicTest</class>
         </Test>
 
         <Test title="Publish - Custom Video Source">
@@ -327,6 +349,28 @@
             <class>SubscribeBandwidthTest</class>
         </Test>
 
+        <Test title="Subscribe - Bandwidth Download Detection">
+
+            <description>An example that tests the download speed between the device and server before subscribing.</description>
+
+            <Properties>
+            </Properties>
+
+            <name>Subscribe - Bandwidth Test</name>
+            <class>BandwidthDetectionDownloadOnlyTest</class>
+        </Test>
+
+        <Test title="Subscribe - Bandwidth Dual Detection">
+
+            <description>An example that tests both the upload and download speeds between the device and server before subscribing.</description>
+
+            <Properties>
+            </Properties>
+
+            <name>Subscribe - Bandwidth Test</name>
+            <class>BandwidthDetectionTest</class>
+        </Test>
+
         <Test title="Subscribe - Cluster">
 
             <description>An example of conecting to a cluster server.</description>
@@ -426,6 +470,19 @@
 
             <name>Two Way</name>
             <class>TwoWayTest</class>
+        </Test>
+
+        <Test title="Two Way - Stream Manager">
+
+            <description>Publish and subscribe simultaneously through a stream manager</description>
+
+            <!-- This is required to be set to 8000 for two-way session. -->
+            <Properties>
+                <sample_rate>8000</sample_rate>
+            </Properties>
+
+            <name>Two Way - Stream Manager</name>
+            <class>TwoWayStreamManagerTest</class>
         </Test>
 
     </Tests>

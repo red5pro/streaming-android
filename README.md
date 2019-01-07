@@ -39,11 +39,17 @@ Once you have modified your settings, you can run the application for simulator 
 | **[Background](app/src/main/java/red5pro/org/testandroidproject/tests/PublishBackgroundTest)**
 | *An example that continues publishing audio from the background.*   
 | ---
+| **[Bandwidth Detection - Upload](app/src/main/java/red5pro/org/testandroidproject/tests/BandwidthDetectionUploadOnlyTest)**
+| *An example that tests the upload speed between the device and server before publishing.*   
+| ---
 | **[Camera Swap](app/src/main/java/red5pro/org/testandroidproject/tests/PublishCameraSwapTest)**
 | *Touch the screen to swap which camera is being used! Verify using flash that camera is swapping properly and no rendering problems occur.*
 | ---
 | **[Camera2](app/src/main/java/red5pro/org/testandroidproject/tests/PublishCameraSwapTest)**
 | *Publish example for the camera2 api.*
+| ---
+| **[Custom Mic Source](app/src/main/java/red5pro/org/testandroidproject/tests/PublishCustomMicTest)**
+| *Uses a custom controller to supply audio data to the publisher.*
 | ---
 | **[Custom Video Source](app/src/main/java/red5pro/org/testandroidproject/tests/PublishCustomSourceTest)**
 | *Uses a custom controller to supply video data to the publisher.*
@@ -84,6 +90,9 @@ Once you have modified your settings, you can run the application for simulator 
 | **[Two Way](app/src/main/java/red5pro/org/testandroidproject/tests/TwoWayTest)**
 | *An example of simultaneously publishing while subscribing - allowing a conversation. Includes stream detection and auto-connection.*
 | ---
+| **[Two Way - Stream Manager](app/src/main/java/red5pro/org/testandroidproject/tests/TwoWayStreamManagerTest)**
+| *The two way example, modified to work with a stream manager. Includes stream detection and auto-connection.*
+| ---
 | **[Shared Object](app/src/main/java/red5pro/org/testandroidproject/tests/SharedObjectTest)**
 | *An example of sending data and messages between clients through remote shared objects.*
 
@@ -94,13 +103,19 @@ Once you have modified your settings, you can run the application for simulator 
 | *Change the fill mode of the stream.  scale to fill, scale to fit, scale fill.  Aspect ratio should be maintained on first 2.*
 | ---
 | **[Authentication](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeAuth)**
-| *An example of subscribing to a stream as an authenticated user*   
-| ---
-| **[Bandwidth Test](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeBandwidthTest)**
-| *Detect Insufficient and Sufficient BW flags.  Test on a poor network using a publisher that has high video quality. Video should become sporadic or stop altogether.  The screen will darken when no video is being received.*
+| *An example of subscribing to a stream as an authenticated user*  
 | ---
 | **[Background Test](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeBackgroundTest)**
 | *An example of running a subscribe example in a separate process so that it can continue when the application loses focus.*
+| ---
+| **[Bandwidth Test](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeBandwidthTest)**
+| *Detect Insufficient and Sufficient BW flags.  Test on a poor network using a publisher that has high video quality. Video should become sporadic or stop altogether.  The screen will darken when no video is being received.*   
+| ---
+| **[Bandwidth Detection - Download](app/src/main/java/red5pro/org/testandroidproject/tests/BandwidthDetectionDownloadOnlyTest)**
+| *An example that tests the download speed between the device and server before subscribing.*  
+| ---
+| **[Bandwidth Detection - Dual](app/src/main/java/red5pro/org/testandroidproject/tests/BandwidthDetectionTest)**
+| *An example that tests both the upload and download speeds between the device and server before subscribing.*
 | ---
 | **[Cluster](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeCluster)**
 | *An example of conecting to a cluster server.*
@@ -133,3 +148,20 @@ Once you have modified your settings, you can run the application for simulator 
 3. Click on the flash link (for example, flash_publisher) in the streams list displayed to view the published stream in your browser.
 
 [![Analytics](https://ga-beacon.appspot.com/UA-59819838-3/red5pro/streaming-ios?pixel)](https://github.com/igrigorik/ga-beacon)
+
+# Android Release and Proguard
+
+The following Proguard Rules may be required when deploying an Android App Release with minification:
+
+```sh
+-keepattributes *Annotation*,Signature,EnclosingMethod
+-keep class com.red5pro.** { *; }
+-keep interface com.red5pro.** { *; }
+-keep public class com.red5pro.streaming.** { *; }
+-dontwarn com.red5pro.**
+
+-keep, includedescriptorclasses class com.red5pro.streaming.R5Stream { *; }
+-keep, includedescriptorclasses class com.android.webrtc.audio.** { *; }
+```
+
+Informative Documentation: https://medium.com/google-developers/practical-proguard-rules-examples-5640a3907dc9
