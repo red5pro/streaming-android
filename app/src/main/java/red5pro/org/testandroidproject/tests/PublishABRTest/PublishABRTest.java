@@ -61,9 +61,6 @@ public class PublishABRTest extends PublishTest {
             camera.setOrientation(camOrientation);
         }
 
-        R5AdaptiveBitrateController adaptor = new R5AdaptiveBitrateController();
-        adaptor.AttachStream(publish);
-
         if(TestContent.GetPropertyBool("audio_on")) {
             //attach a microphone
             R5Microphone mic = new R5Microphone();
@@ -78,6 +75,9 @@ public class PublishABRTest extends PublishTest {
             publish.attachCamera(camera);
 
         preview.showDebugView(TestContent.GetPropertyBool("debug_view"));
+
+        R5AdaptiveBitrateController adaptor = new R5AdaptiveBitrateController();
+        adaptor.AttachStream(publish);
 
         publish.publish(TestContent.GetPropertyString("stream1"), R5Stream.RecordType.Live);
 
