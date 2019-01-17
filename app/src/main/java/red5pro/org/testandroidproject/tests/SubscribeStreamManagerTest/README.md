@@ -8,11 +8,11 @@ With the Stream Manager, our configuration IP will be used similarly for publish
 - ***[SubscribeStreamManagerTest.java](SubscribeStreamManagerTest.java)***
 
 ###Setup
-In order to subscribe, you first need to connect to the origin server's Stream Manager. The Stream Manager will know which edges are active and provide the one that you need to subscribe from.  **Note** that the URL has been changed to `api/2.0` - if you are running stream manager with a server build that is older than 2.1.0, you should modify that to `1.0`
+In order to subscribe, you first need to connect to the origin server's Stream Manager. The Stream Manager will know which edges are active and provide the one that you need to subscribe from.
 
 ```Java
 String url = "http://" +
-	TestContent.GetPropertyString("host") + ":5080/streammanager/api/2.0/event/" +
+	TestContent.GetPropertyString("host") + ":5080/streammanager/api/3.1/event/" +
 	TestContent.GetPropertyString("context") + "/" +
 	TestContent.GetPropertyString("stream1") + "?action=subscribe";
 
@@ -39,3 +39,5 @@ The service returns a json object with the information needed to connect to subs
 <sup>
 [SubscribeStreamManagerTest.java #48](SubscribeStreamManagerTest.java#L48)
 </sup>
+
+**Note:** you will want to start the stream on the main thread.
