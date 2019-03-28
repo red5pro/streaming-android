@@ -108,6 +108,8 @@ public class PublishTest extends TestDetailFragment implements R5ConnectionListe
 
         return rootView;
     }
+
+
     protected void publish(){
         String b = getActivity().getPackageName();
 
@@ -130,27 +132,17 @@ public class PublishTest extends TestDetailFragment implements R5ConnectionListe
         //show all logging
         publish.setLogLevel(R5Stream.LOG_LEVEL_DEBUG);
 
-        if(TestContent.GetPropertyBool("video_on")) {
-            //attach a camera video source
-            cam = openFrontFacingCameraGingerbread();
-            cam.setDisplayOrientation((camOrientation + 180) % 360);
-
-            camera = new R5Camera(cam, TestContent.GetPropertyInt("camera_width"), TestContent.GetPropertyInt("camera_height"));
-            camera.setBitrate(TestContent.GetPropertyInt("bitrate"));
-            camera.setOrientation(camOrientation);
-            camera.setFramerate(TestContent.GetPropertyInt("fps"));
-        }
-
         if(TestContent.GetPropertyBool("audio_on")) {
             //attach a microphone
-            R5Microphone mic = new R5Microphone();
-            publish.attachMic(mic);
+            attachMic();
         }
 
         preview.attachStream(publish);
 
-        if(TestContent.GetPropertyBool("video_on"))
-            publish.attachCamera(camera);
+        if(TestContent.GetPropertyBool("video_on")) {
+            //attach a camera video source
+            attachCamera();
+        }
 
         preview.showDebugView(TestContent.GetPropertyBool("debug_view"));
 
@@ -161,6 +153,22 @@ public class PublishTest extends TestDetailFragment implements R5ConnectionListe
             cam.startPreview();
         }
 
+    }
+
+    protected void attachCamera(){
+        cam = openFrontFacingCameraGingerbread();
+        cam.setDisplayOrientation((camOrientation + 180) % 360);
+
+        camera = new R5Camera(cam, TestContent.GetPropertyInt("camera_width"), TestContent.GetPropertyInt("camera_height"));
+        camera.setBitrate(TestContent.GetPropertyInt("bitrate"));
+        camera.setOrientation(camOrientation);
+        camera.setFramerate(TestContent.GetPropertyInt("fps"));
+        publish.attachCamera(camera);
+    }
+
+    protected void attachMic(){
+        R5Microphone mic = new R5Microphone();
+        publish.attachMic(mic);
     }
 
     protected Camera openFrontFacingCameraGingerbread() {

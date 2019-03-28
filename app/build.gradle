@@ -1,7 +1,6 @@
 apply plugin: 'com.android.application'
 android {
     compileSdkVersion 22
-    buildToolsVersion '20.0.0'
     defaultConfig {
         applicationId "red5pro.org.testandroidproject"
         minSdkVersion 16
@@ -30,15 +29,14 @@ android {
 ////        }
 //
 //    }
-    buildToolsVersion '26.0.2'
 }
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'ch.qos.logback:logback-classic:1.1.2'
-    compile 'ch.qos.logback:logback-core:1.1.2'
-    compile 'org.apache.mina:mina-core:2.0.16'
-    compile 'org.slf4j:slf4j-api:1.7.21'
-    compile 'com.android.support:support-v4:22.2.1'
-    compile 'com.googlecode.mp4parser:isoparser:1.1.22'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'ch.qos.logback:logback-classic:1.1.2'
+    implementation 'ch.qos.logback:logback-core:1.1.2'
+    implementation 'org.apache.mina:mina-core:2.0.16'
+    implementation 'org.slf4j:slf4j-api:1.7.21'
+    implementation 'com.android.support:support-v4:22.2.1'
+    implementation 'com.googlecode.mp4parser:isoparser:1.1.22'
 }
 
