@@ -57,6 +57,9 @@ Once you have modified your settings, you can run the application for simulator 
 | **[Device Orientation](app/src/main/java/red5pro/org/testandroidproject/tests/PublishDeviceOrientationTest)**
 | *After starting a broadcast, rotate your device from portrait to landscape. You will notice that the view updates on the broadcasting device. Additionally, if you subscribe with mobile or the browser-based players, you will see their orientation update with the change to device orientation.*
 | ---
+| **[Encrypted](app/src/main/java/red5pro/org/testandroidproject/tests/PublishEncryptedTest)**
+| *An example that encrypts all traffic between the device and server.*
+| ---
 | **[HQ Audio](app/src/main/java/red5pro/org/testandroidproject/tests/PublishHQAudioTest)**
 | *A publish example with high quality audio*
 | ---
@@ -114,11 +117,17 @@ Once you have modified your settings, you can run the application for simulator 
 | **[Bandwidth Detection - Dual](app/src/main/java/red5pro/org/testandroidproject/tests/BandwidthDetectionTest)**
 | *An example that tests both the upload and download speeds between the device and server before subscribing.*
 | ---
-| **[Cluster](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeCluster)**
+| **[Cluster](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeClusterTest)**
 | *An example of conecting to a cluster server.*
+| ---
+| **[Encrypted](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeEncryptedTest)**
+| *An example that encrypts all traffic between the device and server.*
 | ---
 | **[Image Capture](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeImageTest)**
 | *Touch the subscribe stream to take a screen shot that is displayed!*
+| ---
+| **[Mute](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeMuteTest)**
+| *Simple Subscribe Mute Audio Test!*
 | ---
 | **[No View](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeNoViewTest)**
 | *A proof of using an audio only stream without attaching it to a view.*
@@ -131,6 +140,9 @@ Once you have modified your settings, you can run the application for simulator 
 | ---
 | **[Send](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeReceiveSendTest)**
 | *An example of receiving data and messages from a Broadcaster using the `send` API.*
+| ---
+| **[Set Volume](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeSetVolumeTest)**
+| *Set playback volume on a subscriber.*
 | ---
 | **[Stream Manager](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeStreamManagerTest)**
 | *A subscribe example that connects with a server cluster using a Stream Manger.*
