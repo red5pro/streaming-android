@@ -181,6 +181,17 @@
             <class>PublishDeviceOrientationTest</class>
         </Test>
 
+        <Test title="Publish - Encrypted">
+
+            <description>An example that encrypts all traffic between the device and server.</description>
+
+            <Properties>
+            </Properties>
+
+            <name>Publish - Encrypted</name>
+            <class>PublishEncryptedTest</class>
+        </Test>
+
         <Test title="Publish - HQ Audio">
 
             <description>A publish example with high quality audio</description>
@@ -370,6 +381,17 @@
             <class>SubscribeCluster</class>
         </Test>
 
+        <Test title="Subscribe - Encrypted">
+
+            <description>An example that encrypts all traffic between the device and server.</description>
+
+            <Properties>
+            </Properties>
+
+            <name>Subscribe - Encrypted</name>
+            <class>SubscribeEncryptedTest</class>
+        </Test>
+
         <Test title="Subscribe - Image Capture">
 
             <description>Touch the subscribe stream to take a screen shot that is displayed</description>
@@ -379,6 +401,17 @@
 
             <name>Subscribe - Image Capture</name>
             <class>SubscribeImageTest</class>
+        </Test>
+
+        <Test title="Subscribe - Mute Audio">
+
+            <description>Simple Subscribe Mute Audio Test!</description>
+
+            <Properties>
+            </Properties>
+
+            <name>Subscribe - Mute Audio</name>
+            <class>SubscribeMuteTest</class>
         </Test>
 
         <Test title="Subscribe - No View">
@@ -412,6 +445,17 @@
 
             <name>Subscribe - Remote Call</name>
             <class>SubscribeRemoteCallTest</class>
+        </Test>
+
+        <Test title="Subscribe - Set Volume">
+
+            <description>Set playback volume on a subscriber.</description>
+
+            <Properties>
+            </Properties>
+
+            <name>Subscribe - Set Volume</name>
+            <class>SubscribeSetVolumeTest</class>
         </Test>
 
         <Test title="Subscribe - Stream Manager">
