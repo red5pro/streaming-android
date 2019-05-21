@@ -7,8 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-// import com.red5pro.streaming.event.R5StreamEvent;
-// import com.red5pro.streaming.event.R5StreamListener;
+
+import com.red5pro.streaming.R5Stream;
 
 import red5pro.org.testandroidproject.tests.TestContent;
 
@@ -71,5 +71,14 @@ public class TestDetailFragment extends Fragment {
     }
     public Boolean shouldClean() {
         return true;
+    }
+    public R5Stream.RecordType getPublishRecordType () {
+        String type = TestContent.GetPropertyString("record_mode");
+        if (type.equals("Record")) {
+            return R5Stream.RecordType.Record;
+        } else if (type.equals("Append")) {
+            return R5Stream.RecordType.Append;
+        }
+        return R5Stream.RecordType.Live;
     }
 }

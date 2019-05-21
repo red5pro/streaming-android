@@ -124,14 +124,16 @@ public class TestListActivity extends Activity
 
     @Override
     public void onBackPressed() {
-        if (fragment != null && fragment.isPublisherTest()) {
-            PublishTest pFragment = (PublishTest)fragment;
-            pFragment.stopPublish(this);
-        }
-
+        
         if(fragment == null || fragment.shouldClean()) {
-            super.onBackPressed();
+            
+            if (fragment != null && fragment.isPublisherTest()) {
+                PublishTest pFragment = (PublishTest)fragment;
+                pFragment.stopPublish(this);
+            }
             fragment = null;
+
+            super.onBackPressed();
         }
     }
 

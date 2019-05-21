@@ -31,7 +31,7 @@ public class RecordedTest extends PublishTest {
                 TestContent.GetPropertyString("host"),
                 TestContent.GetPropertyInt("port"),
                 TestContent.GetPropertyString("context"),
-                TestContent.GetPropertyFloat("buffer_time"));
+                TestContent.GetPropertyFloat("publish_buffer_time"));
         config.setLicenseKey(TestContent.GetPropertyString("license_key"));
         config.setBundleID(getActivity().getPackageName());
 
@@ -39,6 +39,8 @@ public class RecordedTest extends PublishTest {
 
         //setup a new stream using the connection
         publish = new R5Stream(connection);
+        publish.audioController.sampleRate =  TestContent.GetPropertyInt("sample_rate");
+
         publish.setListener(this);
 
         //show all logging

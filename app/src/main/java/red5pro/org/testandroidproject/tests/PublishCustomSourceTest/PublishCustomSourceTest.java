@@ -62,7 +62,7 @@ public class PublishCustomSourceTest extends PublishTest {
 
         preview.showDebugView(TestContent.GetPropertyBool("debug_view"));
 
-        publish.publish(TestContent.GetPropertyString("stream1"), R5Stream.RecordType.Live);
+        publish.publish(TestContent.GetPropertyString("stream1"), getPublishRecordType());
 
         return rootView;
     }
