@@ -2,6 +2,7 @@ package red5pro.org.testandroidproject.tests.PublishABRTest;
 
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.SurfaceView;
 import android.view.View;
@@ -11,6 +12,7 @@ import com.red5pro.streaming.R5Connection;
 import com.red5pro.streaming.R5Stream;
 import com.red5pro.streaming.R5StreamProtocol;
 import com.red5pro.streaming.config.R5Configuration;
+import com.red5pro.streaming.event.R5ConnectionEvent;
 import com.red5pro.streaming.source.R5AdaptiveBitrateController;
 import com.red5pro.streaming.source.R5Camera;
 import com.red5pro.streaming.source.R5Microphone;
@@ -24,6 +26,20 @@ import red5pro.org.testandroidproject.tests.TestContent;
  * Created by davidHeimann on 2/10/16.
  */
 public class PublishABRTest extends PublishTest {
+
+    protected R5AdaptiveBitrateController adaptor;
+
+    @Override
+    public void onConnectionEvent(R5ConnectionEvent event) {
+        super.onConnectionEvent(event);
+        if (event.name() == R5ConnectionEvent.ABR_LEVEL_CHANGED.name()) {
+            int level = adaptor.getBitRateLevel();
+            if (level >= 0) {
+                int bitrate = adaptor.getBitrateLevelValues()[level];
+                Log.d("Publisher", "ABR Level Change: level(" + level + "), bitrate(" + bitrate + ")");
+            }
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -61,9 +77,6 @@ public class PublishABRTest extends PublishTest {
             camera.setOrientation(camOrientation);
         }
 
-        R5AdaptiveBitrateController adaptor = new R5AdaptiveBitrateController();
-        adaptor.AttachStream(publish);
-
         if(TestContent.GetPropertyBool("audio_on")) {
             //attach a microphone
             R5Microphone mic = new R5Microphone();
@@ -79,7 +92,11 @@ public class PublishABRTest extends PublishTest {
 
         preview.showDebugView(TestContent.GetPropertyBool("debug_view"));
 
-        publish.publish(TestContent.GetPropertyString("stream1"), R5Stream.RecordType.Live);
+        adaptor = new R5AdaptiveBitrateController();
+        adaptor.AttachStream(publish);
+        adaptor.requiresVideo = false;
+
+        publish.publish(TestContent.GetPropertyString("stream1"), getPublishRecordType());
 
         if(TestContent.GetPropertyBool("video_on"))
             cam.startPreview();

@@ -123,7 +123,7 @@ public class PublishSendTest extends TestDetailFragment implements R5ConnectionL
 
         preview.showDebugView(TestContent.GetPropertyBool("debug_view"));
 
-        publish.publish(TestContent.GetPropertyString("stream1"), R5Stream.RecordType.Live);
+        publish.publish(TestContent.GetPropertyString("stream1"), getPublishRecordType());
 
         if(TestContent.GetPropertyBool("video_on"))
             cam.startPreview();
@@ -212,8 +212,7 @@ public class PublishSendTest extends TestDetailFragment implements R5ConnectionL
 
         // This is offloaded to "flush" events.
         // The publisher has to finish flushing and network packet queues to the server before it can be deallocated.
-//        super.onStop();
-
+        super.onStop();
     }
 
 }

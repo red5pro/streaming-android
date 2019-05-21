@@ -129,7 +129,7 @@ public class PublishCamera2Test extends TestDetailFragment implements R5Connecti
         preview.showDebugView(TestContent.GetPropertyBool("debug_view"));
 
         publish.setListener(this);
-        publish.publish(TestContent.GetPropertyString("stream1"), R5Stream.RecordType.Live);
+        publish.publish(TestContent.GetPropertyString("stream1"), getPublishRecordType());
     }
 
     @Override

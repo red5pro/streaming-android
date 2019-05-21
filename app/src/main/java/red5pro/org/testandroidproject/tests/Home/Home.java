@@ -11,6 +11,10 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+
+import com.red5pro.streaming.R5Stream;
 
 import red5pro.org.testandroidproject.R;
 import red5pro.org.testandroidproject.TestDetailFragment;
@@ -28,6 +32,11 @@ public class Home extends TestDetailFragment {
     CheckBox debugCheck;
     CheckBox videoCheck;
     CheckBox audioCheck;
+    RadioButton liveMode;
+    RadioButton recordMode;
+    RadioButton appendMode;
+    RadioGroup radioRecordMode;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -42,6 +51,11 @@ public class Home extends TestDetailFragment {
         hostText.setText(TestContent.GetPropertyString("host"));
         stream1Text.setText(TestContent.GetPropertyString("stream1"));
         stream2Text.setText(TestContent.GetPropertyString("stream2"));
+
+        radioRecordMode = (RadioGroup) rootView.findViewById(R.id.radioRecordMode);
+        liveMode = (RadioButton)rootView.findViewById(R.id.radioModeLive);
+        recordMode = (RadioButton)rootView.findViewById(R.id.radioModeRecord);
+        appendMode = (RadioButton)rootView.findViewById(R.id.radioModeAppend);
 
         licenseText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -112,6 +126,10 @@ public class Home extends TestDetailFragment {
         videoCheck = (CheckBox)rootView.findViewById(R.id.videoCheck);
         audioCheck = (CheckBox)rootView.findViewById(R.id.audioCheck);
 
+        debugCheck.setChecked((TestContent.GetPropertyString("debug_view").equals("true")));
+        videoCheck.setChecked((TestContent.GetPropertyString("video_on").equals("true")));
+        audioCheck.setChecked((TestContent.GetPropertyString("audio_on").equals("true")));
+
         debugCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -131,6 +149,24 @@ public class Home extends TestDetailFragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked) TestContent.SetPropertyString("audio_on", "true");
                 else TestContent.SetPropertyString("audio_on", "false");
+            }
+        });
+
+        liveMode.setChecked((TestContent.GetPropertyString("record_mode").equals("Live")));
+        recordMode.setChecked((TestContent.GetPropertyString("record_mode").equals("Record")));
+        appendMode.setChecked((TestContent.GetPropertyString("record_mode").equals("Append")));
+
+        radioRecordMode.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
+                if (checkedId == liveMode.getId()) {
+                    String v = String.valueOf(R5Stream.RecordType.Live);
+                    TestContent.SetPropertyString( "record_mode", v);
+                } else if (checkedId == recordMode.getId()) {
+                    TestContent.SetPropertyString( "record_mode", String.valueOf(R5Stream.RecordType.Record));
+                } else if(checkedId == appendMode.getId()) {
+                    TestContent.SetPropertyString( "record_mode", String.valueOf(R5Stream.RecordType.Append));
+                }
             }
         });
 
