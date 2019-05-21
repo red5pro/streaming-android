@@ -13,8 +13,6 @@ import com.red5pro.streaming.R5Connection;
 import com.red5pro.streaming.R5Stream;
 import com.red5pro.streaming.R5StreamProtocol;
 import com.red5pro.streaming.config.R5Configuration;
-import com.red5pro.streaming.source.R5Camera;
-import com.red5pro.streaming.source.R5Microphone;
 import com.red5pro.streaming.view.R5VideoView;
 
 import org.apache.http.HttpResponse;
@@ -139,27 +137,17 @@ public class TwoWayStreamManagerTest extends TwoWayTest {
 
         if(TestContent.GetPropertyBool("audio_on")) {
             //attach a microphone
-            R5Microphone mic = new R5Microphone();
-            publish.attachMic(mic);
+            attachMic();
         }
 
         preview.attachStream(publish);
 
-        if(TestContent.GetPropertyBool("video_on")) {
-            cam = openFrontFacingCameraGingerbread();
-            cam.setDisplayOrientation((camOrientation + 180) % 360);
-
-            camera = new R5Camera(cam, TestContent.GetPropertyInt("camera_width"), TestContent.GetPropertyInt("camera_height"));
-            camera.setBitrate(TestContent.GetPropertyInt("bitrate"));
-            camera.setOrientation(camOrientation);
-            camera.setFramerate(TestContent.GetPropertyInt("fps"));
-
-            publish.attachCamera(camera);
-        }
+        if(TestContent.GetPropertyBool("video_on"))
+            attachCamera();
 
         preview.showDebugView(TestContent.GetPropertyBool("debug_view"));
 
-        publish.publish(TestContent.GetPropertyString("stream1"), R5Stream.RecordType.Live);
+        publish.publish(TestContent.GetPropertyString("stream1"), getPublishRecordType());
 
         isPublishing = true;
 

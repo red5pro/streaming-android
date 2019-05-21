@@ -96,7 +96,7 @@ public class PublishStreamManagerTest extends PublishTest {
         return rootView;
     }
 
-    private void publishToManager( String url ){
+    protected void publishToManager( String url ){
 
         R5Configuration config = new R5Configuration(R5StreamProtocol.RTSP,
                 url,
@@ -141,7 +141,7 @@ public class PublishStreamManagerTest extends PublishTest {
 
         preview.showDebugView(TestContent.GetPropertyBool("debug_view"));
 
-        publish.publish(TestContent.GetPropertyString("stream1"), R5Stream.RecordType.Live);
+        publish.publish(TestContent.GetPropertyString("stream1"), getPublishRecordType());
 
         if(TestContent.GetPropertyBool("video_on"))
             cam.startPreview();

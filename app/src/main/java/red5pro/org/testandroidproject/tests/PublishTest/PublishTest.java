@@ -47,7 +47,7 @@ public class PublishTest extends TestDetailFragment implements R5ConnectionListe
 
     @Override
     public void onConnectionEvent(R5ConnectionEvent event) {
-        Log.d("Publisher", ":onConnectionEvent " + event.name());
+        Log.d("Publisher", ":onConnectionEvent " + event.name() + " - " + event.message);
         if (event.name() == R5ConnectionEvent.LICENSE_ERROR.name()) {
             Handler h = new Handler(Looper.getMainLooper());
             h.post(new Runnable() {
@@ -109,7 +109,6 @@ public class PublishTest extends TestDetailFragment implements R5ConnectionListe
         return rootView;
     }
 
-
     protected void publish(){
         String b = getActivity().getPackageName();
 
@@ -147,7 +146,7 @@ public class PublishTest extends TestDetailFragment implements R5ConnectionListe
         preview.showDebugView(TestContent.GetPropertyBool("debug_view"));
 
         publish.setListener(this);
-        publish.publish(TestContent.GetPropertyString("stream1"), R5Stream.RecordType.Live);
+        publish.publish(TestContent.GetPropertyString("stream1"), getPublishRecordType());
 
         if(TestContent.GetPropertyBool("video_on")) {
             cam.startPreview();

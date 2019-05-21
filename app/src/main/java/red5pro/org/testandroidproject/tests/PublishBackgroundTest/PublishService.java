@@ -46,6 +46,17 @@ public class PublishService extends Service {
         super.onCreate();
     }
 
+    private R5Stream.RecordType getPublishRecordType () {
+        String type = TestContent.GetPropertyString("record_mode");
+        if (type.equals("Record")) {
+            return R5Stream.RecordType.Record;
+        } else if (type.equals("Append")) {
+            return R5Stream.RecordType.Append;
+        }
+        return R5Stream.RecordType.Live;
+
+    }
+
     private void startPublish(){
         if(publish != null){
             publish.stop();
@@ -93,7 +104,7 @@ public class PublishService extends Service {
             publish.attachCamera(camera);
         }
 
-        publish.publish(TestContent.GetPropertyString("stream1"), R5Stream.RecordType.Live);
+        publish.publish(TestContent.GetPropertyString("stream1"), getPublishRecordType());
 
         if(TestContent.GetPropertyBool("video_on")) {
             cam.startPreview();

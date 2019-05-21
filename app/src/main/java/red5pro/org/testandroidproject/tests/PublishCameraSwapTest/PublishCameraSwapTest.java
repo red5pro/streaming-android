@@ -9,12 +9,14 @@ import android.view.View;
 import com.red5pro.streaming.source.R5Camera;
 
 import red5pro.org.testandroidproject.tests.PublishTest.PublishTest;
+import red5pro.org.testandroidproject.tests.TestContent;
 
 /**
  * Created by davidHeimann on 2/10/16.
  */
 public class PublishCameraSwapTest extends PublishTest {
-    private int currentCamMode = Camera.CameraInfo.CAMERA_FACING_FRONT;
+
+    private int currentCamMode = Camera.CameraInfo.CAMERA_FACING_BACK;
 
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -25,6 +27,20 @@ public class PublishCameraSwapTest extends PublishTest {
                 return onPublishTouch(event);
             }
         });
+    }
+
+    @Override
+    protected void attachCamera(){
+        int rotate = (currentCamMode == Camera.CameraInfo.CAMERA_FACING_FRONT) ? 180 : 0;
+        cam = (currentCamMode == Camera.CameraInfo.CAMERA_FACING_FRONT) ?
+                openFrontFacingCameraGingerbread() : openBackFacingCameraGingerbread();
+        cam.setDisplayOrientation((camOrientation + rotate) % 360);
+
+        camera = new R5Camera(cam, TestContent.GetPropertyInt("camera_width"), TestContent.GetPropertyInt("camera_height"));
+        camera.setBitrate(TestContent.GetPropertyInt("bitrate"));
+        camera.setOrientation(camOrientation);
+        camera.setFramerate(TestContent.GetPropertyInt("fps"));
+        publish.attachCamera(camera);
     }
 
     private boolean onPublishTouch( MotionEvent e ) {

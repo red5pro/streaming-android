@@ -146,7 +146,7 @@ public class BandwidthDetectionUploadOnlyTest extends TestDetailFragment
         preview.showDebugView(TestContent.GetPropertyBool("debug_view"));
 
         publish.setListener(this);
-        publish.publish(TestContent.GetPropertyString("stream1"), R5Stream.RecordType.Live);
+        publish.publish(TestContent.GetPropertyString("stream1"), getPublishRecordType());
 
         if(TestContent.GetPropertyBool("video_on"))
             cam.startPreview();

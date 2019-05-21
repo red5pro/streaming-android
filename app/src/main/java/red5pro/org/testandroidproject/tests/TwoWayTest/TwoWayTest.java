@@ -43,10 +43,13 @@ public class TwoWayTest extends PublishTest {
         View rootView = inflater.inflate(R.layout.twoway_test, container, false);
 
         preview = (R5VideoView)rootView.findViewById(R.id.videoPreview);
+        // needed to keep the preview above the subscribe view on some devices, especially for 8.0+
+        preview.setZOrderMediaOverlay(true);
 
         publish();
 
         publish.client = this;
+        preview.setZOrderMediaOverlay(true);
 
         final R5ConnectionListener additionalListener = this;
         publish.setListener(new R5ConnectionListener() {
