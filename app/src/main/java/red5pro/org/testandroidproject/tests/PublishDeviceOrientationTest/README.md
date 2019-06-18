@@ -3,23 +3,25 @@
 This example demonstrates sending orientation metadata to subscribers of a broadcast when the Publisher rotates their physical device.
 
 ### Example Code
+
 - ***[PublishTest.java](../PublishTest/PublishTest.java)***
 - ***[PublishDeviceOrientationTest.java](PublishDeviceOrientationTest.java)***
 
 ## Running the example
+
 After starting a broadcast, rotate your device from portrait to landscape. You will notice that the view updates on the broadcasting device. Additionally, if you subscribe with mobile or the browser-based players, you will see their orientation update with the change to device orientation.
 
-##Implementation as Publisher
+## Implementation as Publisher
 
 ### Device Orientation project settings
+
 The `configChanges="orientation|screenSize"` option was added to the root `Activity` in the `ActivityManifest`:
 
 ```xml
 android:configChanges="orientation|screenSize"
 ```
-<sub>
+
 [ActivityManifest.xml #28](../../../../../../ActivityManifest.xml#L28)
-</sub>
 
 This will allow the view displaying the camera playback to update based on device orientation.
 
@@ -47,16 +49,15 @@ public void onConfigurationChanged(Configuration config) {
   mOrientationDirty = true;
 }
 ```
-<sub>
-[PublishDeviceOrientationTest.java #57](PublishDeviceOrientationTest.java#L57)
-</sub>
 
+[PublishDeviceOrientationTest.java #57](PublishDeviceOrientationTest.java#L57)
 
 This orientation values are not applied directly from this orientation handler as this is a pre-notification of orientation changes that will affect the layout.
 
 Instead, we set a `mOrientationDirty` flag to know that orientation has changed, and we handle the application of these orientation values upon update to the layout.
 
 ### View.OnLayoutChangeListener
+
 To respond to updates on the layout - which occur *after* an orientation notification, a `View.OnLayoutChangeListener` is created upon launch of the test:
 
 ```java
@@ -72,11 +73,11 @@ mLayoutListener = new View.OnLayoutChangeListener() {
   }
 };
 ```
-<sub>
+
 [PublishDeviceOrientationTest.java #92](PublishDeviceOrientationTest.java#L92)
-</sub>
 
 When the `Fragment` is notified of the layout change, the `mOrientationDirty` flag is checked. If we have been notified of an orientation change, then the `PublishDeviceOrientationTest:reorient` method is invoked to proceed.
+
 ```java
 protected void reorient() {
   cam.setDisplayOrientation((camDisplayOrientation + 180) % 360);
@@ -90,6 +91,7 @@ In the `reorient` method, the display of the `Camera` playback is updated with a
 As well, the `R5Camera` object is notified of the new rotation. It is from this `orientation` property that the MetaData value sent to all subscribers is derived.
 
 ## Implementation as Subscriber
+
 When MetaData is received on the Subscriber, there is an `orientation` property values that relates to the current orientation of the Publisher stream.
 
 For the Android Subscriber example, the `orientation` MetaData is parsed and applied as a `rotation` transform on the `R5VideoView` instance that is displaying the incoming stream:
@@ -112,6 +114,4 @@ public void onMetaData(String metadata) {
 }
 ```
 
-<sub>
 [SubscriberTest.java #66](../Subscribe/SubscriberTest.java#L6)
-</sub>

@@ -117,9 +117,7 @@ callThread.start();
 }
 ```
 
-<sup>
 [SubscribeReconnectTest.java #33](SubscribeReconnectTest.java#L33)
-</sup>
 
 Once the stream the subscriber is attempting to connect to has become available in the stream listing from the `Streams API`, you can continue to create a Subscriber session as you would normally.
 
@@ -180,6 +178,4 @@ subscribe.setListener(new R5ConnectionListener() {
 });
 ```
 
-<sup>
 [SubscribeReconnectTest.java #175](SubscribeReconnectTest.java#L175)
-</sup>

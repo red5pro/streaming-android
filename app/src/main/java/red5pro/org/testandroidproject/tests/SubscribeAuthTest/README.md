@@ -2,24 +2,27 @@
 This is an example of authenticating a stream for playback of an authenticated broadcast.
 
 ### Example Code
+
 - ***[SubscribeTest.java](../SubscribeTest/SubscribeTest.java)***
 - ***[SubscribeAuthTest.java](SubscribeAuthTest.java)***
 
 > This example requires you to enable the `SimpleAuthentication` Plugin for the `live` webapp. More information: [https://www.red5pro.com/docs/](https://www.red5pro.com/docs/).
 
 ## Authenticating
+
 With the username and password known from the Red5 Pro Server `webapps/live/WEB-INF/simple-auth-plugin.credentials` file (if following the basic auth setup of the Red5 Pro Server), those values are provided to the `parameters` attribute of the `R5Configuration` instance delimited and appended with a semicolon (`;`).
 
 For example, if you have defined the authorization of a username `foo` with a password `bar`, the configuration addition would look like the following:
 
-```
+```java
 config.setParameters("username=foo;password=bar;");
 ```
 
 ### Example
+
 In the example, the `username` and `password` values are defined in the [test.xml](../../res/raw/test.xml#L181-L191) file entry for the *Subscribe - Authentication* test. They are accessed and provided to the `R5Configuration` instance prior to establishing a connection:
 
-```
+```java
 String auth = "username=" + TestContent.GetPropertyString("username") + ";";
 auth += "password=" + TestContent.GetPropertyString("password") + ";";
 //Create the configuration from the values.xml

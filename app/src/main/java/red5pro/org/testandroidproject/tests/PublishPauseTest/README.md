@@ -19,7 +19,7 @@ The toggle sequence is as follows when you tap the screen multiple times:
 3. The third tap will mute the audio again - muting both video and audio at the same time.
 4. The fourth tap will unmute both audio and video, returning to its original state on launch of test and broadcast.
 
-##Using RStream:restrainAudio and R5Stream:restrainVideo
+## Using RStream:restrainAudio and R5Stream:restrainVideo
 
 `R5Stream:restrainAudio` and `R5Stream:restrainVideo` are methods that can be invoked to mute or unmute the audio and video of a stream, repectively. They each take a `boolean` argument. Passing `true` will mute the media in the stream, passing `false` will unmute the media.
 
@@ -69,9 +69,7 @@ preview.setOnTouchListener(new View.OnTouchListener() {
 });
 ```
 
-<sub>
 [PublishPauseTest.java #31](PublishPauseTest.javat#L31)
-</sub>
 
 ## Listening for mute on a Subscriber stream
 
