@@ -12,8 +12,8 @@ With the Stream Manager, our configuration IP will be used similarly for publish
 In order to publish, you first need to connect to the origin server's Stream Manager. The Stream Manager will know which edges are active and provide the one that needs to be published to.
 
 ```Java
-String url = "http://" +
-	TestContent.GetPropertyString("host") + ":5080/streammanager/api/3.1/event/" +
+String url = "https://" +
+	TestContent.GetPropertyString("host") + "/streammanager/api/3.1/event/" +
 	TestContent.GetPropertyString("context") + "/" +
 	TestContent.GetPropertyString("stream1") + "?action=broadcast";
 
