@@ -127,6 +127,17 @@
             <class>BandwidthDetectionUploadOnlyTest</class>
         </Test>
 
+        <Test title="Publish - Camera Device Orientation">
+
+            <description>A combination of the Camera Swap and Device Orientation examples.</description>
+
+            <Properties>
+            </Properties>
+
+            <name>Publish - Camera Device Orientation</name>
+            <class>PublishCameraDeviceOrientationTest</class>
+        </Test>
+
         <Test title="Publish - Camera Swap">
 
             <description>Touch the screen to swap which camera is being used! Verify using flash that camera is swapping properly and no rendering problems occur.</description>
@@ -268,6 +279,29 @@
 
             <name>Publish - Stream Manager</name>
             <class>PublishStreamManagerTest</class>
+        </Test>
+
+        <Test title="Publish - Stream Manager Encrypted">
+
+            <description>A publish example that connects to a cluster server with the Stream Manager and encrypts all data exchanged.</description>
+
+            <Properties>
+            </Properties>
+
+            <name>Publish - Stream Manager Encrypted</name>
+            <class>PublishSMEncryptedTest</class>
+        </Test>
+
+        <Test title="Publish - Stream Manager Transcoder">
+
+            <description>A publish example that uses transcoding broadcast over Stream Manager.</description>
+
+            <Properties>
+            </Properties>
+
+            <name>Publish - Stream Manager Transcoder</name>
+            <class>PublishStreamManagerTranscodeTest</class>
+
         </Test>
 
         <Test title="Publish - Stream Send">
@@ -468,6 +502,17 @@
 
             <name>Subscribe - Stream Manager</name>
             <class>SubscribeStreamManagerTest</class>
+        </Test>
+
+        <Test title="Subscribe - Stream Manager Encrypted">
+
+            <description>A subscribe example that connects to a cluster server with the Stream Manager and ecrypts all data exchanged.</description>
+
+            <Properties>
+            </Properties>
+
+            <name>Subscribe - Stream Manager Encrypted</name>
+            <class>SubscribeSMEncryptedTest</class>
         </Test>
 
         <Test title="Subscribe - Stream Send">
