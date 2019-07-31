@@ -70,7 +70,7 @@ public class PublishTest extends TestDetailFragment implements R5ConnectionListe
                        }
                    });
         }
-        if (event.name() == R5ConnectionEvent.START_STREAMING.name()){
+        else if (event.name() == R5ConnectionEvent.START_STREAMING.name()){
 //            publish.setFrameListener(new R5FrameListener() {
 //                @Override
 //                public void onBytesReceived(byte[] bytes, int i, int i1) {
