@@ -1,24 +1,26 @@
-#Custom Publishing on Red5 Pro
+# Custom Publishing on Red5 Pro
 
 This example demonstrates passing custom video data into the R5Stream.
 
-###Example Code
+### Example Code
+
 - ***[PublishCustomSourceTest.java](PublishCustomSourceTest.java)***
 - ***[CustomVideoSource.java](CustomVideoSource.java)***
 
-###Setup
+### Setup
+
 To view this example, you simply need to open the example and subscribe to your stream from a second device.  All audio will be recorded, and instead of camera input, a simply plasma style effect is rendered.
 
-####Attach a Custom Video Source
+#### Attach a Custom Video Source
+
 Instead of using an R5Camera, this example uses a custom video source, the `CustomVideoSource`.  This device
 
 ```Java
 CustomVideoSource source = new CustomVideoSource();
 publish.attachCamera(source);
 ```
-<sup>
+
 [PublishCustomSourceTest.java #54](PublishCustomSourceTest.java#L54)
-</sup>
 
 This device automatically polls and pushes to the encoder when new pixels are ready to be published.  There are several steps that are needed to properly feed data to the encoder.
 

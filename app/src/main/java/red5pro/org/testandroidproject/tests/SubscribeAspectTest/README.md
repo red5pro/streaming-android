@@ -1,17 +1,20 @@
-#Subscriber Aspect Ratio
+# Subscriber Aspect Ratio
 
 `R5VideoViewController.scaleMode` controls the display mode of the content that is being pushed to it. Depending on the value the content will scale to the apropriate fill value. 
 
-###Example Code
+### Example Code
+
 - ***[SubscribeTest.java](../SubscribeTest/SubscribeTest.java)***
 - ***[SubscribeImageTest.java](SubscribeImageTest.java)***
 
-##Running the example
+## Running the example
+
 Begin by publishing to **stream1** from a second device.  **stream1** is the default stream1 name that is used by this example.
 
 Touch the screen at any time while streaming to change the scale mode, affecting how the stream is display on the user's end.
 
-##Using scaleMode
+## Using scaleMode
+
 R5VideoViewController.scaleMode has 3 potential enum values.
 
 ```
@@ -31,6 +34,5 @@ if(sMode == 3) sMode = 0;
 
 subscribe.setScaleMode(sMode);
 ```
-<sub>
+
 [SubscribeImageTest.java #34](SubscribeImageTest.java#L34)
-</sub>

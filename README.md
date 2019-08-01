@@ -42,6 +42,9 @@ Once you have modified your settings, you can run the application for simulator 
 | **[Bandwidth Detection - Upload](app/src/main/java/red5pro/org/testandroidproject/tests/BandwidthDetectionUploadOnlyTest)**
 | *An example that tests the upload speed between the device and server before publishing.*   
 | ---
+| **[Camera Device Orientation](app/src/main/java/red5pro/org/testandroidproject/tests/PublishCameraDeviceOrientationTest)**
+| *An example that combines the `Camera Swap` and `Device Orientation` examples.*
+| ---
 | **[Camera Swap](app/src/main/java/red5pro/org/testandroidproject/tests/PublishCameraSwapTest)**
 | *Touch the screen to swap which camera is being used! Verify using flash that camera is swapping properly and no rendering problems occur.*
 | ---
@@ -85,7 +88,13 @@ Once you have modified your settings, you can run the application for simulator 
 | *An example of sending data and messages from a Broadcaster to N-Subscribers.*
 | ---
 | **[Stream Manager](app/src/main/java/red5pro/org/testandroidproject/tests/PublishStreamManagerTest)**
-| *A publish example that connects with a server cluster using a Stream Manger*
+| *A publish example that connects with a server cluster using a Stream Manger.*
+| ---
+| **[Stream Manager Encrypted](app/src/main/java/red5pro/org/testandroidproject/tests/PublishSMEncryptedTest)**
+| *A publish example that connects with a server cluster using a Stream Manger and encrypts the data in transit.*
+| ---
+| **[Stream Manager Transcoder](app/src/main/java/red5pro/org/testandroidproject/tests/PublishStreamManagerTranscodeTest)**
+| *A publish example that uses transcoding broadcast over Stream Manager.*
 | ---
 | **[Two Way](app/src/main/java/red5pro/org/testandroidproject/tests/TwoWayTest)**
 | *An example of simultaneously publishing while subscribing - allowing a conversation. Includes stream detection and auto-connection.*
@@ -146,6 +155,9 @@ Once you have modified your settings, you can run the application for simulator 
 | ---
 | **[Stream Manager](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeStreamManagerTest)**
 | *A subscribe example that connects with a server cluster using a Stream Manger.*
+| ---
+| **[Stream Manager Encrypted](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeSMEncryptedTest)**
+| *A subscribe example that connects with a server cluster using a Stream Manger and encrypts the data in transit.*
 | ---
 | **[Two Streams](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeTwoStreamTest)**
 | *An example of subscribing to multiple streams at once, useful for subscribing to a presentation hosted by two people using a Two Way connection.*

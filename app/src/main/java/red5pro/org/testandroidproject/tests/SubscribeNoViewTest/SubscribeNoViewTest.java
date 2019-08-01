@@ -71,10 +71,11 @@ public class SubscribeNoViewTest extends TestDetailFragment implements R5Connect
 
         //setup a new stream using the connection
         subscribe = new R5Stream(connection);
-        subscribe.setListener(this);
 
         subscribe.audioController = new R5AudioController();
         subscribe.audioController.sampleRate = TestContent.GetPropertyInt("sample_rate");
+
+        subscribe.setListener(this);
 
         //show all logging
         subscribe.setLogLevel(R5Stream.LOG_LEVEL_DEBUG);
