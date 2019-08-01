@@ -1,4 +1,4 @@
-package red5pro.org.testandroidproject.tests.SubscribeStreamManagerTest;
+package red5pro.org.testandroidproject.tests.PublishStreamManagerTranscodeTest;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -13,7 +13,8 @@ import com.red5pro.streaming.R5Connection;
 import com.red5pro.streaming.R5Stream;
 import com.red5pro.streaming.R5StreamProtocol;
 import com.red5pro.streaming.config.R5Configuration;
-import com.red5pro.streaming.media.R5AudioController;
+import com.red5pro.streaming.source.R5Camera;
+import com.red5pro.streaming.source.R5Microphone;
 import com.red5pro.streaming.view.R5VideoView;
 
 import org.apache.http.HttpResponse;
@@ -28,33 +29,33 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import red5pro.org.testandroidproject.R;
-import red5pro.org.testandroidproject.tests.SubscribeTest.SubscribeTest;
+import red5pro.org.testandroidproject.tests.PublishTest.PublishTest;
 import red5pro.org.testandroidproject.tests.TestContent;
 
 /**
- * Created by davidHeimann on 4/8/16.
+ * Created by toddanderson on 07/25/2018.
  */
-public class SubscribeStreamManagerTest extends SubscribeTest {
+public class PublishStreamManagerTranscodeTest extends PublishTest {
     protected TextView edgeShow;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.subscribe_test, container, false);
+        View rootView = inflater.inflate(R.layout.publish_test, container, false);
 
-        display = (R5VideoView) view.findViewById(R.id.videoView);
+        preview = (R5VideoView)rootView.findViewById(R.id.videoPreview);
 
         new Thread(new Runnable() {
             @Override
             public void run() {
-                try{
-                    //url format: https://{streammanagerhost}:{port}/streammanager/api/2.0/event/{scopeName}/{streamName}?action=subscribe
+                try {
+                    //url format: https://{streammanagerhost}:{port}/streammanager/api/2.0/event/{scopeName}/{streamName}?action=broadca
                     String port = TestContent.getFormattedPortSetting(TestContent.GetPropertyString("server_port"));
                     String version = TestContent.GetPropertyString("sm_version");
                     String url = "http://" +
                             TestContent.GetPropertyString("host") + port + "/streammanager/api/" + version + "/event/" +
                             TestContent.GetPropertyString("context") + "/" +
-                            TestContent.GetPropertyString("stream1") + "?action=subscribe";
+                            TestContent.GetPropertyString("stream1") + "?action=broadcast&transcode=true";
 
                     HttpClient httpClient = new DefaultHttpClient();
                     HttpResponse response = httpClient.execute(new HttpGet(url));
@@ -73,7 +74,7 @@ public class SubscribeStreamManagerTest extends SubscribeTest {
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    subscribeToManager(outURL);
+                                    publishToManager(outURL, TestContent.GetPropertyString("stream1") + "_1");
                                 }
                             });
                         }
@@ -86,50 +87,69 @@ public class SubscribeStreamManagerTest extends SubscribeTest {
                         throw new IOException(statusLine.getReasonPhrase());
                     }
 
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         }).start();
 
-        return view;
+        return rootView;
     }
 
-    protected void subscribeToManager( String url ){
+    private void publishToManager( String url, String streamName ){
 
-        //Create the configuration from the tests.xml
         R5Configuration config = new R5Configuration(R5StreamProtocol.RTSP,
                 url,
                 TestContent.GetPropertyInt("port"),
                 TestContent.GetPropertyString("context"),
-                TestContent.GetPropertyFloat("subscribe_buffer_time"));
+                TestContent.GetPropertyFloat("publish_buffer_time"));
         config.setLicenseKey(TestContent.GetPropertyString("license_key"));
         config.setBundleID(getActivity().getPackageName());
 
         R5Connection connection = new R5Connection(config);
 
         //setup a new stream using the connection
-        subscribe = new R5Stream(connection);
-        subscribe.setListener(this);
-
-        subscribe.audioController = new R5AudioController();
-        subscribe.audioController.sampleRate = TestContent.GetPropertyInt("sample_rate");
+        publish = new R5Stream(connection);
+        publish.audioController.sampleRate =  TestContent.GetPropertyInt("sample_rate");
+        publish.setListener(this);
 
         //show all logging
-        subscribe.setLogLevel(R5Stream.LOG_LEVEL_DEBUG);
+        publish.setLogLevel(R5Stream.LOG_LEVEL_DEBUG);
 
-        //find the view and attach the stream
-        display.attachStream(subscribe);
+        R5Camera camera = null;
+        if(TestContent.GetPropertyBool("video_on")) {
+            //attach a camera video source
+            cam = openFrontFacingCameraGingerbread();
+            cam.setDisplayOrientation((camOrientation + 180) % 360);
 
-        display.showDebugView(TestContent.GetPropertyBool("debug_view"));
+            camera = new R5Camera(cam, TestContent.GetPropertyInt("camera_width"), TestContent.GetPropertyInt("camera_height"));
+            camera.setBitrate(TestContent.GetPropertyInt("bitrate"));
+            camera.setOrientation(camOrientation);
+        }
 
-        subscribe.play(TestContent.GetPropertyString("stream1"));
+        if(TestContent.GetPropertyBool("audio_on")) {
+            //attach a microphone
+            R5Microphone mic = new R5Microphone();
+            publish.attachMic(mic);
+        }
 
-        edgeShow = new TextView(display.getContext());
+        preview.attachStream(publish);
+
+        if(TestContent.GetPropertyBool("video_on"))
+            publish.attachCamera(camera);
+
+        preview.showDebugView(TestContent.GetPropertyBool("debug_view"));
+
+        publish.publish(streamName, getPublishRecordType());
+
+        if(TestContent.GetPropertyBool("video_on"))
+            cam.startPreview();
+
+        edgeShow = new TextView(preview.getContext());
         FrameLayout.LayoutParams position = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.BOTTOM);
         edgeShow.setLayoutParams(position);
 
-        ((FrameLayout)display.getParent()).addView(edgeShow);
+        ((FrameLayout)preview.getParent()).addView(edgeShow);
 
         edgeShow.setText("Connected to: " + url, TextView.BufferType.NORMAL);
         edgeShow.setBackgroundColor(Color.LTGRAY);
