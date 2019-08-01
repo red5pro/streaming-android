@@ -17,6 +17,7 @@ import com.red5pro.streaming.R5StreamProtocol;
 import com.red5pro.streaming.config.R5Configuration;
 import com.red5pro.streaming.event.R5ConnectionEvent;
 import com.red5pro.streaming.event.R5ConnectionListener;
+import com.red5pro.streaming.event.R5FrameListener;
 import com.red5pro.streaming.media.R5AudioController;
 import com.red5pro.streaming.view.R5VideoView;
 
@@ -56,6 +57,14 @@ public class SubscribeTest extends TestDetailFragment implements R5ConnectionLis
                     alertDialog.show();
                 }
             });
+        }
+        else if (event.name() == R5ConnectionEvent.START_STREAMING.name()){
+//            subscribe.setFrameListener(new R5FrameListener() {
+//                @Override
+//                public void onBytesReceived(byte[] bytes, int i, int i1) {
+//                    Uncomment for framelistener performance test
+//                }
+//            });
         }
     }
 
@@ -133,6 +142,11 @@ public class SubscribeTest extends TestDetailFragment implements R5ConnectionLis
     public void onStop() {
         if(subscribe != null) {
             subscribe.stop();
+            subscribe = null;
+        }
+
+        if (display != null) {
+            display.attachStream(null);
         }
 
         super.onStop();

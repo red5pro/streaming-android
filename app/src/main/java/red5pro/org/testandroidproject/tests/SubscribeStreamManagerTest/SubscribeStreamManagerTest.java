@@ -95,7 +95,7 @@ public class SubscribeStreamManagerTest extends SubscribeTest {
         return view;
     }
 
-    private void subscribeToManager( String url ){
+    protected void subscribeToManager( String url ){
 
         //Create the configuration from the tests.xml
         R5Configuration config = new R5Configuration(R5StreamProtocol.RTSP,
