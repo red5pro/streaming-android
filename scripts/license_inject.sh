@@ -20,5 +20,5 @@ while IFS= read -r -d '' file; do
 done < <(find "${SRC}/" -type f -name "*.java" -print0)
 
 echo "Exit $WAS_UPDATED"
-exit 0
+exit 1
 # $WAS_UPDATED
