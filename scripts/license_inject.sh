@@ -15,7 +15,7 @@ while IFS= read -r -d '' file; do
                 echo "Already has license..."
         else
                 cat "$LICENSE" "$file" > $$.tmp && mv $$.tmp "$file"
-                $WAS_UPDATED=1
+                WAS_UPDATED=1
         fi
 done < <(find "${SRC}/" -type f -name "*.java" -print0)
 
