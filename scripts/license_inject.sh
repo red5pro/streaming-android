@@ -19,6 +19,8 @@ while IFS= read -r -d '' file; do
         fi
 done < <(find "${SRC}/" -type f -name "*.java" -print0)
 
-echo "Exit $WAS_UPDATED"
-exit 1
+if [ $WAS_UPDATED != 0 ]; then
+  echo "License injection was required. Please commit all updated files."
+  exit 1
+fi
 # $WAS_UPDATED
