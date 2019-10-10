@@ -78,7 +78,8 @@ public class SubscribeCluster extends SubscribeTest {
                 try{
                     HttpClient httpClient = new DefaultHttpClient();
                     String port = TestContent.getFormattedPortSetting(TestContent.GetPropertyString("server_port"));
-                    HttpResponse response = httpClient.execute(new HttpGet("http://" + TestContent.GetPropertyString("host") + port + "/cluster"));
+                    String protocol = (port.isEmpty() || port.equals("443")) ? "https" : "http";
+                    HttpResponse response = httpClient.execute(new HttpGet(protocol + "://" + TestContent.GetPropertyString("host") + port + "/cluster"));
                     StatusLine statusLine = response.getStatusLine();
                     if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
                         ByteArrayOutputStream out = new ByteArrayOutputStream();
