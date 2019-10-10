@@ -214,8 +214,9 @@ public class SharedObjectTest extends PublishTest{
 
         addMessage("Retrieved list");
 
-        final String port = TestContent.getFormattedPortSetting(TestContent.GetPropertyString("server_port"));
-        final String urlStr = "http://" + TestContent.GetPropertyString("host") + port + "/" + TestContent.GetPropertyString("context") + "/streams.jsp";
+        String port = TestContent.getFormattedPortSetting(TestContent.GetPropertyString("server_port"));
+        String protocol = (port.isEmpty() || port.equals("443")) ? "https" : "http";
+        final String urlStr = protocol + "://" + TestContent.GetPropertyString("host") + port + "/" + TestContent.GetPropertyString("context") + "/streams.jsp";
 
         if(callThread != null) {
             callThread.interrupt();

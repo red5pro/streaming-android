@@ -98,8 +98,10 @@ public class TwoWayStreamManagerTest extends TwoWayTest {
 
                     //url format: https://{streammanagerhost}:{port}/streammanager/api/2.0/event/{scopeName}/{streamName}?action=broadcast
                     String port = TestContent.getFormattedPortSetting(TestContent.GetPropertyString("server_port"));
-                    String url = "http://" +
-                            TestContent.GetPropertyString("host") + port + "/streammanager/api/2.0/event/" +
+                    String version = TestContent.GetPropertyString("sm_version");
+                    String protocol = (port.isEmpty() || port.equals("443")) ? "https" : "http";
+                    String url = protocol + "://" +
+                            TestContent.GetPropertyString("host") + port + "/streammanager/api/" + version + "/event/" +
                             TestContent.GetPropertyString("context") + "/" + streamName + "?action=" + action;
 
                     HttpClient httpClient = new DefaultHttpClient();
@@ -204,7 +206,8 @@ public class TwoWayStreamManagerTest extends TwoWayTest {
                     try {
 
                         String port = TestContent.getFormattedPortSetting(TestContent.GetPropertyString("server_port"));
-                        String urlStr = "http://" + TestContent.GetPropertyString("host") + port + "/streammanager/api/2.0/event/list";
+                        String protocol = (port.isEmpty() || port.equals("443")) ? "https" : "http";
+                        String urlStr = protocol + "://" + TestContent.GetPropertyString("host") + port + "/streammanager/api/2.0/event/list";
 
                         URL url = new URL(urlStr);
                         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
