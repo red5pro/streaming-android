@@ -149,6 +149,17 @@
             <class>PublishCameraSwapTest</class>
         </Test>
 
+        <Test title="Publish - Camera Swap Blink">
+
+            <description>Touch the screen to swap which camera is being used! Blanks the video to hide rendering issues.</description>
+
+            <Properties>
+            </Properties>
+
+            <name>Publish - Camera Swap Blink</name>
+            <class>PublishCameraSwapBlinkTest</class>
+        </Test>
+
         <Test title="Publish - Camera2">
 
             <description>Publish example for the camera2 api</description>
