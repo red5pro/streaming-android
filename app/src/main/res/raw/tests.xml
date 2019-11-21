@@ -1,13 +1,13 @@
 <Testbed>
     <Properties>
         <bitrate>750</bitrate>
-        <host>0.0.0.0</host>
+        <host>release.red5.org</host>
         <server_port>5080</server_port>
-        <license_key></license_key>
+        <license_key>FSN2-VZ3A-Z8DA-WJNO</license_key>
         <publish_buffer_time>0.5</publish_buffer_time>
         <subscribe_buffer_time>0.5</subscribe_buffer_time>
         <port>8554</port>
-        <stream1>stream1</stream1>
+        <stream1>stream1todd</stream1>
         <stream2>stream2</stream2>
         <context>live</context>
         <camera_width>640</camera_width>

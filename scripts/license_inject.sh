@@ -23,4 +23,3 @@ if [ $WAS_UPDATED != 0 ]; then
   echo "License injection was required. Please commit all updated files."
   exit 1
 fi
-# $WAS_UPDATED
