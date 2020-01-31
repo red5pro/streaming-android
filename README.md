@@ -84,9 +84,6 @@ Once you have modified your settings, you can run the application for simulator 
 | **[Remote Call](app/src/main/java/red5pro/org/testandroidproject/tests/PublishRemoteCallTest)**
 | *The publish portion of the remote call example - sends the remote call.*
 | ---
-| **[Send](app/src/main/java/red5pro/org/testandroidproject/tests/PublishSendTest)**
-| *An example of sending data and messages from a Broadcaster to N-Subscribers.*
-| ---
 | **[Stream Manager](app/src/main/java/red5pro/org/testandroidproject/tests/PublishStreamManagerTest)**
 | *A publish example that connects with a server cluster using a Stream Manger.*
 | ---
@@ -104,6 +101,9 @@ Once you have modified your settings, you can run the application for simulator 
 | ---
 | **[Shared Object](app/src/main/java/red5pro/org/testandroidproject/tests/SharedObjectTest)**
 | *An example of sending data and messages between clients through remote shared objects.*
+| ---
+| **[Shared Object](app/src/main/java/red5pro/org/testandroidproject/tests/SharedObjectStreamlessTest)**
+| *Chat example with shared objects that doesn't require an active stream..*
 
 ### [Subscribing](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeTest)
 
@@ -135,6 +135,9 @@ Once you have modified your settings, you can run the application for simulator 
 | **[Image Capture](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeImageTest)**
 | *Touch the subscribe stream to take a screen shot that is displayed!*
 | ---
+| **[Hardware Acceleration](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeHardwareAccelerationTest)**
+| *Subscribe test using hardware acceleration for decoding.*
+| ---
 | **[Mute](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeMuteTest)**
 | *Simple Subscribe Mute Audio Test!*
 | ---
@@ -147,8 +150,8 @@ Once you have modified your settings, you can run the application for simulator 
 | **[Remote Call](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeRemoteCallTest)**
 | *The subscribe portion of the remote call example - receives the remote call.*
 | ---
-| **[Send](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeReceiveSendTest)**
-| *An example of receiving data and messages from a Broadcaster using the `send` API.*
+| **[Render RGB](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeRendererRGBScalarTest)**
+| *Subscribe test forcing RGB scalar for decoding.*
 | ---
 | **[Set Volume](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeSetVolumeTest)**
 | *Set playback volume on a subscriber.*
@@ -158,6 +161,9 @@ Once you have modified your settings, you can run the application for simulator 
 | ---
 | **[Stream Manager Encrypted](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeSMEncryptedTest)**
 | *A subscribe example that connects with a server cluster using a Stream Manger and encrypts the data in transit.*
+| ---
+| **[Stream Manager Transcoder](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeStreamManagerTranscoderTest)**
+| *A subscribe example that connects to a cluster server with the Stream Manager using ABR.*
 | ---
 | **[Two Streams](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeTwoStreamTest)**
 | *An example of subscribing to multiple streams at once, useful for subscribing to a presentation hosted by two people using a Two Way connection.*
