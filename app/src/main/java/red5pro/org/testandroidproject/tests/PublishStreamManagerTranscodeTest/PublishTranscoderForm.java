@@ -22,7 +22,8 @@
 // NONINFRINGEMENT.   IN  NO  EVENT  SHALL INFRARED5, INC. BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
 // WHETHER IN  AN  ACTION  OF  CONTRACT,  TORT  OR  OTHERWISE,  ARISING  FROM,  OUT  OF  OR  IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-//package red5pro.org.testandroidproject.tests.PublishStreamManagerTranscodeTest;
+//
+package red5pro.org.testandroidproject.tests.PublishStreamManagerTranscodeTest;
 
 import android.view.View;
 import android.view.ViewGroup;
