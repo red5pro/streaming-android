@@ -55,10 +55,9 @@ public class SubscribeReconnectTest extends SubscribeTest  {
     public boolean stopped = false;
     public int reconnectDelay = 2000;
 
-
     private void findStreams() {
 
-        String port = TestContent.getFormattedPortSetting(TestContent.GetPropertyString("server_port"));
+        final String port = TestContent.getFormattedPortSetting(TestContent.GetPropertyString("server_port"));
         String protocol = (port.isEmpty() || port.equals("443")) ? "https" : "http";
         final String urlStr = protocol + "://" + TestContent.GetPropertyString("host") + port + "/" + TestContent.GetPropertyString("context") + "/streams.jsp";
 
@@ -192,11 +191,10 @@ public class SubscribeReconnectTest extends SubscribeTest  {
 
     }
 
-
     public void SetupListener(){
 
-        final R5ConnectionListener additionalListener = this;
         final SubscribeReconnectTest subscribeTest = this;
+        final R5ConnectionListener additionalListener = this;
         final R5Stream subscriber = this.subscribe;
         final R5VideoView view = this.display;
 
@@ -208,7 +206,6 @@ public class SubscribeReconnectTest extends SubscribeTest  {
                 additionalListener.onConnectionEvent(r5ConnectionEvent);
 
                 if (r5ConnectionEvent == R5ConnectionEvent.CLOSE && !SubscribeReconnectTest.this.stopped) {
-
 
                     Handler h = new Handler(Looper.getMainLooper());
                     h.postDelayed(new Runnable() {
@@ -238,7 +235,6 @@ public class SubscribeReconnectTest extends SubscribeTest  {
 
                         }
                     }, reconnectDelay);
-
 
                 }
             }

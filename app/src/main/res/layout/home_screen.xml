@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="50dp">
+    android:paddingTop="14dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -137,6 +137,14 @@
         android:id="@+id/audioCheck"
         android:layout_gravity="center_horizontal"
         android:checked="true" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Use HW Acceleration"
+        android:id="@+id/hwAccelCheck"
+        android:layout_gravity="center_horizontal"
+        android:checked="false" />
 
     <RelativeLayout
         android:layout_width="match_parent"

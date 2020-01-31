@@ -10,13 +10,82 @@
 
     </com.red5pro.streaming.view.R5VideoView>
 
-    <TextView
+    <ScrollView
         android:layout_width="225dp"
-        android:id="@+id/chatView"
         android:layout_height="250dp"
-        android:layout_above="@+id/chatInput"
+        android:layout_above="@+id/colorContainer"
         android:scrollbars="vertical"
-        android:background="#aacccccc" />
+        android:background="#aacccccc">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:gravity="bottom"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/chatView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:editable="false" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/colorContainer"
+        android:layout_width="225dp"
+        android:layout_height="32dp"
+        android:layout_above="@id/chatInput"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/redButton"
+            android:layout_width="32dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:background="#FF0000"
+            android:text="R"
+            android:textColor="#FF0000"
+            android:textSize="12sp"
+            android:visibility="visible"/>
+
+        <Button
+            android:id="@+id/greenButton"
+            android:layout_width="32dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:background="#00FF00"
+            android:text="G"
+            android:textColor="#00FF00"
+            android:textSize="12sp"
+            android:visibility="visible"/>
+
+        <Button
+            android:id="@+id/blueButton"
+            android:layout_width="32dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:background="#0000FF"
+            android:text="B"
+            android:textColor="#0000FF"
+            android:textSize="12sp"
+            android:visibility="visible"/>
+
+        <Button
+            android:id="@+id/blackButton"
+            android:layout_width="32dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:background="#000000"
+            android:text="BL"
+            android:textColor="#000000"
+            android:textSize="12sp"
+            android:visibility="visible"/>
+
+    </LinearLayout>
 
     <EditText
         android:layout_height="wrap_content"
@@ -34,8 +103,9 @@
         android:text="Send"
         android:layout_height="wrap_content"
         android:id="@+id/chatSend"
-        android:layout_alignRight="@+id/chatView"
-        android:layout_below="@+id/chatView"
+        android:layout_toRightOf="@+id/chatInput"
+        android:layout_gravity="bottom"
+        android:layout_alignParentBottom="true"
         android:textSize="12sp"
         android:layout_width="60dp" />
 

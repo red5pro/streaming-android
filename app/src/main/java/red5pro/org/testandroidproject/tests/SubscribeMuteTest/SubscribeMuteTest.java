@@ -157,7 +157,7 @@ public class SubscribeMuteTest extends TestDetailFragment implements R5Connectio
         display.showDebugView(TestContent.GetPropertyBool("debug_view"));
 
 
-        subscribe.play(TestContent.GetPropertyString("stream1"));
+        subscribe.play(TestContent.GetPropertyString("stream1"), TestContent.GetPropertyBool("hwAccel_on"));
 
     }
 

@@ -22,53 +22,48 @@
 // NONINFRINGEMENT.   IN  NO  EVENT  SHALL INFRARED5, INC. BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
 // WHETHER IN  AN  ACTION  OF  CONTRACT,  TORT  OR  OTHERWISE,  ARISING  FROM,  OUT  OF  OR  IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-//
-package red5pro.org.testandroidproject.tests.PublishRemoteCallTest;
+//package red5pro.org.testandroidproject.tests.PublishStreamManagerTranscodeTest;
 
-import android.os.Bundle;
-import android.view.MotionEvent;
-import android.view.View;
+import com.google.gson.Gson;
 
-import com.red5pro.streaming.event.R5ConnectionEvent;
-import com.red5pro.streaming.event.R5ConnectionListener;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 
-import java.util.Hashtable;
+public class PublishTranscoderData {
 
-import red5pro.org.testandroidproject.tests.PublishTest.PublishTest;
+    public HashMap<String, Object> meta;
 
-/**
- * Created by davidHeimann on 4/25/16.
- */
-public class PublishRemoteCallTest extends PublishTest {
+    public PublishTranscoderData (ArrayList<HashMap<String, Object>> variants) {
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+        HashMap<String, String> authMap = new HashMap<>();
+        authMap.put("username", "");
+        authMap.put("password", "");
+        HashMap<String, Object> geoMap = new HashMap<>();
+        geoMap.put("regions", new ArrayList<>(Arrays.asList("US", "UK")));
+        geoMap.put("restricted", false);
 
-        publish.setListener(this);
+
+        meta = new HashMap<>();
+        meta.put("authentication", authMap);
+        meta.put("georules", geoMap);
+        meta.put("stream", variants);
+        meta.put("qos", 3);
+
     }
 
-    @Override
-    public void onConnectionEvent(R5ConnectionEvent r5ConnectionEvent) {
-
-        super.onConnectionEvent(r5ConnectionEvent);
-        if(r5ConnectionEvent == R5ConnectionEvent.START_STREAMING ) {
-            preview.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-
-                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                        Hashtable<Object, Object> map = new Hashtable<Object, Object>();
-                        map.put("message", "The streamer wants your attention");
-                        map.put("touchX", Float.toString(event.getRawX() / preview.getWidth()) );
-                        map.put("touchY", Float.toString(event.getRawY() / preview.getHeight()) );
-
-                        publish.send("whateverFunctionName", map);
-                    }
-
-                    return true;
-                }
-            });
+    public HashMap<String, Object> getVariantByName (String name) {
+        ArrayList<HashMap<String, Object>> variants = (ArrayList<HashMap<String, Object>>)this.meta.get("stream");
+        for(int i = 0; i < variants.size(); i++) {
+            HashMap<String, Object> variant = variants.get(i);
+            if (variant.get("name").equals(name)) {
+                return variant;
+            }
         }
+        return null;
+    }
+
+    public String toJSON () {
+        return new Gson().toJson(this);
     }
 }
