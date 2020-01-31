@@ -15,10 +15,12 @@
         <debug_view>true</debug_view>
         <audio_on>true</audio_on>
         <video_on>true</video_on>
+        <hwAccel_on>true</hwAccel_on>
         <record_mode>Live</record_mode>
         <sample_rate>44100</sample_rate>
-        <fps>24</fps>
+        <fps>15</fps>
         <sm_version>3.1</sm_version>
+        <sm_access_token>xyz123</sm_access_token>
     </Properties>
     <Tests>
 
@@ -36,17 +38,18 @@
         <Test title="Publish">
 
             <description>Simple publish example!</description>
-
+<!--
             <Properties>
+                <fps>30</fps>
             </Properties>
-
+-->
             <name>Publish</name>
             <class>PublishTest</class>
         </Test>
 
         <Test title="Publish - High sample rate">
 
-            <description>Simple publish example with high sample rate</description>
+            <description>Simple publish example with high audio sample rate</description>
 
             <Properties>
                 <sample_rate>44100</sample_rate>
@@ -63,7 +66,8 @@
             <Properties>
                 <camera_width>1920</camera_width>
                 <camera_height>1080</camera_height>
-                <bitrate>4500</bitrate>
+                <bitrate>3500</bitrate>
+                <fps>30</fps>
             </Properties>
 
             <name>Publish - 1080p</name>
@@ -72,12 +76,13 @@
 
         <Test title="Publish - ABR">
 
-            <description>Publisher with AdaptiveBitrateController</description>
+            <description>A high quality publisher with AdaptiveBitrateController</description>
 
             <Properties>
-                <camera_width>640</camera_width>
-                <camera_height>480</camera_height>
-                <bitrate>1000</bitrate>
+                <camera_width>1280</camera_width>
+                <camera_height>720</camera_height>
+                <bitrate>2500</bitrate>
+                <fps>30</fps>
             </Properties>
 
             <name>Publish - ABR</name>
@@ -117,30 +122,20 @@
             <class>PublishBackgroundTest</class>
         </Test>
 
-        <Test title="Publish - Bandwidth Upload Detection">
-            <description>An example that tests the upload speed between the device and server before publishing</description>
+        <Test title="Publish - Camera2">
+
+            <description>Publish example for the camera2 api</description>
 
             <Properties>
             </Properties>
 
-            <name>Publish - Bandwidth Upload Detection</name>
-            <class>BandwidthDetectionUploadOnlyTest</class>
-        </Test>
-
-        <Test title="Publish - Camera Device Orientation">
-
-            <description>A combination of the Camera Swap and Device Orientation examples.</description>
-
-            <Properties>
-            </Properties>
-
-            <name>Publish - Camera Device Orientation</name>
-            <class>PublishCameraDeviceOrientationTest</class>
+            <name>Publish - Camera2</name>
+            <class>PublishCamera2Test</class>
         </Test>
 
         <Test title="Publish - Camera Swap">
 
-            <description>Touch the screen to swap which camera is being used! Verify using flash that camera is swapping properly and no rendering problems occur.</description>
+            <description>Touch the screen to swap which camera is being used!</description>
 
             <Properties>
             </Properties>
@@ -160,20 +155,20 @@
             <class>PublishCameraSwapBlinkTest</class>
         </Test>
 
-        <Test title="Publish - Camera2">
+        <Test title="Publish - Camera Swap + Device Orientation">
 
-            <description>Publish example for the camera2 api</description>
+            <description>Orientation with Camera Swap support.</description>
 
             <Properties>
             </Properties>
 
-            <name>Publish - Camera2</name>
-            <class>PublishCamera2Test</class>
+            <name>Publish - Camera Swap + Device Orientation</name>
+            <class>PublishCameraDeviceOrientationTest</class>
         </Test>
 
         <Test title="Publish - Custom Audio Source">
 
-            <description>Uses a custom controller to supply audio data to the publisher.</description>
+            <description>Uses a custom controller to modify the microphone input, changing its volume over time.</description>
 
             <Properties>
             </Properties>
@@ -259,6 +254,13 @@
             <class>PublishOrientationTest</class>
         </Test>
 
+        <Test title="Publish - Pause">
+
+            <description>Mute/Unmute Audio and Video!</description>
+            <name>Publish - Pause</name>
+            <class>PublishPauseTest</class>
+        </Test>
+
         <Test title="Publish - Record">
 
             <description>A publish example that records stream data on the server.</description>
@@ -294,7 +296,7 @@
 
         <Test title="Publish - Stream Manager Encrypted">
 
-            <description>A publish example that connects to a cluster server with the Stream Manager and encrypts all data exchanged.</description>
+            <description>A publish example that connects to a cluster server with the Stream Manager using SRTP encryption.</description>
 
             <Properties>
             </Properties>
@@ -308,23 +310,20 @@
             <description>A publish example that uses transcoding broadcast over Stream Manager.</description>
 
             <Properties>
+                <high_bitrate>1500000</high_bitrate>
+                <high_width>1280</high_width>
+                <high_height>720</high_height>
+                <med_bitrate>600000</med_bitrate>
+                <med_width>640</med_width>
+                <med_height>360</med_height>
+                <low_bitrate>400000</low_bitrate>
+                <low_width>320?</low_width>
+                <low_height>270</low_height>
             </Properties>
 
             <name>Publish - Stream Manager Transcoder</name>
             <class>PublishStreamManagerTranscodeTest</class>
 
-        </Test>
-
-        <Test title="Publish - Stream Send">
-
-            <description>A publish example that sends "onStreamSend" R5Stream.send messages on a loop.</description>
-
-            <Properties>
-                <bitrate>512</bitrate>
-            </Properties>
-
-            <name>Publish - Stream Send</name>
-            <class>PublishSendTest</class>
         </Test>
 
         <Test title="Shared Objects">
@@ -338,6 +337,17 @@
             <class>SharedObjectTest</class>
         </Test>
 
+        <Test title="Shared Object - Streamless">
+
+            <description>Chat example with shared objects that doesn't require an active stream.</description>
+
+            <Properties>
+            </Properties>
+
+            <name>Shared Object - Streamless</name>
+            <class>SharedObjectStreamlessTest</class>
+        </Test>
+
         <Test title="Subscribe">
 
             <description>Simple Subscribe Test!</description>
@@ -348,6 +358,19 @@
             <name>Subscribe</name>
             <class>SubscribeTest</class>
         </Test>
+
+        <!-- Not ready for primetime, yet :(
+        <Test title="Subscribe 360 Camera">
+
+            <description>Rendering 360 video stream.</description>
+
+            <Properties>
+            </Properties>
+
+            <name>[hw] subscribe - 360 Camera</name>
+            <class>Subscribe360Test</class>
+        </Test>
+        -->
 
         <Test title="Subscribe - Aspect Ratio">
 
@@ -388,32 +411,11 @@
             <description>Detect Insufficient and Sufficient BW flags.  Test on a poor network using a publisher that has high video quality. Video should become sporadic or stop altogether.  The screen will darken when no video is being received.</description>
 
             <Properties>
+                <subscribe_buffer_time>2</subscribe_buffer_time>
             </Properties>
 
             <name>Subscribe - Bandwidth Test</name>
             <class>SubscribeBandwidthTest</class>
-        </Test>
-
-        <Test title="Subscribe - Bandwidth Download Detection">
-
-            <description>An example that tests the download speed between the device and server before subscribing.</description>
-
-            <Properties>
-            </Properties>
-
-            <name>Subscribe - Bandwidth Test</name>
-            <class>BandwidthDetectionDownloadOnlyTest</class>
-        </Test>
-
-        <Test title="Subscribe - Bandwidth Dual Detection">
-
-            <description>An example that tests both the upload and download speeds between the device and server before subscribing.</description>
-
-            <Properties>
-            </Properties>
-
-            <name>Subscribe - Bandwidth Test</name>
-            <class>BandwidthDetectionTest</class>
         </Test>
 
         <Test title="Subscribe - Cluster">
@@ -438,6 +440,18 @@
             <class>SubscribeEncryptedTest</class>
         </Test>
 
+        <Test title="Subscribe - Hardware Acceleration">
+
+            <description>Subscribe test using hardware acceleration for decoding.</description>
+
+            <Properties>
+                <fps>24</fps>
+            </Properties>
+
+            <name>[hw] subscribe - Hardware Acceleration</name>
+            <class>SubscribeHardwareAccelerationTest</class>
+        </Test>
+
         <Test title="Subscribe - Image Capture">
 
             <description>Touch the subscribe stream to take a screen shot that is displayed</description>
@@ -447,17 +461,6 @@
 
             <name>Subscribe - Image Capture</name>
             <class>SubscribeImageTest</class>
-        </Test>
-
-        <Test title="Subscribe - Mute Audio">
-
-            <description>Simple Subscribe Mute Audio Test!</description>
-
-            <Properties>
-            </Properties>
-
-            <name>Subscribe - Mute Audio</name>
-            <class>SubscribeMuteTest</class>
         </Test>
 
         <Test title="Subscribe - No View">
@@ -471,15 +474,27 @@
             <class>SubscribeNoViewTest</class>
         </Test>
 
+        <Test title="Subscribe - Mute Audio">
+
+            <description>Simple Subscribe Mute Audio Test!</description>
+
+            <Properties>
+            </Properties>
+
+            <name>Subscribe - Mute Audio</name>
+            <class>SubscribeMuteTest</class>
+        </Test>
+
         <Test title="Subscribe - Reconnect">
 
-            <description>Simple Subscribe Reconnection test.  Touch to disconnect and automatically reconnect</description>
+            <description>Simple Subscribe Reconnection test.  Touch to disconnect/reconnect!</description>
 
             <Properties>
             </Properties>
 
             <name>Subscribe - Reconnect</name>
             <class>SubscribeReconnectTest</class>
+
         </Test>
 
         <Test title="Subscribe - Remote Call">
@@ -491,6 +506,17 @@
 
             <name>Subscribe - Remote Call</name>
             <class>SubscribeRemoteCallTest</class>
+        </Test>
+
+        <Test title="Subscribe - Renderer RGB">
+
+            <description>Subscribe test forcing RGB scalar for decoding.</description>
+
+            <Properties>
+            </Properties>
+
+            <name>[hw] subscribe - Renderer RGB</name>
+            <class>SubscribeRendererRGBScalarTest</class>
         </Test>
 
         <Test title="Subscribe - Set Volume">
@@ -517,7 +543,7 @@
 
         <Test title="Subscribe - Stream Manager Encrypted">
 
-            <description>A subscribe example that connects to a cluster server with the Stream Manager and ecrypts all data exchanged.</description>
+            <description>A subscribe example that connects to a cluster server with the Stream Manager using SRTP encryption.</description>
 
             <Properties>
             </Properties>
@@ -526,15 +552,15 @@
             <class>SubscribeSMEncryptedTest</class>
         </Test>
 
-        <Test title="Subscribe - Stream Send">
+        <Test title="Subscribe - Stream Manager Transcoder">
 
-            <description>A subscribe example that receives stream send events.</description>
+            <description>A subscribe example that connects to a cluster server with the Stream Manager using ABR.</description>
 
             <Properties>
             </Properties>
 
-            <name>Subscribe - Stream Send</name>
-            <class>SubscribeReceiveSendTest</class>
+            <name>Subscribe - Stream Manager Transcoder</name>
+            <class>SubscribeStreamManagerTranscoderTest</class>
         </Test>
 
         <Test title="Subscribe - Two Stream">
@@ -552,7 +578,7 @@
 
             <description>Publish and subscribe simultaneously to hold a conversation</description>
 
-            <!-- This is required to be set to 8000 for two-way session. -->
+            <!-- This is required to be 8000 in order for 2-Way to work. -->
             <Properties>
                 <sample_rate>8000</sample_rate>
             </Properties>
@@ -565,13 +591,46 @@
 
             <description>Publish and subscribe simultaneously through a stream manager</description>
 
-            <!-- This is required to be set to 8000 for two-way session. -->
+            <!-- This is required to be 8000 in order for 2-Way to work. -->
             <Properties>
                 <sample_rate>8000</sample_rate>
             </Properties>
 
             <name>Two Way - Stream Manager</name>
             <class>TwoWayStreamManagerTest</class>
+        </Test>
+
+        <Test title="Bandwidth Detection">
+
+            <description>Detect download and upload bandwidth prior to subscribing to a stream.</description>
+
+            <Properties>
+            </Properties>
+
+            <name>BandwidthDetection</name>
+            <class>BandwidthDetectionTest</class>
+        </Test>
+
+        <Test title="Bandwidth Detection - Download Only">
+
+            <description>Detect download bandwidth prior to subscribing to a stream.</description>
+
+            <Properties>
+            </Properties>
+
+            <name>BandwidthDetectionDownloadOnly</name>
+            <class>BandwidthDetectionDownloadOnlyTest</class>
+        </Test>
+
+        <Test title="Bandwidth Detection - Upload Only">
+
+            <description>Detect upload bandwidth prior to publishing a stream.</description>
+
+            <Properties>
+            </Properties>
+
+            <name>BandwidthDetectionUploadOnly</name>
+            <class>BandwidthDetectionUploadOnlyTest</class>
         </Test>
 
     </Tests>
