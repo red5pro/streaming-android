@@ -25,18 +25,26 @@
 //
 package red5pro.org.testandroidproject;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.app.Activity;
 import android.os.Message;
 import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.PermissionChecker;
+import android.util.AttributeSet;
 import android.util.Log;
+import android.view.View;
 
 import red5pro.org.testandroidproject.tests.*;
-import red5pro.org.testandroidproject.tests.PublishSendTest.PublishSendTest;
 import red5pro.org.testandroidproject.tests.PublishTest.PublishTest;
 
 
@@ -57,7 +65,7 @@ import red5pro.org.testandroidproject.tests.PublishTest.PublishTest;
  * to listen for item selections.
  */
 public class TestListActivity extends Activity
-        implements TestListFragment.Callbacks, PublishTestListener {
+        implements TestListFragment.Callbacks, PublishTestListener, ActivityCompat.OnRequestPermissionsResultCallback {
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -95,7 +103,32 @@ public class TestListActivity extends Activity
         // TODO: If exposing deep links into your app, handle intents here.
 
         //onItemSelected("0");
+
     }
+
+    @Override
+    public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PermissionChecker.PERMISSION_GRANTED
+                    || ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PermissionChecker.PERMISSION_GRANTED
+                    || ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PermissionChecker.PERMISSION_GRANTED) {
+
+                getFragmentManager().beginTransaction().addToBackStack(null).commit();
+                ActivityCompat.requestPermissions(this,
+                        new String[]{
+                                android.Manifest.permission.CAMERA,
+                                android.Manifest.permission.RECORD_AUDIO,
+                                android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                        }, 1337);
+            }
+        }
+
+        return super.onCreateView(parent, name, context, attrs);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {}
 
     /**
      * Callback method from {@link TestListFragment.Callbacks}
@@ -103,7 +136,10 @@ public class TestListActivity extends Activity
      */
     @Override
     public void onItemSelected(String id) {
+
+
         int _id = Integer.parseInt(id);
+
         TestContent.SetTestItem( _id );
 
         Bundle arguments = new Bundle();

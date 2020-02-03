@@ -140,7 +140,7 @@ public class SubscribeCluster extends SubscribeTest {
 
         display.showDebugView(TestContent.GetPropertyBool("debug_view"));
 
-        subscribe.play(TestContent.GetPropertyString("stream1"));
+        subscribe.play(TestContent.GetPropertyString("stream1"), TestContent.GetPropertyBool("hwAccel_on"));
 
         edgeShow = new TextView(display.getContext());
         FrameLayout.LayoutParams position = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.BOTTOM);

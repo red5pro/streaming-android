@@ -98,10 +98,9 @@ public class TwoWayStreamManagerTest extends TwoWayTest {
 
                     //url format: https://{streammanagerhost}:{port}/streammanager/api/2.0/event/{scopeName}/{streamName}?action=broadcast
                     String port = TestContent.getFormattedPortSetting(TestContent.GetPropertyString("server_port"));
-                    String version = TestContent.GetPropertyString("sm_version");
                     String protocol = (port.isEmpty() || port.equals("443")) ? "https" : "http";
                     String url = protocol + "://" +
-                            TestContent.GetPropertyString("host") + port + "/streammanager/api/" + version + "/event/" +
+                            TestContent.GetPropertyString("host") + port + "/streammanager/api/2.0/event/" +
                             TestContent.GetPropertyString("context") + "/" + streamName + "?action=" + action;
 
                     HttpClient httpClient = new DefaultHttpClient();
@@ -287,7 +286,7 @@ public class TwoWayStreamManagerTest extends TwoWayTest {
 
         //Unlike basic subscription, two-way needs echo cancellation, which needs the subscriber and publisher
         //to use the same Audio Controller - instead of recreating it for stability, we delay the subscriber
-        subscribe.play(TestContent.GetPropertyString("stream2"));
+        subscribe.play(TestContent.GetPropertyString("stream2"), TestContent.GetPropertyBool("hwAccel_on"));
 
         subscribeEdgeShow = new TextView(display.getContext());
         FrameLayout.LayoutParams position = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);

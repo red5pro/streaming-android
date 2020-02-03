@@ -38,6 +38,7 @@ import android.view.ViewGroup;
 
 import com.red5pro.streaming.R5Connection;
 import com.red5pro.streaming.R5Stream;
+import com.red5pro.streaming.R5StreamFormat;
 import com.red5pro.streaming.R5StreamProtocol;
 import com.red5pro.streaming.config.R5Configuration;
 import com.red5pro.streaming.event.R5ConnectionEvent;
@@ -86,8 +87,11 @@ public class SubscribeTest extends TestDetailFragment implements R5ConnectionLis
         else if (event.name() == R5ConnectionEvent.START_STREAMING.name()){
 //            subscribe.setFrameListener(new R5FrameListener() {
 //                @Override
-//                public void onBytesReceived(byte[] bytes, int i, int i1) {
-//                    Uncomment for framelistener performance test
+//                public void onFrameReceived(Object o, R5StreamFormat r5StreamFormat, int w, int h) {
+//                    int format = r5StreamFormat.value(); // 2 - YUV_PLANAR
+//                    if (r5StreamFormat.equals(R5StreamFormat.YUV_PLANAR)) {
+//                        byte[][] yuv_frames = (byte[][]) o; // Cast and access data in 3 planes as byte array. (byte[3][])
+//                    }
 //                }
 //            });
         }
@@ -138,25 +142,19 @@ public class SubscribeTest extends TestDetailFragment implements R5ConnectionLis
 
         display.showDebugView(TestContent.GetPropertyBool("debug_view"));
 
-        subscribe.play(TestContent.GetPropertyString("stream1"));
+        subscribe.play(TestContent.GetPropertyString("stream1"), TestContent.GetPropertyBool("hwAccel_on"));
 
-    }
-
-    protected void updateOrientation(int value) {
-        value += 90;
-        Log.d("SubscribeTest", "update orientation to: " + value);
-        display.setStreamRotation(value);
     }
 
     public void onMetaData(String metadata) {
         Log.d("SubscribeTest", "Metadata receieved: " + metadata);
         String[] props = metadata.split(";");
-        for (String s : props) {
-            String[] kv = s.split("=");
-            if (kv[0].equalsIgnoreCase("orientation")) {
-                updateOrientation(Integer.parseInt(kv[1]));
-            }
-        }
+//        for (String s : props) {
+//            String[] kv = s.split("=");
+//            if (kv[0].equalsIgnoreCase("orientation")) {
+//                updateOrientation(Integer.parseInt(kv[1]));
+//            }
+//        }
     }
 
     public void onStreamSend(String msg){

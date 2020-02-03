@@ -41,7 +41,7 @@ import red5pro.org.testandroidproject.tests.TestContent;
  */
 public class PublishCameraSwapTest extends PublishTest {
 
-    private int currentCamMode = Camera.CameraInfo.CAMERA_FACING_BACK;
+    protected int currentCamMode = Camera.CameraInfo.CAMERA_FACING_BACK;
 
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -68,7 +68,7 @@ public class PublishCameraSwapTest extends PublishTest {
         publish.attachCamera(camera);
     }
 
-    private boolean onPublishTouch( MotionEvent e ) {
+    protected boolean onPublishTouch( MotionEvent e ) {
 
         if( e.getAction() == MotionEvent.ACTION_UP && publish != null) {
             R5Camera publishCam = (R5Camera)publish.getVideoSource();

@@ -60,17 +60,24 @@ To disconnect, simply call `close()` on the object. This should be called before
 
 Remote Shared Objects use JSON for transmission, meaning that its structure is primarily up to your discretion. The base object will always be a dictionary with string keys, while values can be strings, numbers, booleans, arrays, or other dictionaries - with the same restriction on sub-objects.
 
-This example simply uses a number to keep a count of how many people are connected to the object. As seen in `onSharedObjectConnect`, value can be accessed from the object by name, and set using `setProperty`
+This example simply uses a hex-string color to update the text color of messages across all clients connected to the same Shared Object. When a user selects a color from the User Interface, the `setProperty` method is invoked on the Shared Object instance:
 
-```Java
-public void onSharedObjectConnect(JSONObject objectValue){
-    try {
-        addMessage("Connected to object, there are " + ((objectValue.has("count")) ? objectValue.getInt("count") : "no") + " other people connected");
-        thisUser = (objectValue.has("count") ? objectValue.getInt("count") + 1 : 1 );
-        //set the count property to add yourself
-        sObject.setProperty("count", thisUser);
-    } catch (JSONException e) { e.printStackTrace(); }
-}
+```java
+protected View.OnClickListener colorPicker = new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+        if (sObject == null) return;
+
+        Drawable background = view.getBackground();
+        int color = Color.BLACK;
+        if (background instanceof ColorDrawable) {
+            color = ((ColorDrawable) background).getColor();
+        }
+        String hexStr = "#"+Integer.toHexString(color).substring(2);
+        sObject.setProperty("color", hexStr);
+        setChatViewToHex(hexStr);
+     }
+};
 ```
 
 [SharedObjectTest.java #141](SharedObjectTest.java#L141)
@@ -79,9 +86,10 @@ When one client calls `setProperty` other clients will be notified through `onUp
 
 ```Java
 public void onUpdateProperty(JSONObject propertyInfo){
-//    propertyInfo.keys().next() can be used to find which property has updated.
+//        propertyInfo.keys().next() can be used to find which property has updated.
     try {
-        addMessage("Room update - There are now " + propertyInfo.getInt("count") + " users");
+        String hexString = propertyInfo.getString("color");
+        setChatViewToHex(hexString);
     } catch (JSONException e) {}
 }
 ```

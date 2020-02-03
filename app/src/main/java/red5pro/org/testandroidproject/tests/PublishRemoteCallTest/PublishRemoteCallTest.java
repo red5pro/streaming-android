@@ -58,7 +58,7 @@ public class PublishRemoteCallTest extends PublishTest {
                 public boolean onTouch(View v, MotionEvent event) {
 
                     if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                        Hashtable<String, String> map = new Hashtable<String, String>();
+                        Hashtable<Object, Object> map = new Hashtable<Object, Object>();
                         map.put("message", "The streamer wants your attention");
                         map.put("touchX", Float.toString(event.getRawX() / preview.getWidth()) );
                         map.put("touchY", Float.toString(event.getRawY() / preview.getHeight()) );

@@ -1,6 +1,6 @@
 # Subscribe Auto Reconnect Test
 
-This example utilizes overriding the `onConnectionEvent` method to test for and attempt to recover from connection errors or stopped streams by resubscribing after some preconfigured amount of time.
+This example utilizes overriding the `onConnectionEvent` method to test for and attempt to recover from connection errors or stopped streams by resubscribing after some preconfigured amount of time.  Prior to attempt to subscribe, it first makes a call on the `Streams API` to see if the stream is still active and available.
 
 ## Example Code
 

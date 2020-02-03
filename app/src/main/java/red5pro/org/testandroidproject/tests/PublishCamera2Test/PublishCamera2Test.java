@@ -106,7 +106,6 @@ public class PublishCamera2Test extends TestDetailFragment implements R5Connecti
 
         preview.attachStream(publish);
 
-
         CameraManager manager = (CameraManager)getActivity().getSystemService(Context.CAMERA_SERVICE);
         try {
             String[] camList = manager.getCameraIdList();
@@ -118,7 +117,7 @@ public class PublishCamera2Test extends TestDetailFragment implements R5Connecti
                     manager.openCamera(id, new CameraDevice.StateCallback() {
                         @Override
                         public void onOpened(@NonNull CameraDevice camera) {
-                            if(preview == null)
+                            if(publish == null)
                                 return;
                             startPublish(camera);
                         }
@@ -167,8 +166,6 @@ public class PublishCamera2Test extends TestDetailFragment implements R5Connecti
 
     @Override
     public void onStop() {
-
-        preview = null;
 
         if(publish != null){
             publish.stop();

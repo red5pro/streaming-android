@@ -156,7 +156,7 @@ public class TwoWayTest extends PublishTest {
                         @Override
                         public void run() {
                             try {
-                                Thread.sleep(2500);
+                                Thread.sleep(250);
 
                                 if(!Thread.interrupted())
                                     onSubscribeReady();
@@ -264,7 +264,7 @@ public class TwoWayTest extends PublishTest {
 
                 //Unlike basic subscription, two-way needs echo cancellation, which needs the subscriber and publisher
                 //to use the same Audio Controller - instead of recreating it for stability, we delay the subscriber
-                subscribe.play(TestContent.GetPropertyString("stream2"));
+                subscribe.play(TestContent.GetPropertyString("stream2"), TestContent.GetPropertyBool("hwAccel_on"));
 
                 killListThread();
             }

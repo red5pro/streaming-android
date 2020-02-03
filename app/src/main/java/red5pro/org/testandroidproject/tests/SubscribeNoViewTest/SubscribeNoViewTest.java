@@ -44,7 +44,6 @@ import com.red5pro.streaming.event.R5ConnectionListener;
 import com.red5pro.streaming.media.R5AudioController;
 
 import red5pro.org.testandroidproject.TestDetailFragment;
-import red5pro.org.testandroidproject.tests.PublishSendTest.PublishSendTest;
 import red5pro.org.testandroidproject.tests.TestContent;
 
 /**
@@ -105,7 +104,7 @@ public class SubscribeNoViewTest extends TestDetailFragment implements R5Connect
         //show all logging
         subscribe.setLogLevel(R5Stream.LOG_LEVEL_DEBUG);
 
-        subscribe.play(TestContent.GetPropertyString("stream1"));
+        subscribe.play(TestContent.GetPropertyString("stream1"), TestContent.GetPropertyBool("hwAccel_on"));
 
         return super.onCreateView(inflater, container, savedInstanceState);
     }
