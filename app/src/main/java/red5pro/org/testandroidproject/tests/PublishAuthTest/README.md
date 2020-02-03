@@ -1,4 +1,5 @@
 # Publisher Authentication using Red5 Pro
+
 This is an example of authenticating a Broadcast for stream playback.
 
 ### Example Code

@@ -95,7 +95,7 @@ public class SubscribeService extends Service {
         subscribe.audioController = new R5AudioController();
         subscribe.audioController.sampleRate = TestContent.GetPropertyInt("sample_rate");
 
-        subscribe.play(TestContent.GetPropertyString("stream1"));
+        subscribe.play(TestContent.GetPropertyString("stream1"), TestContent.GetPropertyBool("hwAccel_on"));
     }
 
     private void attachDisplay(){

@@ -83,7 +83,7 @@ public class SubscribeTwoStreamTest extends SubscribeTest {
 
         display.showDebugView(TestContent.GetPropertyString("debug_view").equals("true"));
 
-        subscribe.play(TestContent.GetPropertyString("stream1"));
+        subscribe.play(TestContent.GetPropertyString("stream1"), TestContent.GetPropertyBool("hwAccel_on"));
 
 
         secondDisplay = (R5VideoView) view.findViewById(R.id.videoView2);
@@ -122,7 +122,7 @@ public class SubscribeTwoStreamTest extends SubscribeTest {
 
                             secondSubscribe.audioController = new R5AudioController();
                             secondSubscribe.audioController.sampleRate = TestContent.GetPropertyInt("sample_rate");
-                            secondSubscribe.play(TestContent.GetPropertyString("stream2"));
+                            secondSubscribe.play(TestContent.GetPropertyString("stream2"), TestContent.GetPropertyBool("hwAccel_on"));
                         }
                     });
 

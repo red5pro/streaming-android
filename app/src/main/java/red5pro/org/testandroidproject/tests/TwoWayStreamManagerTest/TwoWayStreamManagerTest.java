@@ -287,7 +287,7 @@ public class TwoWayStreamManagerTest extends TwoWayTest {
 
         //Unlike basic subscription, two-way needs echo cancellation, which needs the subscriber and publisher
         //to use the same Audio Controller - instead of recreating it for stability, we delay the subscriber
-        subscribe.play(TestContent.GetPropertyString("stream2"));
+        subscribe.play(TestContent.GetPropertyString("stream2"), TestContent.GetPropertyBool("hwAccel_on"));
 
         subscribeEdgeShow = new TextView(display.getContext());
         FrameLayout.LayoutParams position = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -313,4 +313,3 @@ public class TwoWayStreamManagerTest extends TwoWayTest {
         void passURL(String url);
     }
 }
-

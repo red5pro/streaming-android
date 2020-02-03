@@ -23,54 +23,77 @@
 // WHETHER IN  AN  ACTION  OF  CONTRACT,  TORT  OR  OTHERWISE,  ARISING  FROM,  OUT  OF  OR  IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-package red5pro.org.testandroidproject.tests.SubscribeReceiveSendTest;
+package red5pro.org.testandroidproject.tests.Subscribe360Test;
 
-import android.content.res.Resources;
+import android.opengl.GLSurfaceView;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.AbsoluteLayout;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 
 import com.red5pro.streaming.R5Connection;
 import com.red5pro.streaming.R5Stream;
 import com.red5pro.streaming.R5StreamProtocol;
 import com.red5pro.streaming.config.R5Configuration;
+import com.red5pro.streaming.media.R5AudioController;
 import com.red5pro.streaming.view.R5VideoView;
 
 import red5pro.org.testandroidproject.R;
-import red5pro.org.testandroidproject.TestDetailFragment;
 import red5pro.org.testandroidproject.tests.SubscribeTest.SubscribeTest;
 import red5pro.org.testandroidproject.tests.TestContent;
 
 /**
- * Created by davidHeimann on 2/9/16.
+ * Created by toddanderson on 08/30/2018.
  */
-public class SubscribeReceiveSendTest extends SubscribeTest {
+public class Subscribe360Test extends SubscribeTest {
+
+   @Override
+   public void Subscribe(){
+
+       //Create the configuration from the tests.xml
+       R5Configuration config = new R5Configuration(R5StreamProtocol.RTSP,
+               TestContent.GetPropertyString("host"),
+               TestContent.GetPropertyInt("port"),
+               TestContent.GetPropertyString("context"),
+               TestContent.GetPropertyFloat("subscribe_buffer_time"));
+       config.setLicenseKey(TestContent.GetPropertyString("license_key"));
+       config.setBundleID(getActivity().getPackageName());
+
+       R5Connection connection = new R5Connection(config);
+
+       //setup a new stream using the connection
+       subscribe = new R5Stream(connection);
 
 
-    public void onStreamSend(String map){
+       //Some devices can't handle rapid reuse of the audio controller, and will crash
+       //Recreation of the controller assures that the example will always be stable
+       subscribe.audioController = new R5AudioController();
+       subscribe.audioController.sampleRate = TestContent.GetPropertyInt("sample_rate");
 
-        final String m = map;
-        Log.d("SubscribeReceive", "Got map: " + map);
-        Handler h = new Handler(Looper.getMainLooper());
-        h.post(new Runnable() {
-            @Override
-            public void run() {
+       subscribe.client = this;
+       subscribe.setListener(this);
 
-                Toast.makeText(SubscribeReceiveSendTest.this.
+       //show all logging
+       subscribe.setLogLevel(R5Stream.LOG_LEVEL_DEBUG);
 
-                        getActivity(),m,Toast
+       GLSurfaceView glView = new GLSurfaceView(display.getContext());
+       CustomVideoViewRenderer renderer = new CustomVideoViewRenderer(glView);
+       display.setRenderer(renderer);
 
-                        .LENGTH_SHORT).
+       //display.setZOrderOnTop(true);
+       display.attachStream(subscribe);
 
-                        show();
-            }
-        });
+       display.showDebugView(TestContent.GetPropertyBool("debug_view"));
 
-    }
+       subscribe.play(TestContent.GetPropertyString("stream1"), true);
+
+   }
 
 }

@@ -57,6 +57,7 @@ public class Home extends TestDetailFragment {
     CheckBox debugCheck;
     CheckBox videoCheck;
     CheckBox audioCheck;
+    CheckBox hwAccelCheck;
     RadioButton liveMode;
     RadioButton recordMode;
     RadioButton appendMode;
@@ -150,10 +151,12 @@ public class Home extends TestDetailFragment {
         debugCheck = (CheckBox)rootView.findViewById(R.id.debugCheck);
         videoCheck = (CheckBox)rootView.findViewById(R.id.videoCheck);
         audioCheck = (CheckBox)rootView.findViewById(R.id.audioCheck);
+        hwAccelCheck = (CheckBox)rootView.findViewById(R.id.hwAccelCheck);
 
         debugCheck.setChecked((TestContent.GetPropertyString("debug_view").equals("true")));
         videoCheck.setChecked((TestContent.GetPropertyString("video_on").equals("true")));
         audioCheck.setChecked((TestContent.GetPropertyString("audio_on").equals("true")));
+        hwAccelCheck.setChecked((TestContent.GetPropertyString("hwAccel_on").equals("true")));
 
         debugCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -174,6 +177,13 @@ public class Home extends TestDetailFragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked) TestContent.SetPropertyString("audio_on", "true");
                 else TestContent.SetPropertyString("audio_on", "false");
+            }
+        });
+        hwAccelCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked) TestContent.SetPropertyString("hwAccel_on", "true");
+                else TestContent.SetPropertyString("hwAccel_on", "false");
             }
         });
 

@@ -30,7 +30,6 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 
 import com.red5pro.streaming.R5Stream;
@@ -76,6 +75,8 @@ public class TestDetailFragment extends Fragment {
 
 
         }
+
+
     }
 
     @Override
