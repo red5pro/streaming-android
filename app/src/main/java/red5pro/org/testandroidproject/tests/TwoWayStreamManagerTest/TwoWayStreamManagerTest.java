@@ -98,9 +98,10 @@ public class TwoWayStreamManagerTest extends TwoWayTest {
 
                     //url format: https://{streammanagerhost}:{port}/streammanager/api/2.0/event/{scopeName}/{streamName}?action=broadcast
                     String port = TestContent.getFormattedPortSetting(TestContent.GetPropertyString("server_port"));
+                    String version = TestContent.GetPropertyString("sm_version");
                     String protocol = (port.isEmpty() || port.equals("443")) ? "https" : "http";
                     String url = protocol + "://" +
-                            TestContent.GetPropertyString("host") + port + "/streammanager/api/2.0/event/" +
+                            TestContent.GetPropertyString("host") + port + "/streammanager/api/" + version + "/event/" +
                             TestContent.GetPropertyString("context") + "/" + streamName + "?action=" + action;
 
                     HttpClient httpClient = new DefaultHttpClient();
@@ -312,4 +313,3 @@ public class TwoWayStreamManagerTest extends TwoWayTest {
         void passURL(String url);
     }
 }
-
