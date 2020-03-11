@@ -7,7 +7,7 @@
         <publish_buffer_time>0.5</publish_buffer_time>
         <subscribe_buffer_time>0.5</subscribe_buffer_time>
         <port>8554</port>
-        <stream1>stream1todd</stream1>
+        <stream1>stream1</stream1>
         <stream2>stream2</stream2>
         <context>live</context>
         <camera_width>640</camera_width>
