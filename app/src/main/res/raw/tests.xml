@@ -587,6 +587,18 @@
             <class>TwoWayTest</class>
         </Test>
 
+        <Test title="Conference">
+
+            <description>Join a virtual room, publish while subscribing to multiple other participants.</description>
+
+            <Properties>
+                <sample_rate>8000</sample_rate>
+            </Properties>
+
+            <name>Conference</name>
+            <class>ConferenceTest</class>
+        </Test>
+
         <Test title="Two Way - Stream Manager">
 
             <description>Publish and subscribe simultaneously through a stream manager</description>
