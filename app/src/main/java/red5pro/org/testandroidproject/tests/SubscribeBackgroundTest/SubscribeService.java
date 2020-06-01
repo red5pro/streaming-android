@@ -26,11 +26,17 @@
 package red5pro.org.testandroidproject.tests.SubscribeBackgroundTest;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Binder;
+import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 
 import com.red5pro.streaming.R5Connection;
 import com.red5pro.streaming.R5Stream;
@@ -65,6 +71,18 @@ public class SubscribeService extends Service {
 
         super.onCreate();
     }
+
+
+	@RequiresApi(Build.VERSION_CODES.O)
+	private String createNotificationChannel(String channelId, String channelName) {
+		NotificationChannel chan = new NotificationChannel(channelId,
+			channelName, NotificationManager.IMPORTANCE_NONE);
+		chan.setLightColor(Color.BLUE);
+		chan.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+		NotificationManager service = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+		service.createNotificationChannel(chan);
+		return channelId;
+	}
 
     public void startSubscribe(){
 
@@ -123,12 +141,22 @@ public class SubscribeService extends Service {
             subscribe.deactivate_display();
 
             if(holderNote == null){
-                holderNote = (new Notification.Builder(getApplicationContext()))
-                        .setContentTitle("R5Testbed")
-                        .setContentText("Streaming from the background")
-                        .setSmallIcon(R.drawable.ic_launcher)
-                        .build();
-                startForeground(7335776, holderNote);
+				Notification.Builder builder = null;
+				String channelId = "";
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+					channelId = createNotificationChannel("r5pro_service", "Red5 Pro Service");
+					builder = new Notification.Builder(getApplicationContext(), channelId);
+				} else {
+					builder = new Notification.Builder(getApplicationContext());
+				}
+
+				if (builder != null) {
+					holderNote = builder.setContentTitle("R5Testbed")
+						.setContentText("Streaming from the background")
+						.setSmallIcon(R.drawable.ic_launcher)
+						.build();
+					startForeground(7335776, holderNote);
+				}
             }
         }
         else {
