@@ -19,7 +19,7 @@
         <record_mode>Live</record_mode>
         <sample_rate>44100</sample_rate>
         <fps>15</fps>
-        <sm_version>3.1</sm_version>
+        <sm_version>4.0</sm_version>
         <sm_access_token>xyz123</sm_access_token>
     </Properties>
     <Tests>
