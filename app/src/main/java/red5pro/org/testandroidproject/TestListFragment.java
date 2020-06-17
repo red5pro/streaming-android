@@ -34,6 +34,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import red5pro.org.testandroidproject.tests.TestContent;
+import red5pro.org.testandroidproject.tests.TestItemAdapter;
 
 /**
  * A list fragment representing a list of Tests. This fragment
@@ -101,12 +102,13 @@ public class TestListFragment extends ListFragment {
         //Load XML TESTS
         TestContent.LoadTests(res.openRawResource(R.raw.tests));
         // TODO: replace with a real list adapter.
+        // AND DONE! see onViewCreated
 
-        setListAdapter(new ArrayAdapter<TestContent.TestItem>(
-                getActivity(),
-                android.R.layout.simple_list_item_activated_1,
-                android.R.id.text1,
-                TestContent.ITEMS));
+//        setListAdapter(new ArrayAdapter<TestContent.TestItem>(
+//                getActivity(),
+//                android.R.layout.simple_list_item_activated_1,
+//                android.R.id.text1,
+//                TestContent.ITEMS));
     }
 
     @Override
@@ -118,6 +120,10 @@ public class TestListFragment extends ListFragment {
                 && savedInstanceState.containsKey(STATE_ACTIVATED_POSITION)) {
             setActivatedPosition(savedInstanceState.getInt(STATE_ACTIVATED_POSITION));
         }
+
+        // Added to be able to assign accessibility id for appium testing.
+        TestItemAdapter adapter = new TestItemAdapter(this.getActivity(), TestContent.ITEMS);
+        setListAdapter(adapter);
     }
 
     @Override

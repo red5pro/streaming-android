@@ -26,7 +26,10 @@
 package red5pro.org.testandroidproject.tests;
 
 
+import android.content.Context;
 import android.util.Log;
+import android.widget.ArrayAdapter;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -75,7 +78,7 @@ public class TestContent {
             NodeList tests = doc.getDocumentElement().getElementsByTagName("Test");
             for (int i = 0; i < tests.getLength() ; i++) {
                 Element testElement = (Element)tests.item(i);
-                TestItem test = new TestItem( ""+i , testElement );//.getAttribute("title") , testElement.toString() );
+                TestItem test = new TestItem(""+i , testElement );//.getAttribute("title") , testElement.toString() );
                 ITEMS.add( test );
             }
 
@@ -163,6 +166,7 @@ public class TestContent {
 
     public static class TestItem {
         public String id;
+        public String title;
         public String content;
         public String className;
         public String description;
@@ -176,6 +180,7 @@ public class TestContent {
 
         public TestItem( String _id, Element contentXML) {
             id = _id;
+            title = contentXML.getAttribute("title");
             content = contentXML.getElementsByTagName("name").item(0).getTextContent();
             className = contentXML.getElementsByTagName("class").item(0).getTextContent();
             description = contentXML.getElementsByTagName("description").item(0).getTextContent();
@@ -187,4 +192,5 @@ public class TestContent {
             return content;
         }
     }
+
 }
