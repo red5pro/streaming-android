@@ -170,7 +170,7 @@ Once you have modified your settings, you can run the application for simulator 
 
 ### Multi
 
-| **[Conference](app/src/main/java/red5pro/org/testandroidproject/tests/Conference)**
+| **[Conference](app/src/main/java/red5pro/org/testandroidproject/tests/ConferenceTest)**
 | :-----
 | *Demonstrates multi-party communication using Red5 Pro. It also demonstrates using Shared Objects as notifications to recognize the addition and removal of parties broadcasting.*
 
