@@ -140,6 +140,26 @@ public class PublishCamera2Test extends TestDetailFragment implements R5Connecti
     }
 
     public void startPublish(CameraDevice device){
+        if(camera == null && delayThread == null){
+            delayThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try{
+                        Thread.sleep(100);
+                    }catch (Exception e){}
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            delayedStartPublish(device);
+                        }
+                    });
+                }
+            });
+            delayThread.start();
+        }
+    }
+
+    public void delayedStartPublish(CameraDevice device){
 
         camera = device;
 
