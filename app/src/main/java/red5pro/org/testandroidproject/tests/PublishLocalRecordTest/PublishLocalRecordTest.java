@@ -43,9 +43,12 @@ public class PublishLocalRecordTest extends PublishTest {
     protected void publish() {
         super.publish();
 
-        Map<String, Integer> props = new HashMap<>();
+        Map<String, Object> props = new HashMap<>();
         props.put(R5Stream.VideoBitrateKey, TestContent.GetPropertyInt("bitrate") * 2);
         props.put(R5Stream.AudioBitrateKey, publish.getAudioSource().getBitRate() * 2);
+        //other potential properties (all properties are optional):
+//        props.put(R5Stream.RecordDirectoryKey, "some/location/on/this/device"); //where to store the media
+//        props.put(R5Stream.RecordMediaScanKey, true); //should the media be scanned into the OS's media apps (default: true)
 
         publish.beginLocalRecordingWithProperties(getActivity().getApplicationContext(), "r5pro/testRecord", props);
     }

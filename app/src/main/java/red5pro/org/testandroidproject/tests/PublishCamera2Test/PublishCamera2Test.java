@@ -25,8 +25,10 @@
 //
 package red5pro.org.testandroidproject.tests.PublishCamera2Test;
 
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.hardware.camera2.CameraAccessException;
@@ -35,6 +37,7 @@ import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -75,7 +78,7 @@ public class PublishCamera2Test extends TestDetailFragment implements R5Connecti
 
         View rootView = inflater.inflate(R.layout.publish_test, container, false);
 
-        preview = (R5VideoView)rootView.findViewById(R.id.videoPreview);
+        preview = (R5VideoView) rootView.findViewById(R.id.videoPreview);
 
         String b = getActivity().getPackageName();
 
@@ -93,12 +96,12 @@ public class PublishCamera2Test extends TestDetailFragment implements R5Connecti
         //setup a new stream using the connection
         publish = new R5Stream(connection);
 
-        publish.audioController.sampleRate =  TestContent.GetPropertyInt("sample_rate");
+        publish.audioController.sampleRate = TestContent.GetPropertyInt("sample_rate");
 
         //show all logging
         publish.setLogLevel(R5Stream.LOG_LEVEL_DEBUG);
 
-        if(TestContent.GetPropertyBool("audio_on")) {
+        if (TestContent.GetPropertyBool("audio_on")) {
             //attach a microphone
             R5Microphone mic = new R5Microphone();
             publish.attachMic(mic);
@@ -106,27 +109,29 @@ public class PublishCamera2Test extends TestDetailFragment implements R5Connecti
 
         preview.attachStream(publish);
 
-        CameraManager manager = (CameraManager)getActivity().getSystemService(Context.CAMERA_SERVICE);
+        CameraManager manager = (CameraManager) getActivity().getSystemService(Context.CAMERA_SERVICE);
         try {
             String[] camList = manager.getCameraIdList();
-            for(String id : camList){
+            for (String id : camList) {
                 CameraCharacteristics info = manager.getCameraCharacteristics(id);
-                if(info.get(CameraCharacteristics.LENS_FACING) == CameraCharacteristics.LENS_FACING_FRONT){
+                if (info.get(CameraCharacteristics.LENS_FACING) == CameraCharacteristics.LENS_FACING_FRONT) {
                     camOrientation = info.get(CameraCharacteristics.SENSOR_ORIENTATION);
                     camInfo = info;
                     manager.openCamera(id, new CameraDevice.StateCallback() {
                         @Override
                         public void onOpened(@NonNull CameraDevice camera) {
-                            if(publish == null)
+                            if (publish == null)
                                 return;
                             startPublish(camera);
                         }
 
                         @Override
-                        public void onDisconnected(@NonNull CameraDevice camera) {}
+                        public void onDisconnected(@NonNull CameraDevice camera) {
+                        }
 
                         @Override
-                        public void onError(@NonNull CameraDevice camera, int error) {}
+                        public void onError(@NonNull CameraDevice camera, int error) {
+                        }
                     }, null);
                     break;
                 }
@@ -139,8 +144,28 @@ public class PublishCamera2Test extends TestDetailFragment implements R5Connecti
         return rootView;
     }
 
-    public void startPublish(CameraDevice device){
+    Thread delayThread = null;
+    public void startPublish(final CameraDevice device) {
+        if(camera == null && delayThread == null){
+            delayThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try{
+                        Thread.sleep(100);
+                    }catch (Exception e){}
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            delayedStartPublish(device);
+                        }
+                    });
+                }
+            });
+            delayThread.start();
+        }
+    }
 
+    public void delayedStartPublish(CameraDevice device){
         camera = device;
 
         camera2 = new R5Camera2(camera, camInfo, TestContent.GetPropertyInt("camera_width"), TestContent.GetPropertyInt("camera_height"));
