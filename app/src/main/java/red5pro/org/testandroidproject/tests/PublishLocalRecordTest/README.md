@@ -43,6 +43,12 @@ In order to have videos save to a different album in Android's photo app, all yo
 
 For instance, if you wanted the above example to save to the `r5pro` album, you would pass `"r5pro/testRecord"` instead.
 
+## Android 10+
+
+Android 10 introduced new security measures that limited where on the device an app can handle files - in specific, apps can no longer access the externalStoragePublicDirectory. Instead, all files made by an app must be stored in their own local directory. By default, the local record is placed in the internal, but you can also add a specific path as a string with the `R5Stream.RecordDirectoryKey` key in the properties object.
+
+Note that not every location will be able to be scanned into the Photos app, so please test all locations you intend to use in production before distributing it. If you don't want the video sent to the user's media roll, you can disable the media scanner by setting `R5Stream.RecordMediaScanKey` to `false` in the properties object.
+
 ## A Note about Android Jellybean
 
 Local Record relies primarily on MediaMuxer - which was added in Android API 18 - partway through Jellybean's update. In order to support api 16 and 17, the mp4parser library needs to be added to your project.

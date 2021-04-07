@@ -26,11 +26,17 @@
 package red5pro.org.testandroidproject.tests.SubscribeBackgroundTest;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Binder;
+import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 
 import com.red5pro.streaming.R5Connection;
 import com.red5pro.streaming.R5Stream;
@@ -48,117 +54,138 @@ import red5pro.org.testandroidproject.tests.TestContent;
 
 public class SubscribeService extends Service {
 
-    private R5Stream subscribe;
-    private R5VideoView display;
-    private Notification holderNote;
-    private final SubscribeServiceBinder mBinder = new SubscribeServiceBinder();
+	private R5Stream subscribe;
+	private R5VideoView display;
+	private Notification holderNote;
+	private final SubscribeServiceBinder mBinder = new SubscribeServiceBinder();
 
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        return mBinder;
-    }
+	@Nullable
+	@Override
+	public IBinder onBind(Intent intent) {
+		return mBinder;
+	}
 
-    @Override
-    public void onCreate() {
-        startSubscribe();
+	@Override
+	public void onCreate() {
+		startSubscribe();
 
-        super.onCreate();
-    }
+		super.onCreate();
+	}
 
-    public void startSubscribe(){
+	@RequiresApi(Build.VERSION_CODES.O)
+	private String createNotificationChannel(String channelId, String channelName) {
+		NotificationChannel chan = new NotificationChannel(channelId,
+			channelName, NotificationManager.IMPORTANCE_NONE);
+		chan.setLightColor(Color.BLUE);
+		chan.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+		NotificationManager service = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+		service.createNotificationChannel(chan);
+		return channelId;
+	}
 
-        if( subscribe != null){
-            subscribe.stop();
-        }
+	public void startSubscribe(){
 
-        R5Configuration config = new R5Configuration(R5StreamProtocol.RTSP,
-                TestContent.GetPropertyString("host"),
-                TestContent.GetPropertyInt("port"),
-                TestContent.GetPropertyString("context"),
-                TestContent.GetPropertyFloat("subscribe_buffer_time"));
-        config.setLicenseKey(TestContent.GetPropertyString("license_key"));
-        config.setBundleID( getPackageName() );
+		if( subscribe != null){
+			subscribe.stop();
+		}
 
-        R5Connection connection = new R5Connection(config);
+		R5Configuration config = new R5Configuration(R5StreamProtocol.RTSP,
+			TestContent.GetPropertyString("host"),
+			TestContent.GetPropertyInt("port"),
+			TestContent.GetPropertyString("context"),
+			TestContent.GetPropertyFloat("subscribe_buffer_time"));
+		config.setLicenseKey(TestContent.GetPropertyString("license_key"));
+		config.setBundleID( getPackageName() );
 
-        //setup a new stream using the connection
-        subscribe = new R5Stream(connection);
+		R5Connection connection = new R5Connection(config);
 
-        //show all logging
-        subscribe.setLogLevel(R5Stream.LOG_LEVEL_DEBUG);
+		//setup a new stream using the connection
+		subscribe = new R5Stream(connection);
 
-        if(display != null) {
-            attachDisplay();
-        }
+		//show all logging
+		subscribe.setLogLevel(R5Stream.LOG_LEVEL_DEBUG);
 
-        subscribe.audioController = new R5AudioController();
-        subscribe.audioController.sampleRate = TestContent.GetPropertyInt("sample_rate");
+		if(display != null) {
+			attachDisplay();
+		}
 
-        subscribe.play(TestContent.GetPropertyString("stream1"), TestContent.GetPropertyBool("hwAccel_on"));
-    }
+		subscribe.audioController = new R5AudioController();
+		subscribe.audioController.sampleRate = TestContent.GetPropertyInt("sample_rate");
 
-    private void attachDisplay(){
-        display.attachStream(subscribe);
-        display.showDebugView(TestContent.GetPropertyBool("debug_view"));
-    }
+		subscribe.play(TestContent.GetPropertyString("stream1"), TestContent.GetPropertyBool("hwAccel_on"));
+	}
 
-    public void setDisplay( R5VideoView view ){
-        if(view == null){
-            return;
-        }
-        else {
+	private void attachDisplay(){
+		display.attachStream(subscribe);
+		display.showDebugView(TestContent.GetPropertyBool("debug_view"));
+	}
 
-            display = view;
+	public void setDisplay( R5VideoView view ){
+		if(view == null){
+			return;
+		}
+		else {
 
-            if (subscribe != null) {
-                attachDisplay();
-            } else startSubscribe();
-        }
-    }
+			display = view;
 
-    public void setDisplayOn(boolean setOn){
+			if (subscribe != null) {
+				attachDisplay();
+			} else startSubscribe();
+		}
+	}
 
-        if(!setOn){
-            subscribe.deactivate_display();
+	public void setDisplayOn(boolean setOn){
 
-            if(holderNote == null){
-                holderNote = (new Notification.Builder(getApplicationContext()))
-                        .setContentTitle("R5Testbed")
-                        .setContentText("Streaming from the background")
-                        .setSmallIcon(R.drawable.ic_launcher)
-                        .build();
-                startForeground(7335776, holderNote);
-            }
-        }
-        else {
-            if(holderNote != null){
-                stopForeground(true);
-                holderNote = null;
-            }
+		if(!setOn){
+			subscribe.deactivate_display();
 
-            subscribe.activate_display();
-        }
-    }
+			if(holderNote == null){
+				Notification.Builder builder = null;
+				String channelId = "";
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+					channelId = createNotificationChannel("r5pro_service", "Red5 Pro Service");
+					builder = new Notification.Builder(getApplicationContext(), channelId);
+				} else {
+					builder = new Notification.Builder(getApplicationContext());
+				}
 
-    @Override
-    public void onDestroy() {
+				if (builder != null) {
+					holderNote = builder.setContentTitle("R5Testbed")
+						.setContentText("Streaming from the background")
+						.setSmallIcon(R.drawable.ic_launcher)
+						.build();
+					startForeground(7335776, holderNote);
+				}
+			}
+		}
+		else {
+			if(holderNote != null){
+				stopForeground(true);
+				holderNote = null;
+			}
 
-        if(holderNote != null) {
-            stopForeground(true);
-            holderNote = null;
-        }
+			subscribe.activate_display();
+		}
+	}
 
-        if(subscribe != null){
-            subscribe.stop();
-        }
+	@Override
+	public void onDestroy() {
 
-        super.onDestroy();
-    }
+		if(holderNote != null) {
+			stopForeground(true);
+			holderNote = null;
+		}
 
-    class SubscribeServiceBinder extends Binder {
-        SubscribeService getService(){
-            return SubscribeService.this;
-        }
-    }
+		if(subscribe != null){
+			subscribe.stop();
+		}
+
+		super.onDestroy();
+	}
+
+	class SubscribeServiceBinder extends Binder {
+		SubscribeService getService(){
+			return SubscribeService.this;
+		}
+	}
 }
