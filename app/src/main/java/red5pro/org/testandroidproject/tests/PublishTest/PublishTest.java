@@ -244,6 +244,7 @@ public class PublishTest extends TestDetailFragment implements R5ConnectionListe
 
         publishTestListener = listener;
         if (publish != null) {
+            preview.attachStream(null);
             publish.stop();
 
             if(publish.getVideoSource() != null) {
