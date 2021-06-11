@@ -26,14 +26,19 @@
 package red5pro.org.testandroidproject.tests.PublishBackgroundTest;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.hardware.Camera;
 import android.os.Binder;
+import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.view.Surface;
 import android.view.WindowManager;
 
@@ -70,6 +75,17 @@ public class PublishService extends Service {
 
         super.onCreate();
     }
+
+	@RequiresApi(Build.VERSION_CODES.O)
+	private String createNotificationChannel(String channelId, String channelName) {
+		NotificationChannel chan = new NotificationChannel(channelId,
+			channelName, NotificationManager.IMPORTANCE_NONE);
+		chan.setLightColor(Color.BLUE);
+		chan.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+		NotificationManager service = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+		service.createNotificationChannel(chan);
+		return channelId;
+	}
 
     private R5Stream.RecordType getPublishRecordType () {
         String type = TestContent.GetPropertyString("record_mode");
@@ -168,14 +184,24 @@ public class PublishService extends Service {
             camera.setCamera(null);
             cam = null;
 
-            if(holderNote == null){
-                holderNote = (new Notification.Builder(getApplicationContext()))
-                        .setContentTitle("R5Testbed")
-                        .setContentText("Publishing from the background")
-                        .setSmallIcon(R.drawable.ic_launcher)
-                        .build();
-                startForeground(57234111, holderNote);
-            }
+			if(holderNote == null){
+				Notification.Builder builder = null;
+				String channelId = "";
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+					channelId = createNotificationChannel("r5pro_service", "Red5 Pro Service");
+					builder = new Notification.Builder(getApplicationContext(), channelId);
+				} else {
+					builder = new Notification.Builder(getApplicationContext());
+				}
+
+				if (builder != null) {
+					holderNote = builder.setContentTitle("R5Testbed")
+						.setContentText("Publishing from the background")
+						.setSmallIcon(R.drawable.ic_launcher)
+						.build();
+					startForeground(57234111, holderNote);
+				}
+			}
         }
         else {
             if(holderNote != null){

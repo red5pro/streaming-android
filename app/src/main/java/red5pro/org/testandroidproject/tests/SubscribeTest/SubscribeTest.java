@@ -26,8 +26,11 @@
 package red5pro.org.testandroidproject.tests.SubscribeTest;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -106,6 +109,9 @@ public class SubscribeTest extends TestDetailFragment implements R5ConnectionLis
         display = (R5VideoView) view.findViewById(R.id.videoView);
 
         Subscribe();
+//
+//        ConnectivityManager cm = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+//        NetworkInfo info = cm.getActiveNetworkInfo();
 
         return view;
     }
@@ -163,13 +169,13 @@ public class SubscribeTest extends TestDetailFragment implements R5ConnectionLis
 
     @Override
     public void onStop() {
+        if (display != null) {
+            display.attachStream(null);
+        }
+
         if(subscribe != null) {
             subscribe.stop();
             subscribe = null;
-        }
-
-        if (display != null) {
-            display.attachStream(null);
         }
 
         super.onStop();
