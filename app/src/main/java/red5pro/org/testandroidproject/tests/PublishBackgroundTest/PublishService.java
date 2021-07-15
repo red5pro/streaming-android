@@ -37,8 +37,8 @@ import android.hardware.Camera;
 import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import android.view.Surface;
 import android.view.WindowManager;
 

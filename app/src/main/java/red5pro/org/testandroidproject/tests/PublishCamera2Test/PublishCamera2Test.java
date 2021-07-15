@@ -36,8 +36,8 @@ import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraManager;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -143,7 +143,6 @@ public class PublishCamera2Test extends TestDetailFragment implements R5Connecti
 
         return rootView;
     }
-
 
     Thread delayThread = null;
     public void startPublish(final CameraDevice device) {
