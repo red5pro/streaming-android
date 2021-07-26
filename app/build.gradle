@@ -6,8 +6,8 @@ android {
         applicationId "red5pro.org.testandroidproject"
         minSdkVersion 23
         targetSdkVersion 30
-        versionCode 8181
-        versionName "8.1.8.1"
+        versionCode 9000
+        versionName "9.0.0.0"
     }
     buildTypes {
         release {
