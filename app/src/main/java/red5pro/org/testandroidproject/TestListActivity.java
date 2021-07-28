@@ -26,6 +26,7 @@
 package red5pro.org.testandroidproject;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
@@ -36,10 +37,10 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.os.Message;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.PermissionChecker;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.PermissionChecker;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
