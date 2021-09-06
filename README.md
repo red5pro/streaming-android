@@ -11,7 +11,7 @@ You will need a functional, running Red5 Pro server web- (or locally-) accessibl
 ### Red5 Pro SDK License Key
 A Red5 Pro SDK License Key is required to use the iOS Mobile SDK. If you already have a [Red5 Pro Account](https://account.red5pro.com), you can find your Red5 Pro SDK License Key at [https://account.red5pro.com/overview](https://account.red5pro.com/overview).
 
-> You will need to copy the `SDK License` into the `license_key` property field of the [tests.xml](app/src/res/raw/test.xml) resource file.
+> You will need to copy the `SDK License` into the `license_key` property field of the [tests.xml](app/src/main/res/raw/test.xml) resource file.
 
 ## Setup
 
