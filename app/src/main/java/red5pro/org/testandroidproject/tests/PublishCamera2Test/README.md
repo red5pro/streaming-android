@@ -1,6 +1,6 @@
 # Publish Camera2
 
-The Camera2 API offers a robust suite of controls for a device's camera. While it's still possible to use the Camera API for simpler use-cases, note that it is deprecated. Instead, the Android developer documents recommend using the Camera2 and CameraX APIs. See the [Camera API](https://developer.android.com/guide/topics/media/camera) and [Camera2 API](https://developer.android.com/training/camera2) Developer Documentation for more information.
+The Camera2 API offers a robust suite of controls for a device's camera. While it's still possible to use the Camera API for simpler use-cases, note that it is deprecated. Instead, the Android developer documention recommends using the Camera2 and CameraX APIs. See the [Camera API](https://developer.android.com/guide/topics/media/camera) and [Camera2 API](https://developer.android.com/training/camera2) Developer Documentation for more information.
 
 ### Example Code
 
