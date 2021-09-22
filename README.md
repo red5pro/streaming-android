@@ -16,7 +16,7 @@ Once you have modified your settings, you can run the application on a device.
 | **[Publish](app/src/main/java/red5pro/org/testandroidproject/tests/PublishTest)**
 | The primary Publish example.
 | **[1080p](app/src/main/java/red5pro/org/testandroidproject/tests/PublishTest)**
-| High-qaulity stream example with a 1080p (1920x1080) resolution, 3500 kbps bitrate, and 30 fps framerate. Values are set in `tests.xml`. See [#L62](https://github.com/red5pro/streaming-android/blob/edee52de098ab566a521663829eb7ca598d446a2/app/src/main/res/raw/tests.xml#L62) for reference.
+| High-quality stream example with a 1080p (1920x1080) resolution, 3500 kbps bitrate, and 30 fps framerate. Values are set in `tests.xml`. See [#L62](https://github.com/red5pro/streaming-android/blob/edee52de098ab566a521663829eb7ca598d446a2/app/src/main/res/raw/tests.xml#L62) for reference.
 | **[ABR](app/src/main/java/red5pro/org/testandroidproject/tests/PublishABRTest)**
 | A high bitrate publisher with `AdaptiveBitrateController`.
 | **[Aspect Ratio](app/src/main/java/red5pro/org/testandroidproject/tests/PublishAspectTest)**
@@ -117,14 +117,13 @@ Once you have modified your settings, you can run the application on a device.
 | **[Two Streams](app/src/main/java/red5pro/org/testandroidproject/tests/SubscribeTwoStreamTest)**
 | An example of subscribing to multiple streams at once, useful for subscribing to a presentation hosted by two people using a Two Way connection.
 
-### Multi
-
+### Multi-party
+| |
+| ----
 | **[Conference](app/src/main/java/red5pro/org/testandroidproject/tests/ConferenceTest)**
-| :-----
-| *Demonstrates multi-party communication using Red5 Pro. It also demonstrates using Shared Objects as notifications to recognize the addition and removal of parties broadcasting.*
+| Demonstrates multi-party communication using Red5 Pro. It also demonstrates using Shared Objects as notifications to recognize the addition and removal of parties broadcasting.
 
 ## Notes
-
 1. You will need two devices, a publisher and a subscriber, for some examples. Also, some require another mobile device, but most can also use the [HTML5 Testbed Examples](https://github.com/red5pro/streaming-html5).
 2. You can see a list of active streams by navigating to http://your_red5_pro_server_ip:5080/live/streams.jsp
 3. Click on the flash link (for example, flash_publisher) in the streams list displayed to view the published stream in your browser.
