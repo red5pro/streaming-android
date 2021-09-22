@@ -1,5 +1,5 @@
 ## Requirements
-You will need a Red5 Pro server (either hosted or local) to connect the client. Also required is a Red5 Pro Mobile SDK License Key. If you already have a Red5 Pro account you can download the server and find your license key at [Accounts](https://account.red5pro.com). If not, you will need to sign up for a new account.
+You will need a Red5 Pro server (either hosted or local) to connect the client. Also required is a Red5 Pro Mobile SDK License Key. If you already have a Red5 Pro account, you can download the server and find your license key at [Accounts](https://account.red5pro.com). If not, you will need to sign up for a new account.
  
 ### Mobile SDK Setup
 * Copy your key into the `<license_key>` property field of the `app/src/res/raw/test.xml` resource file.
@@ -14,9 +14,9 @@ Once you have modified your settings, you can run the application on a device.
 | |
 | ----
 | **[Publish](app/src/main/java/red5pro/org/testandroidproject/tests/PublishTest)**
-| The base Publish example.
+| The primary Publish example.
 | **[1080p](app/src/main/java/red5pro/org/testandroidproject/tests/PublishTest)**
-| A high quality publisher. Note that this is the publish test with a non-default 'bitrate' and camera size values set in `tests.xml`.
+| High-qaulity stream example with a 1080p (1920x1080) resolution, 3500 kbps bitrate, and 30 fps framerate. Values are set in `tests.xml`. See [#L62](https://github.com/red5pro/streaming-android/blob/edee52de098ab566a521663829eb7ca598d446a2/app/src/main/res/raw/tests.xml#L62) for reference.
 | **[ABR](app/src/main/java/red5pro/org/testandroidproject/tests/PublishABRTest)**
 | A high bitrate publisher with `AdaptiveBitrateController`.
 | **[Aspect Ratio](app/src/main/java/red5pro/org/testandroidproject/tests/PublishAspectTest)**
@@ -30,9 +30,9 @@ Once you have modified your settings, you can run the application on a device.
 | **[Camera Device Orientation](app/src/main/java/red5pro/org/testandroidproject/tests/PublishCameraDeviceOrientationTest)**
 | An example that combines the `Camera Swap` and `Device Orientation` examples.
 | **[Camera Swap](app/src/main/java/red5pro/org/testandroidproject/tests/PublishCameraSwapTest)**
-| Touch the screen to swap which camera is being used! Verify using flash that camera is swapping properly and no rendering problems occur.
+| Touch the screen to swap which camera is being used.
 | **[Camera2](app/src/main/java/red5pro/org/testandroidproject/tests/PublishCamera2Test)**
-| Publish example for the camera2 API.
+| Publish example for the Camera2 API.
 | **[Custom Mic Source](app/src/main/java/red5pro/org/testandroidproject/tests/PublishCustomMicTest)**
 | Uses a custom controller to supply audio data to the publisher.
 | **[Custom Video Source](app/src/main/java/red5pro/org/testandroidproject/tests/PublishCustomSourceTest)**
@@ -125,7 +125,7 @@ Once you have modified your settings, you can run the application on a device.
 
 ## Notes
 
-1. For some of the above examples you will need two devices (a publisher, and a subscriber). You can also use a web browser to subscribe or publish via Flash.
+1. You will need two devices, a publisher and a subscriber, for some examples. Also, some require another mobile device, but most can also use the [HTML5 Testbed Examples](https://github.com/red5pro/streaming-html5).
 2. You can see a list of active streams by navigating to http://your_red5_pro_server_ip:5080/live/streams.jsp
 3. Click on the flash link (for example, flash_publisher) in the streams list displayed to view the published stream in your browser.
 
