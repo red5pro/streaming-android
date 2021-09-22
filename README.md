@@ -3,7 +3,7 @@ You will need a Red5 Pro server (either hosted or local) to connect the client. 
  
 ### Mobile SDK Setup
 * Copy your key into the `<license_key>` property field of the `app/src/res/raw/test.xml` resource file.
-* Also modify the `<host>` value in `app/src/res/main/raw/test.xml` to point to your server address.
+* Also, modify the `<host>` value in `app/src/res/main/raw/test.xml` to point to your server address.
 * If running the server locally, your machine and mobile device need to be on the same Wi-Fi network.
 
 Once you have modified your settings, you can run the application on a device.
@@ -16,9 +16,9 @@ Once you have modified your settings, you can run the application on a device.
 | **[Publish](app/src/main/java/red5pro/org/testandroidproject/tests/PublishTest)**
 | The primary Publish example.
 | **[1080p](app/src/main/java/red5pro/org/testandroidproject/tests/PublishTest)**
-| High-quality stream example with a 1080p (1920x1080) resolution, 3500 kbps bitrate, and 30 fps framerate. Values are set in `tests.xml`. See [#L62](https://github.com/red5pro/streaming-android/blob/edee52de098ab566a521663829eb7ca598d446a2/app/src/main/res/raw/tests.xml#L62) for reference.
+| This example produces a high-quality 1080p stream. Settings are 1920x1080 resolution, 3500 kbps bitrate, and 30 fps framerate—these values are in the `tests.xml` file. See [#L62](https://github.com/red5pro/streaming-android/blob/edee52de098ab566a521663829eb7ca598d446a2/app/src/main/res/raw/tests.xml#L62) for reference.
 | **[ABR](app/src/main/java/red5pro/org/testandroidproject/tests/PublishABRTest)**
-| A high bitrate publisher with `AdaptiveBitrateController`.
+| Demonstrates the `AdaptiveBitrateController`, which dynamically adjusts the publishing bitrate to meet the bandwidth restrictions of the network connection or encoding hardware.
 | **[Aspect Ratio](app/src/main/java/red5pro/org/testandroidproject/tests/PublishAspectTest)**
 | Publish example that includes manipulation of the preview display's aspect ratio.
 | **[Authentication](app/src/main/java/red5pro/org/testandroidproject/tests/PublishAuthTest)**
