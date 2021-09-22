@@ -1,6 +1,6 @@
 # Adaptive Bitrate Publishing
 
-Demonstrates the 'AdaptiveBitrateController', which dynamically adjusts the publishing bitrate to meet the bandwidth restrictions of the network connection or encoding hardware.
+Demonstrates the `AdaptiveBitrateController`, which dynamically adjusts the publishing bitrate to meet the bandwidth restrictions of the network connection or encoding hardware.
 
 ### Example Code
 
