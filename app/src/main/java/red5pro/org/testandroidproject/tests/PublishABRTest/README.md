@@ -18,11 +18,9 @@ adaptor.AttachStream(publish);
 
 [PublishABRTest.java #56](PublishABRTest.java#L56)
 
-The controller will continuously adjust the video bitrate until the stream has closed.
-
 ### Range
 
-The `AdaptiveBitrateController` will dynamically adjust the video bitrate between the lowest possible bitrate the encoder can encode at, and the value set on the `R5VideoSource` (typically an `R5Camera`) on the stream. In this case, the value is assigned according to the value in `tests.xml`. 
+The `AdaptiveBitrateController` will dynamically adjust the video bit rate between the lowest possible bit rate the encoder can achieve and the value set on the `R5VideoSource` (typically an `R5Camera`) on the stream. Assign that value in `tests.xml`.
 
 ```Java
 camera.setBitrate(TestContent.GetPropertyInt("bitrate"));
@@ -30,6 +28,8 @@ camera.setBitrate(TestContent.GetPropertyInt("bitrate"));
 
 [PublishABRTest.java #53](PublishABRTest.java#L53)
 
-The controller will adjust the bitrate ~200 kbps every 2 seconds to achieve the best possible video quality.
+The controller will adjust the bit rate up to 200 kbps every two seconds to achieve the best possible video quality.
 
-Video will be turned off if the stream is unable to maintain a smooth connection at the lowest possible bitrate.  You can force video to be included with the `AdaptiveBitrateController.requiresVideo` flag.
+If the stream cannot maintain a smooth connection at the lowest possible bit rate, the video will be turned off. ***(? What does that mean, exactly?)***
+
+You can force the video stream ***(to be?)*** with the `AdaptiveBitrateController.requiresVideo` flag. ***(Do we want them to be able to do this?)***
