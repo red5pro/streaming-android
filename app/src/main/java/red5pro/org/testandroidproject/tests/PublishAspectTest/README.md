@@ -9,7 +9,7 @@
 
 ## Running the example
 
-Touch the screen at any time while streaming to change the scale mode, affecting how the stream is display on the user's end.
+Touch the screen at any time while streaming to change the scale mode, affecting how the stream is display on the Subscriber's end.
 
 ## Using scaleMode
 
