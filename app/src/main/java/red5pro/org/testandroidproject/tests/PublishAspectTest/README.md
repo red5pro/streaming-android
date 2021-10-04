@@ -22,15 +22,3 @@ Touch the screen at any time while streaming to change the scale mode, affecting
 
 
 By default, this value is `r5_scale_to_fill`, and the Android SDK handles this enum through raw int value (0,1,2). This example cycles through these values when it receives a screen tap.
-
-```Java
-int sMode = subscribe.getScaleMode();
-
-sMode++;
-//A value of 3 or larger won't parse correctly to the enum, so it's reset to 0
-if(sMode == 3) sMode = 0;
-
-subscribe.setScaleMode(sMode);
-```
-
-[PublishAspectTest.java #34](PublishAspectTest.java#L29)
