@@ -26,6 +26,7 @@
 package red5pro.org.testandroidproject.tests.SubscribeMuteTest;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -37,6 +38,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.red5pro.streaming.R5Connection;
 import com.red5pro.streaming.R5Stream;
@@ -58,9 +60,30 @@ public class SubscribeMuteTest extends TestDetailFragment implements R5Connectio
     protected R5Stream subscribe;
     protected boolean mIsMuted = false;
 
+	protected void showToast (String message) {
+		final CharSequence text = message;
+		final Context context = getContext();
+		final int duration = Toast.LENGTH_SHORT;
+		try {
+			getActivity().runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					Toast toast = Toast.makeText(context, text, duration);
+					toast.show();
+				}
+			});
+		} catch (Exception e) {
+			// Most likely have moved away from activity back to main listing on Event.CLOSE.
+			e.printStackTrace();
+		}
+	}
+
     @Override
     public void onConnectionEvent(R5ConnectionEvent event) {
         Log.d("Subscriber", ":onConnectionEvent " + event.name());
+		String msg = event.message;
+		showToast(msg == null ? event.name() : msg);
+
         if (event.name() == R5ConnectionEvent.LICENSE_ERROR.name()) {
             Handler h = new Handler(Looper.getMainLooper());
             h.post(new Runnable() {
