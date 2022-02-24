@@ -21,6 +21,7 @@
         <fps>15</fps>
         <sm_version>4.0</sm_version>
         <sm_access_token>xyz123</sm_access_token>
+		<conference_host>ws://10.0.0.75:8001</conference_host>
     </Properties>
     <Tests>
 
