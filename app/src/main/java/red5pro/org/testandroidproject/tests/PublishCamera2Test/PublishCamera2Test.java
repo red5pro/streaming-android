@@ -45,6 +45,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.red5pro.streaming.R5Connection;
 import com.red5pro.streaming.R5Stream;
@@ -72,6 +73,24 @@ public class PublishCamera2Test extends TestDetailFragment implements R5Connecti
     private CameraDevice camera;
     private CameraCharacteristics camInfo;
     protected int camOrientation;
+
+	protected void showToast (String message) {
+		final CharSequence text = message;
+		final Context context = getContext();
+		final int duration = Toast.LENGTH_SHORT;
+		try {
+			getActivity().runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					Toast toast = Toast.makeText(context, text, duration);
+					toast.show();
+				}
+			});
+		} catch (Exception e) {
+			// Most likely have moved away from activity back to main listing on Event.CLOSE.
+			e.printStackTrace();
+		}
+	}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -184,6 +203,9 @@ public class PublishCamera2Test extends TestDetailFragment implements R5Connecti
     @Override
     public void onConnectionEvent(R5ConnectionEvent event) {
         Log.d("Publisher", ":onConnectionEvent " + event.name());
+		String msg = event.message;
+		showToast(msg == null ? event.name() : msg);
+
         if (event.name() == R5ConnectionEvent.START_STREAMING.name()){
 
         }

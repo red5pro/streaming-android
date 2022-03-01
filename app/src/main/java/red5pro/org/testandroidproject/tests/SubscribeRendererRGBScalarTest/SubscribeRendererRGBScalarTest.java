@@ -99,6 +99,7 @@ public class SubscribeRendererRGBScalarTest extends SubscribeTest {
    @Override
    public void onConnectionEvent(R5ConnectionEvent event) {
        Log.d("Subscriber", ":onConnectionEvent " + event.name());
+       super.onConnectionEvent(event);
        if (event.name() == R5ConnectionEvent.LICENSE_ERROR.name()) {
            Handler h = new Handler(Looper.getMainLooper());
            h.post(new Runnable() {
