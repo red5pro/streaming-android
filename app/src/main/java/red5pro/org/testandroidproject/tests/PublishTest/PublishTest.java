@@ -74,6 +74,11 @@ public class PublishTest extends TestDetailFragment implements R5ConnectionListe
 		final CharSequence text = message;
 		final Context context = getContext();
 		final int duration = Toast.LENGTH_SHORT;
+
+		if (getActivity() == null || context == null) {
+			return;
+		}
+
 		try {
 			getActivity().runOnUiThread(new Runnable() {
 				@Override
