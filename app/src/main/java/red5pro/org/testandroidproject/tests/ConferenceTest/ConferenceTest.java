@@ -40,8 +40,6 @@ import red5pro.org.testandroidproject.tests.TestContent;
 
 public class ConferenceTest extends PublishTest {
 
-	public boolean useSocket = true;
-
 	public LinearLayout rootView = null;
 	public RelativeLayout nameRoot, muteRoot;
 	public EditText streamNameTxt, roomNameTxt;
@@ -52,7 +50,6 @@ public class ConferenceTest extends PublishTest {
 	public ArrayList<StreamPackage> streams = new ArrayList<>();
 	public ArrayList<String> subQueue = null;
 	public R5Configuration config = null;
-	R5SharedObject roomSO;
 
 	WebSocketProvider mWebSocketProvider;
 
@@ -367,11 +364,7 @@ public class ConferenceTest extends PublishTest {
 	// ^ STREAMS ^
 
 	public void connectToListServer () {
-		if (useSocket) {
-			connectSocket();
-		} else {
-			connectSO();
-		}
+		connectSocket();
 	}
 
 	// v SOCKET v
@@ -395,50 +388,6 @@ public class ConferenceTest extends PublishTest {
 	}
 
 	// ^ SOCKET ^
-
-	// v SHARED OBJECT v
-
-	public void connectSO(){
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				try{
-					Thread.sleep(100);
-				}catch (Exception e){
-					return;
-				}
-				if (streams == null || streams.size() < 1) { //we've stopped
-					return;
-				}
-				roomSO = new R5SharedObject(roomName, streams.get(0).stream.connection);
-				roomSO.client = ConferenceTest.this;
-			}
-		}).start();
-	}
-
-	//callback for remote object connection - remote object now available
-	public void onSharedObjectConnect(JSONObject objectValue) {
-		try {
-			JSONObject data = roomSO.getData();
-			String streamsString = data.has("streams") ? (String) data.get("streams") : "";
-			if(streamsString.isEmpty() || clear){
-				streamsString = pubName;
-				clear = false;
-			} else {
-				stringToQueue(streamsString);
-				streamsString += "," + pubName;
-			}
-			roomSO.setProperty("streams", streamsString);
-		} catch (JSONException e) {}
-	}
-
-	//Called whenever a property of the shared object is changed
-	public void onUpdateProperty(JSONObject propertyInfo){
-		try {
-			String streamsString = propertyInfo.getString("streams");
-			stringToQueue(streamsString);
-		} catch (JSONException e) {}
-	}
 
 	public void stringToQueue(String incoming){
 
@@ -518,7 +467,6 @@ public class ConferenceTest extends PublishTest {
 		});
 	}
 
-	// ^ SHARED OBJECT ^
 	// v VIEWS V
 
 	public void AddTag(R5VideoView r5View, String tagName) {
@@ -730,31 +678,6 @@ public class ConferenceTest extends PublishTest {
 			mWebSocketProvider.disconnect();
 		}
 
-		if(roomSO != null){
-			try {
-				String streamsString = (String) roomSO.getData().get("streams");
-				String[] streamsList = streamsString.split(",");
-				StringBuilder builder = null;
-
-				for (String s : streamsList) {
-					if(!s.equals(pubName)){
-						if(builder == null){
-							builder = new StringBuilder();
-						}
-						else {
-							builder.append(",");
-						}
-						builder.append(s);
-					}
-				}
-				roomSO.setProperty("streams", builder == null ? "" : builder.toString());
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-
-			roomSO.client = null;
-			roomSO.close();
-		}
 		if(streams != null && streams.size() > 0){
 			StreamPackage pack = streams.get(0);
 
