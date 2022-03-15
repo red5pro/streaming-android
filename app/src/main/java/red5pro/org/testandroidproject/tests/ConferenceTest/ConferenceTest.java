@@ -44,7 +44,6 @@ public class ConferenceTest extends PublishTest {
 	public RelativeLayout nameRoot, muteRoot;
 	public EditText streamNameTxt, roomNameTxt;
 	public Button startBtn, videoMuteBtn, audioMuteBtn;
-	public Switch clearSwitch;
 	public View previewBlinder;
 	public ArrayList<LinearLayout> rows = new ArrayList<>();
 	public ArrayList<StreamPackage> streams = new ArrayList<>();
@@ -74,7 +73,6 @@ public class ConferenceTest extends PublishTest {
 		startBtn = nameRoot.findViewById(R.id.publish_btn);
 		videoMuteBtn = muteRoot.findViewById(R.id.video_mute);
 		audioMuteBtn = muteRoot.findViewById(R.id.audio_mute);
-		clearSwitch = nameRoot.findViewById(R.id.clear_switch);
 
 		startBtn.setOnTouchListener(startTouch);
 		nameRoot.setOnTouchListener(rootTouch);
@@ -103,10 +101,6 @@ public class ConferenceTest extends PublishTest {
 
 				roomName = roomNameTxt.getText().toString();
 				roomNameTxt.setVisibility(View.GONE);
-
-				clear = clearSwitch.isChecked();
-				clearSwitch.setChecked(false);
-				clearSwitch.setVisibility(View.GONE);
 
 				nameRoot.setAlpha(0.0f);
 				muteRoot.setAlpha(0.0f);

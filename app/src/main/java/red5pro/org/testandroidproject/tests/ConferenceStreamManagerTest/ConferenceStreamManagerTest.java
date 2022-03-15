@@ -1,5 +1,8 @@
 package red5pro.org.testandroidproject.tests.ConferenceStreamManagerTest;
 
+import android.os.Handler;
+import android.os.Looper;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
@@ -17,6 +20,17 @@ import red5pro.org.testandroidproject.tests.TestContent;
 public class ConferenceStreamManagerTest extends ConferenceTest {
 
 	protected boolean cleanUp = false;
+
+	private void delayRetryRequest (final String streamName, final String context, final String action, final ConferenceStreamManagerTest.StreamURLDelegate starter) {
+		Handler h = new Handler(Looper.getMainLooper());
+		h.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				requestServer(streamName, context, action, starter);
+			}
+		}, 2000);
+	}
+
 	private void requestServer(final String streamName, final String context, final String action, final ConferenceStreamManagerTest.StreamURLDelegate starter){
 		new Thread(new Runnable() {
 			@Override
@@ -58,11 +72,13 @@ public class ConferenceStreamManagerTest extends ConferenceTest {
 						}
 						else {
 							System.out.println("Server address not returned");
+							delayRetryRequest(streamName, context, action, starter);
 						}
 					}
 					else{
 						response.getEntity().getContent().close();
-						throw new IOException(statusLine.getReasonPhrase());
+//						throw new IOException(statusLine.getReasonPhrase());
+						delayRetryRequest(streamName, context, action, starter);
 					}
 
 				}catch (Exception e){
