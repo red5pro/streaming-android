@@ -38,6 +38,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.red5pro.streaming.R5Connection;
 import com.red5pro.streaming.R5Stream;
@@ -62,9 +63,35 @@ public class SubscribeTest extends TestDetailFragment implements R5ConnectionLis
     protected R5VideoView display;
     protected R5Stream subscribe;
 
-    @Override
+	protected void showToast (String message) {
+		final CharSequence text = message;
+		final Context context = getContext();
+		final int duration = Toast.LENGTH_SHORT;
+
+		if (getActivity() == null || context == null) {
+			return;
+		}
+
+		try {
+			getActivity().runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					Toast toast = Toast.makeText(context, text, duration);
+					toast.show();
+				}
+			});
+		} catch (Exception e) {
+			// Most likely have moved away from activity back to main listing on Event.CLOSE.
+			e.printStackTrace();
+		}
+	}
+
+	@Override
     public void onConnectionEvent(R5ConnectionEvent event) {
         Log.d("Subscriber", ":onConnectionEvent " + event.name());
+		String msg = event.message;
+		showToast(msg == null ? event.name() : msg);
+
         if (event.name() == R5ConnectionEvent.LICENSE_ERROR.name()) {
             Handler h = new Handler(Looper.getMainLooper());
             h.post(new Runnable() {

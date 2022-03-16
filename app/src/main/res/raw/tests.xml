@@ -21,6 +21,7 @@
         <fps>15</fps>
         <sm_version>4.0</sm_version>
         <sm_access_token>xyz123</sm_access_token>
+		<conference_host>ws://10.0.0.75:8001</conference_host>
     </Properties>
     <Tests>
 
@@ -586,31 +587,17 @@
 			<class>ConferenceTest</class>
 		</Test>
 
-        <Test title="Two Way">
+		<Test title="Conference - Stream Manager">
 
-            <description>Publish and subscribe simultaneously to hold a conversation</description>
+			<description>Join a virtual room, publish while subscribing to multiple other participants over Stream Manager.</description>
 
-            <!-- This is required to be 8000 in order for 2-Way to work. -->
-            <Properties>
-                <sample_rate>8000</sample_rate>
-            </Properties>
+			<Properties>
+				<sample_rate>8000</sample_rate>
+			</Properties>
 
-            <name>Two Way</name>
-            <class>TwoWayTest</class>
-        </Test>
-
-        <Test title="Two Way - Stream Manager">
-
-            <description>Publish and subscribe simultaneously through a stream manager</description>
-
-            <!-- This is required to be 8000 in order for 2-Way to work. -->
-            <Properties>
-                <sample_rate>8000</sample_rate>
-            </Properties>
-
-            <name>Two Way - Stream Manager</name>
-            <class>TwoWayStreamManagerTest</class>
-        </Test>
+			<name>Conference - Stream Manager</name>
+			<class>ConferenceStreamManagerTest</class>
+		</Test>
 
         <Test title="Bandwidth Detection">
 
