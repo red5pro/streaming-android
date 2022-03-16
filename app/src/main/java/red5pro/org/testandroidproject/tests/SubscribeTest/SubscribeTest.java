@@ -67,6 +67,11 @@ public class SubscribeTest extends TestDetailFragment implements R5ConnectionLis
 		final CharSequence text = message;
 		final Context context = getContext();
 		final int duration = Toast.LENGTH_SHORT;
+
+		if (getActivity() == null || context == null) {
+			return;
+		}
+
 		try {
 			getActivity().runOnUiThread(new Runnable() {
 				@Override
