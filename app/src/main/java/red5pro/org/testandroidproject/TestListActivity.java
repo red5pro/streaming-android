@@ -46,6 +46,7 @@ import android.util.Log;
 import android.view.View;
 
 import red5pro.org.testandroidproject.tests.*;
+import red5pro.org.testandroidproject.tests.ParamTable.ParamTable;
 import red5pro.org.testandroidproject.tests.PublishTest.PublishTest;
 
 
@@ -131,6 +132,19 @@ public class TestListActivity extends Activity
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {}
 
+	@Override
+	public void onAddConnectionParams () {
+		try {
+			getFragmentManager().beginTransaction()
+					.replace(R.id.test_list_container, new ParamTable())
+					.addToBackStack(null)
+					.commit();
+//			mIsParamsFragmentActive = true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
     /**
      * Callback method from {@link TestListFragment.Callbacks}
      * indicating that the item with the given ID was selected.
@@ -186,9 +200,9 @@ public class TestListActivity extends Activity
 
     @Override
     public void onBackPressed() {
-        
+
         if(fragment == null || fragment.shouldClean()) {
-            
+
             if (fragment != null && fragment.isPublisherTest()) {
                 PublishTest pFragment = (PublishTest)fragment;
                 pFragment.stopPublish(this);

@@ -107,6 +107,11 @@ public class SharedObjectStreamlessTest extends SharedObjectTest {
         config.setLicenseKey(TestContent.GetPropertyString("license_key"));
         config.setBundleID(b);
 
+		String params = TestContent.getConnectionParams();
+		if (params != null) {
+			config.setParameters(params);
+		}
+
         connection = new R5Connection(config);
 
         connection.addListener(this);

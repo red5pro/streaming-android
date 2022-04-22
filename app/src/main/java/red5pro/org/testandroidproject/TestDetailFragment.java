@@ -25,6 +25,7 @@
 //
 package red5pro.org.testandroidproject;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
@@ -51,6 +52,22 @@ public class TestDetailFragment extends Fragment {
      * The dummy content this fragment is presenting.
      */
     private TestContent mItem;
+
+	/**
+	 * A dummy implementation of the {@link TestListFragment.Callbacks} interface that does
+	 * nothing. Used only when this fragment is not attached to an activity.
+	 */
+	private static TestListFragment.Callbacks sDummyCallbacks = new TestListFragment.Callbacks() {
+		@Override
+		public void onItemSelected(String id) {}
+		@Override
+		public void onAddConnectionParams() {}
+	};
+	/**
+	 * The fragment's current callback object, which is notified of list item
+	 * clicks.
+	 */
+	protected TestListFragment.Callbacks mCallbacks = sDummyCallbacks;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -107,4 +124,23 @@ public class TestDetailFragment extends Fragment {
         }
         return R5Stream.RecordType.Live;
     }
+
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+
+		// Activities containing this fragment must implement its callbacks.
+		if (!(activity instanceof TestListFragment.Callbacks)) {
+			throw new IllegalStateException("Activity must implement fragment's callbacks.");
+		}
+
+		mCallbacks = (TestListFragment.Callbacks) activity;
+	}
+
+	@Override
+	public void onDetach() {
+		super.onDetach();
+
+		// Reset the active callbacks interface to the dummy implementation.
+		mCallbacks = sDummyCallbacks;
+	}
 }
