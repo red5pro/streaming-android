@@ -54,6 +54,7 @@ public class Home extends TestDetailFragment {
     EditText stream1Text;
     EditText stream2Text;
     Button swapButton;
+    Button addParamsButton;
     CheckBox debugCheck;
     CheckBox videoCheck;
     CheckBox audioCheck;
@@ -147,6 +148,14 @@ public class Home extends TestDetailFragment {
                 return true;
             }
         });
+
+		addParamsButton = (Button)rootView.findViewById(R.id.params_btn);
+		addParamsButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				mCallbacks.onAddConnectionParams();
+			}
+		});
 
         debugCheck = (CheckBox)rootView.findViewById(R.id.debugCheck);
         videoCheck = (CheckBox)rootView.findViewById(R.id.videoCheck);

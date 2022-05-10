@@ -183,6 +183,12 @@ public class ConferenceTest extends PublishTest {
 				TestContent.GetPropertyFloat("publish_buffer_time"));
 		config.setLicenseKey(TestContent.GetPropertyString("license_key"));
 		config.setBundleID(b);
+
+		String params = TestContent.getConnectionParams();
+		if (params != null) {
+			config.setParameters(params);
+		}
+
 	}
 
 	@Override
