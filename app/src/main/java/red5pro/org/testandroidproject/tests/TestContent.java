@@ -33,7 +33,9 @@ import org.w3c.dom.NodeList;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -52,6 +54,8 @@ public class TestContent {
     public static Element localProperties;
 
     public static HashMap<String,String> setProperties;
+
+	public static HashMap<String, String> connectionParams = new HashMap<String, String>();
 
     public static void LoadTests(InputStream stream){
 
@@ -160,6 +164,16 @@ public class TestContent {
 
         localProperties = ITEMS.get(id).localProperties;
     }
+
+	public static String getConnectionParams () {
+		String str = "";
+		Iterator iterator = TestContent.connectionParams.entrySet().iterator();
+		while (iterator.hasNext()) {
+			Map.Entry mapElement = (Map.Entry)iterator.next();
+			str += (String)mapElement.getKey() + "=" + (String)mapElement.getValue() + ";";
+		}
+		return str.isEmpty() ? null : str;
+	}
 
     public static class TestItem {
         public String id;

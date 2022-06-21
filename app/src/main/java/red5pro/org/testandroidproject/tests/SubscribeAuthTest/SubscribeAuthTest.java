@@ -42,8 +42,10 @@ public class SubscribeAuthTest extends SubscribeTest {
 
     public void Subscribe() {
 
-        String auth = "username=" + TestContent.GetPropertyString("username") + ";";
-        auth += "password=" + TestContent.GetPropertyString("password") + ";";
+		String params = TestContent.getConnectionParams();
+		String auth = params != null ? params : "";
+		auth += "username=" + TestContent.GetPropertyString("username") + ";";
+		auth += "password=" + TestContent.GetPropertyString("password") + ";";
 
         //Create the configuration from the tests.xml
         R5Configuration config = new R5Configuration(R5StreamProtocol.RTSP,

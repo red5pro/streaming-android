@@ -136,6 +136,11 @@ public class BandwidthDetectionUploadOnlyTest extends TestDetailFragment
         config.setLicenseKey(TestContent.GetPropertyString("license_key"));
         config.setBundleID(b);
 
+		String params = TestContent.getConnectionParams();
+		if (params != null) {
+			config.setParameters(params);
+		}
+
         R5Connection connection = new R5Connection(config);
 
         //setup a new stream using the connection

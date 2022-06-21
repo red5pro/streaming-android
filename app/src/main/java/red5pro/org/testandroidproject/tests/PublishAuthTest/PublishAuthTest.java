@@ -52,8 +52,10 @@ public class PublishAuthTest extends PublishTest {
 
         View rootView = inflater.inflate(R.layout.publish_test, container, false);
 
-        String auth = "username=" + TestContent.GetPropertyString("username") + ";";
-        auth += "password=" + TestContent.GetPropertyString("password") + ";";
+		String params = TestContent.getConnectionParams();
+		String auth = params != null ? params : "";
+		auth += "username=" + TestContent.GetPropertyString("username") + ";";
+		auth += "password=" + TestContent.GetPropertyString("password") + ";";
         //Create the configuration from the values.xml
         R5Configuration config = new R5Configuration(R5StreamProtocol.RTSP,
                 TestContent.GetPropertyString("host"),

@@ -3,7 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/layout/activity_param_table.xml" value="0.18541666666666667" />
         <entry key="app/src/main/res/layout/conference_test.xml" value="0.21784420289855072" />
+        <entry key="app/src/main/res/layout/fragment_param_table.xml" value="0.18541666666666667" />
+        <entry key="app/src/main/res/layout/home_screen.xml" value="0.18541666666666667" />
+        <entry key="app/src/main/res/layout/param_table_row_editable.xml" value="0.18541666666666667" />
       </map>
     </option>
   </component>

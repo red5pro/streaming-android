@@ -73,6 +73,7 @@ public class TestListFragment extends ListFragment {
          * Callback for when an item has been selected.
          */
         public void onItemSelected(String id);
+		public void onAddConnectionParams();
     }
 
     /**
@@ -81,8 +82,9 @@ public class TestListFragment extends ListFragment {
      */
     private static Callbacks sDummyCallbacks = new Callbacks() {
         @Override
-        public void onItemSelected(String id) {
-        }
+        public void onItemSelected(String id) {}
+        @Override
+		public void onAddConnectionParams() {}
     };
 
     /**
