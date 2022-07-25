@@ -93,9 +93,6 @@ Once you have modified your settings, you can run the application for simulator 
 | **[Stream Manager Transcoder](app/src/main/java/red5pro/org/testandroidproject/tests/PublishStreamManagerTranscodeTest)**
 | *A publish example that uses transcoding broadcast over Stream Manager.*
 | ---
-| **[Two Way](app/src/main/java/red5pro/org/testandroidproject/tests/TwoWayTest)**
-| *An example of simultaneously publishing while subscribing - allowing a conversation. Includes stream detection and auto-connection.*
-| ---
 | **[Two Way - Stream Manager](app/src/main/java/red5pro/org/testandroidproject/tests/TwoWayStreamManagerTest)**
 | *The two way example, modified to work with a stream manager. Includes stream detection and auto-connection.*
 | ---
