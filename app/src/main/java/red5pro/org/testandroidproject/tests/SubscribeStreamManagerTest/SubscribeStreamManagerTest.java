@@ -47,6 +47,7 @@ import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
@@ -73,14 +74,19 @@ public class SubscribeStreamManagerTest extends SubscribeTest {
             @Override
             public void run() {
                 try{
-                    //url format: https://{streammanagerhost}:{port}/streammanager/api/2.0/event/{scopeName}/{streamName}?action=subscribe
-                    String port = TestContent.getFormattedPortSetting(TestContent.GetPropertyString("server_port"));
-                    String version = TestContent.GetPropertyString("sm_version");
-                    String protocol = (port.isEmpty() || port.equals("443")) ? "https" : "http";
-                    String url = protocol + "://" +
-                            TestContent.GetPropertyString("host") + port + "/streammanager/api/" + version + "/event/" +
-                            TestContent.GetPropertyString("context") + "/" +
-                            TestContent.GetPropertyString("stream1") + "?action=subscribe";
+					//url format: "\(host)\(portURI)/as/\(version)/streams/stream/\(nodeGroup)/publish/\(context)/\(streamName)"
+					String host = TestContent.GetPropertyString("host");
+					String version = TestContent.GetPropertyString("sm_version");
+					String nodeGroup = TestContent.GetPropertyString("sm_nodegroup");
+					String context = TestContent.GetPropertyString("context");
+					String streamName = TestContent.GetPropertyString("stream1");
+
+					String url = String.format("https://%s/as/%s/streams/stream/%s/subscribe/%s/%s",
+						host,
+						version,
+						nodeGroup,
+						context,
+						streamName);
 
                     HttpClient httpClient = new DefaultHttpClient();
                     HttpResponse response = httpClient.execute(new HttpGet(url));
@@ -92,8 +98,9 @@ public class SubscribeStreamManagerTest extends SubscribeTest {
                         String responseString = out.toString();
                         out.close();
 
-                        JSONObject data = new JSONObject(responseString);
-                        final String outURL = data.getString("serverAddress");
+						JSONArray edges = new JSONArray(responseString);
+						JSONObject data = edges.getJSONObject(0);
+						final String outURL = data.getString("serverAddress");
 
                         if( !outURL.isEmpty() ){
                             getActivity().runOnUiThread(new Runnable() {

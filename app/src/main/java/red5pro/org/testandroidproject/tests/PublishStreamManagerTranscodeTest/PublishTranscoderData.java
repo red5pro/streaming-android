@@ -30,34 +30,71 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 public class PublishTranscoderData {
+	public String streamGuid;
+	public String messageType = "ProvisionCommand";
+	public Credentials credentials;
+	public List<StreamVariant> streams = new ArrayList<StreamVariant>();
 
-    public HashMap<String, Object> meta;
+	public static class Credentials {
+		public String username;
+		public String password;
 
-    public PublishTranscoderData (ArrayList<HashMap<String, Object>> variants) {
+		public Credentials(String user, String pass) {
+			username = user;
+			password = pass;
+		}
+	}
 
-        HashMap<String, String> authMap = new HashMap<>();
-        authMap.put("username", "");
-        authMap.put("password", "");
-        HashMap<String, Object> geoMap = new HashMap<>();
-        geoMap.put("regions", new ArrayList<>(Arrays.asList("US", "UK")));
-        geoMap.put("restricted", false);
+	public static class StreamVariant {
+		public String streamGuid;
+		public Integer abrLevel;
+		public VideoParams videoParams;
 
+		public StreamVariant(String guid, Integer abr, VideoParams params) {
+			streamGuid = guid;
+			abrLevel = abr;
+			videoParams = params;
+		}
+	}
 
-        meta = new HashMap<>();
-        meta.put("authentication", authMap);
-        meta.put("georules", geoMap);
-        meta.put("stream", variants);
-        meta.put("qos", 3);
+	public static class VideoParams {
+		public Integer videoWidth;
+		public Integer videoHeight;
+		public Integer videoBitRate;
 
-    }
+		public VideoParams(Integer width, Integer height, Integer bitRate) {
+			videoWidth = width;
+			videoHeight = height;
+			videoBitRate = bitRate;
+		}
+	}
 
-    public HashMap<String, Object> getVariantByName (String name) {
-        ArrayList<HashMap<String, Object>> variants = (ArrayList<HashMap<String, Object>>)this.meta.get("stream");
-        for(int i = 0; i < variants.size(); i++) {
-            HashMap<String, Object> variant = variants.get(i);
-            if (variant.get("name").equals(name)) {
+    public PublishTranscoderData (String streamGuid) {
+		this.streamGuid = streamGuid;
+	}
+
+	public PublishTranscoderData (String streamGuid, List<StreamVariant> streams) {
+		this.streamGuid = streamGuid;
+		this.streams = streams;
+	}
+
+	public StreamVariant getVariantByLevel (int level) {
+		for(int i = 0; i < streams.size(); i++) {
+			StreamVariant variant = streams.get(i);
+			if (variant.abrLevel == level) {
+				return variant;
+			}
+		}
+		return null;
+	}
+
+    public StreamVariant getVariantByName (String streamGuid) {
+        for(int i = 0; i < streams.size(); i++) {
+            StreamVariant variant = streams.get(i);
+            if (variant.streamGuid.equals(streamGuid)) {
                 return variant;
             }
         }

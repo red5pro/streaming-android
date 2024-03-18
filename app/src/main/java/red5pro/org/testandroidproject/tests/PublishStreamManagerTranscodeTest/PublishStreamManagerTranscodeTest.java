@@ -40,6 +40,7 @@ import android.widget.FrameLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.red5pro.streaming.R5Connection;
 import com.red5pro.streaming.R5Stream;
 import com.red5pro.streaming.R5StreamProtocol;
@@ -69,10 +70,14 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -105,86 +110,147 @@ public class PublishStreamManagerTranscodeTest extends PublishTest implements
         return rootView;
     }
 
-    private void postProvisions (final String streamName, final String json) {
+	private void authenticateAndPost(final PublishTranscoderData data) {
+		final Context context = this.getActivity();
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+
+					String host = TestContent.GetPropertyString("host");
+					String username = TestContent.GetPropertyString("sm_username");
+					String password = TestContent.GetPropertyString("sm_password");
+
+					String url = String.format("https://%s/as/v1/auth/login", host);
+					String creds = String.format("%s:%s", username, password);
+					String token = String.format("Basic %s", Base64.getEncoder().encodeToString(creds.getBytes()));
+
+					URL url1 = new URL(url);
+					HttpURLConnection httpURLConnection = (HttpURLConnection) url1.openConnection();
+					httpURLConnection.setDoOutput(true);
+					httpURLConnection .setDoInput(true);
+					httpURLConnection.setChunkedStreamingMode(0);
+					httpURLConnection.setRequestProperty("Authorization", token);
+					httpURLConnection.setRequestProperty("Accept", "application/json");
+					httpURLConnection.setRequestProperty("Content-type", "application/json");
+					httpURLConnection.setRequestMethod("PUT");
+
+					InputStream in = new BufferedInputStream(httpURLConnection.getInputStream());
+					BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+					StringBuilder result = new StringBuilder();
+					String line = null;
+					try {
+						while ((line = reader.readLine()) != null) {
+							result.append(line + "\n");
+						}
+						final JSONObject jsonObject = new JSONObject(result.toString());
+						postProvisions(jsonObject.getString("token"), data);
+
+					} catch (Exception e) {
+						throw e;
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+					final String message = e.getMessage();
+					getActivity().runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+
+							try {
+								AlertDialog alertDialog = new AlertDialog.Builder(context).create();
+								alertDialog.setTitle("Error");
+								alertDialog.setMessage(message);
+								alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+									new DialogInterface.OnClickListener() {
+										public void onClick(DialogInterface dialog, int which) {
+											dialog.dismiss();
+										}
+									}
+
+								);
+								alertDialog.show();
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						}
+					});
+				}
+			}
+		}).start();
+	}
+
+    private void postProvisions (final String authToken, final PublishTranscoderData data) {
 
         final Context context = this.getActivity();
+		final ArrayList list = new ArrayList<>();
+		list.add(data);
+		Gson gson = new Gson();
+		final String json = gson.toJson(list);
 
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    String port = TestContent.getFormattedPortSetting(TestContent.GetPropertyString("server_port"));
-                    String version = TestContent.GetPropertyString("sm_version");
-                    String protocol = (port.isEmpty() || port.equals("443")) ? "https" : "http";
-                    String url = protocol + "://" +
-                            TestContent.GetPropertyString("host") + port + "/streammanager/api/" + version + "/admin/event/meta/" +
-                            TestContent.GetPropertyString("context") + "/" +
-                            streamName + "?accessToken=" + TestContent.GetPropertyString("sm_access_token");
+					String host = TestContent.GetPropertyString("host");
+					String version = TestContent.GetPropertyString("sm_version");
+					String nodeGroup = TestContent.GetPropertyString("sm_nodegroup");
+					String url = String.format("https://%s/as/%s/streams/provision/%s", host, version, nodeGroup);
 
                     HttpURLConnection conn = null;
                     try {
                         URL url1 = new URL(url);
-                        if (protocol.equals("https")) {
-                            conn = (HttpsURLConnection) url1.openConnection();
-                        } else {
-                            conn = (HttpURLConnection) url1.openConnection();
-                        }
+						conn = (HttpURLConnection) url1.openConnection();
                         conn.setDoOutput(true);
-                        conn .setDoInput(true);
+                        conn.setDoInput(true);
                         conn.setChunkedStreamingMode(0);
-                        conn.setRequestProperty("Accept", "application/json");
+						conn.setRequestProperty("Authorization", "Bearer " + authToken);
                         conn.setRequestProperty("Content-type", "application/json");
                         conn.setRequestMethod("POST");
 
-                        OutputStream out = new BufferedOutputStream(conn.getOutputStream());
-                        out.write(json.getBytes("UTF-8"));
+                        OutputStream out = conn.getOutputStream();
+                        out.write(json.getBytes());
+						out.flush();
                         out.close();
 
-                        InputStream in = new BufferedInputStream(conn.getInputStream());
-                        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-                        StringBuilder result = new StringBuilder();
-                        String line = null;
                         try {
-                            while ((line = reader.readLine()) != null) {
-                                result.append(line + "\n");
-                            }
-                            final JSONObject jsonObject = new JSONObject(result.toString());
-                            if (jsonObject.has("errorMessage")) {
-                                getActivity().runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
+							int statusCode = conn.getResponseCode();
+							if ((statusCode >= 200 && statusCode < 300) || (statusCode == 409)) {
+								// 409 is Conflict, which means the provision already exists.
+								getActivity().runOnUiThread(new Runnable() {
+									@Override
+									public void run() {
+										transcoderForm.setVisibility(View.INVISIBLE);
+										getOriginAndPublish(transcoderData.getVariantByLevel(1));
+									}
+								});
+							} else {
+								String errorMessage = "Could not create provision. Status code: " + statusCode;
+								getActivity().runOnUiThread(new Runnable() {
+									@Override
+									public void run() {
 
-                                        try {
-                                            AlertDialog alertDialog = new AlertDialog.Builder(context).create();
-                                            alertDialog.setTitle("Error");
-                                            alertDialog.setMessage(jsonObject.getString("errorMessage"));
-                                            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                                                    new DialogInterface.OnClickListener() {
-                                                        public void onClick(DialogInterface dialog, int which) {
-                                                            dialog.dismiss();
-                                                        }
-                                                    }
+										try {
+											AlertDialog alertDialog = new AlertDialog.Builder(context).create();
+											alertDialog.setTitle("Error");
+											alertDialog.setMessage(errorMessage);
+											alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+												new DialogInterface.OnClickListener() {
+													public void onClick(DialogInterface dialog, int which) {
+														dialog.dismiss();
+													}
+												}
 
-                                            );
-                                            alertDialog.show();
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                });
-                            } else {
-                                getActivity().runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        transcoderForm.setVisibility(View.INVISIBLE);
-                                        getProvisions(TestContent.GetPropertyString("stream1"));
-                                    }
-                                });
-                            }
+											);
+											alertDialog.show();
+										} catch (Exception e) {
+											e.printStackTrace();
+										}
+									}
+								});
+							}
                         } catch (Exception e) {
                             throw e;
                         }
-                        in.close();
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -225,7 +291,7 @@ public class PublishStreamManagerTranscodeTest extends PublishTest implements
 
     }
 
-    private void getProvisions (final String guidStreamName) {
+    private void getOriginAndPublish (final PublishTranscoderData.StreamVariant variant) {
 
         final Context context = this.getActivity();
 
@@ -233,13 +299,18 @@ public class PublishStreamManagerTranscodeTest extends PublishTest implements
             @Override
             public void run() {
                 try {
-                    String port = TestContent.getFormattedPortSetting(TestContent.GetPropertyString("server_port"));
-                    String version = TestContent.GetPropertyString("sm_version");
-                    String protocol = (port.isEmpty() || port.equals("443")) ? "https" : "http";
-                    String url = protocol + "://" +
-                            TestContent.GetPropertyString("host") + port + "/streammanager/api/" + version + "/admin/event/meta/" +
-                            TestContent.GetPropertyString("context") + "/" +
-                            guidStreamName + "?accessToken=" + TestContent.GetPropertyString("sm_access_token");
+					String host = TestContent.GetPropertyString("host");
+					String version = TestContent.GetPropertyString("sm_version");
+					String nodeGroup = TestContent.GetPropertyString("sm_nodegroup");
+					String appContext = TestContent.GetPropertyString("context");
+					String streamName = TestContent.GetPropertyString("stream1");
+
+					String url = String.format("https://%s/as/%s/streams/stream/%s/publish/%s/%s",
+						host,
+						version,
+						nodeGroup,
+						appContext,
+						streamName);
 
                     HttpClient httpClient = new DefaultHttpClient();
                     HttpResponse response = httpClient.execute(new HttpGet(url));
@@ -251,124 +322,15 @@ public class PublishStreamManagerTranscodeTest extends PublishTest implements
                         String responseString = out.toString();
                         out.close();
 
-                        JSONObject json = new JSONObject(responseString);
-                        final JSONObject data = json.getJSONObject("data");
-                        final JSONObject meta = data.getJSONObject("meta");
-                        final JSONArray streams = meta.getJSONArray("stream");
-
-                        if( streams.length() > 0 ){
-                            getActivity().runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    View.OnClickListener clickListener = new View.OnClickListener() {
-
-                                        @Override
-                                        public void onClick(View v) {
-                                            final Button btn = (Button)v;
-                                            final String name = String.valueOf(btn.getText());
-                                            getOrigin(guidStreamName, name);
-                                            buttonContainer.removeAllViews();
-                                        }
-
-                                    };
-                                    for (int i = 0; i < streams.length(); i++) {
-                                        try {
-                                            JSONObject stream = streams.getJSONObject(i);
-                                            String name = stream.getString("name");
-                                            Button btn = new Button(context);
-                                            btn.setText(name);
-                                            btn.setLayoutParams(new TableLayout.LayoutParams(
-                                                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                                                    0, 1));
-                                            buttonContainer.addView(btn);
-                                            btn.setOnClickListener(clickListener);
-
-                                        } catch (JSONException e) {
-                                            System.out.println("Error in provisions: " + e.getMessage());
-                                        }
-                                    }
-                                }
-                            });
-                        }
-                        else {
-                            System.out.println("Server address not returned");
-                        }
-                    }
-                    else{
-                        ByteArrayOutputStream out = new ByteArrayOutputStream();
-                        response.getEntity().writeTo(out);
-                        String responseString = out.toString();
-                        out.close();
-
-                        final JSONObject j = new JSONObject(responseString);
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-
-                                try {
-                                    AlertDialog alertDialog = new AlertDialog.Builder(context).create();
-                                    alertDialog.setTitle("Error");
-                                    alertDialog.setMessage(j.getString("errorMessage"));
-                                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                                            new DialogInterface.OnClickListener() {
-                                                public void onClick(DialogInterface dialog, int which) {
-                                                    dialog.dismiss();
-                                                }
-                                            }
-
-                                    );
-                                    alertDialog.show();
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        });
-
-                        response.getEntity().getContent().close();
-                        throw new IOException(statusLine.getReasonPhrase());
-                    }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-    }
-
-    private void getOrigin (final String guidStreamName, final String variantName) {
-
-        final Context context = this.getActivity();
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    String port = TestContent.getFormattedPortSetting(TestContent.GetPropertyString("server_port"));
-                    String version = TestContent.GetPropertyString("sm_version");
-                    String protocol = (port.isEmpty() || port.equals("443")) ? "https" : "http";
-                    String url = protocol + "://" +
-                            TestContent.GetPropertyString("host") + port + "/streammanager/api/" + version + "/event/" +
-                            TestContent.GetPropertyString("context") + "/" +
-                            guidStreamName + "?action=broadcast&transcode=true";
-
-                    HttpClient httpClient = new DefaultHttpClient();
-                    HttpResponse response = httpClient.execute(new HttpGet(url));
-                    StatusLine statusLine = response.getStatusLine();
-
-                    if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
-                        ByteArrayOutputStream out = new ByteArrayOutputStream();
-                        response.getEntity().writeTo(out);
-                        String responseString = out.toString();
-                        out.close();
-
-                        JSONObject data = new JSONObject(responseString);
-                        final String outURL = data.getString("serverAddress");
+						JSONArray origins = new JSONArray(responseString);
+						JSONObject data = origins.getJSONObject(0);
+						final String outURL = data.getString("serverAddress");
 
                         if( !outURL.isEmpty() ){
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    publishToManager(outURL, variantName);
+                                    publishToManager(outURL, variant);
                                 }
                             });
                         }
@@ -420,15 +382,19 @@ public class PublishStreamManagerTranscodeTest extends PublishTest implements
         return fps.get(level);
     }
 
-    private void publishToManager( String url, String streamName ){
+    private void publishToManager(String url, PublishTranscoderData.StreamVariant variant) {
 
-        HashMap<String, Object> variant = transcoderData.getVariantByName(streamName);
-        HashMap<String, Integer> properties = (HashMap<String, Integer>)variant.get("properties");
+		PublishTranscoderData.VideoParams videoParams = variant.videoParams;
+		List<String> paths = Arrays.asList(variant.streamGuid.split("/"));
+		String streamName = paths.get(paths.size() - 1);
+		paths = paths.subList(0, paths.size() - 1);
+		String context = String.join("/", paths);
 
+		int port = TestContent.GetPropertyInt("port");
         R5Configuration config = new R5Configuration(R5StreamProtocol.RTSP,
                 url,
-                TestContent.GetPropertyInt("port"),
-                TestContent.GetPropertyString("context"),
+                port,
+                context,
                 TestContent.GetPropertyFloat("publish_buffer_time"));
         config.setLicenseKey(TestContent.GetPropertyString("license_key"));
         config.setBundleID(getActivity().getPackageName());
@@ -454,10 +420,10 @@ public class PublishStreamManagerTranscodeTest extends PublishTest implements
             cam = openFrontFacingCameraGingerbread();
             cam.setDisplayOrientation((camOrientation + 180) % 360);
 
-            camera = new R5Camera(cam, properties.get("videoWidth"), properties.get("videoHeight"));
-            camera.setBitrate(properties.get("videoBR") / 1000);
+            camera = new R5Camera(cam, videoParams.videoWidth, videoParams.videoHeight);
+            camera.setBitrate(videoParams.videoBitRate / 1000);
             camera.setOrientation(camOrientation);
-            camera.setFramerate(getFPSFromLevel(((Integer)variant.get("level")).intValue()));
+            camera.setFramerate(getFPSFromLevel((variant.abrLevel).intValue()));
         }
 
         if(TestContent.GetPropertyBool("audio_on")) {
@@ -491,18 +457,19 @@ public class PublishStreamManagerTranscodeTest extends PublishTest implements
     @Override
     public void onProvisionSubmit (PublishTranscoderForm form) {
 
-        String streamName = TestContent.GetPropertyString("stream1");
-        HashMap<String, Object> highVariant = form.getHighVariant(streamName, 1);
-        HashMap<String, Object> mediumVariant = form.getMediumVariant(streamName, 2);
-        HashMap<String, Object> lowVariant = form.getLowVariant(streamName, 3);
+		String context = TestContent.GetPropertyString("context");
+		String streamName = TestContent.GetPropertyString("stream1");
+        String streamGuid = String.format("%s/%s", context, streamName);
+        PublishTranscoderData.StreamVariant highVariant = form.getHighVariant(streamGuid + "_1", 1);
+        PublishTranscoderData.StreamVariant mediumVariant = form.getMediumVariant(streamGuid + "_2", 2);
+        PublishTranscoderData.StreamVariant lowVariant = form.getLowVariant(streamGuid + "_3", 3);
 
-        ArrayList<HashMap<String, Object>> provisions = new ArrayList<>(
-                Arrays.asList(highVariant, mediumVariant, lowVariant)
+        ArrayList<PublishTranscoderData.StreamVariant> provisions = new ArrayList<>(
+			Arrays.asList(highVariant, mediumVariant, lowVariant)
         );
 
-        this.transcoderData = new PublishTranscoderData(provisions);
-
-        postProvisions(streamName, this.transcoderData.toJSON());
+        this.transcoderData = new PublishTranscoderData(streamGuid, provisions);
+        authenticateAndPost(this.transcoderData);
 
     }
 }
