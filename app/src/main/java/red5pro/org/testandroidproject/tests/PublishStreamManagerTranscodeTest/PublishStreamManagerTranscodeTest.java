@@ -304,7 +304,7 @@ public class PublishStreamManagerTranscodeTest extends PublishTest implements
 					String version = TestContent.GetPropertyString("sm_version");
 					String nodeGroup = TestContent.GetPropertyString("sm_nodegroup");
 
-					String url = String.format("https://%s/as/%s/streams/stream/%s/publish/%s",
+					String url = String.format("https://%s/as/%s/streams/stream/%s/publish/%s?transcode=true",
 						host,
 						version,
 						nodeGroup,

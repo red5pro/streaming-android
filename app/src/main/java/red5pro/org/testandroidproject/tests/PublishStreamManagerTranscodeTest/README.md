@@ -183,21 +183,23 @@ Providing the top-level stream variant from the provision, you will then request
 ```Java
 private void publishToManager(String url, PublishTranscoderData.StreamVariant variant) {
 
-PublishTranscoderData.VideoParams videoParams = variant.videoParams;
-List<String> paths = Arrays.asList(variant.streamGuid.split("/"));
+    PublishTranscoderData.VideoParams videoParams = variant.videoParams;
+    List<String> paths = Arrays.asList(variant.streamGuid.split("/"));
 
-String streamName = paths.get(paths.size() - 1);
-paths = paths.subList(0, paths.size() - 1);
-String context = String.join("/", paths);
+    String streamName = paths.get(paths.size() - 1);
+    paths = paths.subList(0, paths.size() - 1);
+    String context = String.join("/", paths);
 
-int port = TestContent.GetPropertyInt("port");
-R5Configuration config = new R5Configuration(R5StreamProtocol.RTSP,
-        url,
-        port,
-        context,
-        TestContent.GetPropertyFloat("publish_buffer_time"));
-config.setLicenseKey(TestContent.GetPropertyString("license_key"));
-config.setBundleID(getActivity().getPackageName());
+    int port = TestContent.GetPropertyInt("port");
+    R5Configuration config = new R5Configuration(R5StreamProtocol.RTSP,
+            url,
+            port,
+            context,
+            TestContent.GetPropertyFloat("publish_buffer_time"));
+    config.setLicenseKey(TestContent.GetPropertyString("license_key"));
+    config.setBundleID(getActivity().getPackageName());
+...
+}
 ```
 
 After successfully starting a broadcast usign the top-level `streamGuid` as the `context` and `streamName`, that stream and the other variant streams will be available to subscribe to.
