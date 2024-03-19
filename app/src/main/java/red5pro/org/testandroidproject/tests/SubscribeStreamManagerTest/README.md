@@ -43,7 +43,7 @@ if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
 }
 ```
 
-The service returns a JSON array of Origin nodes available to connect to; in typical deployments, this will be of a length of one.
+The service returns a JSON array of Edge nodes available to connect to; in typical deployments, this will be of a length of one.
 
 ```Java
 JSONArray origins = new JSONArray(responseString);
