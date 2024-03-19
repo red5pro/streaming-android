@@ -128,7 +128,7 @@ public class PublishStreamManagerTranscodeTest extends PublishTest implements
 					URL url1 = new URL(url);
 					HttpURLConnection httpURLConnection = (HttpURLConnection) url1.openConnection();
 					httpURLConnection.setDoOutput(true);
-					httpURLConnection .setDoInput(true);
+					httpURLConnection.setDoInput(true);
 					httpURLConnection.setChunkedStreamingMode(0);
 					httpURLConnection.setRequestProperty("Authorization", token);
 					httpURLConnection.setRequestProperty("Accept", "application/json");

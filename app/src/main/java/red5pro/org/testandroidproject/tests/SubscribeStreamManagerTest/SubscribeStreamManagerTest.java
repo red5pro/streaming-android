@@ -70,69 +70,73 @@ public class SubscribeStreamManagerTest extends SubscribeTest {
 
         display = (R5VideoView) view.findViewById(R.id.videoView);
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try{
-					//url format: "\(host)\(portURI)/as/\(version)/streams/stream/\(nodeGroup)/publish/\(context)/\(streamName)"
-					String host = TestContent.GetPropertyString("host");
-					String version = TestContent.GetPropertyString("sm_version");
-					String nodeGroup = TestContent.GetPropertyString("sm_nodegroup");
-					String context = TestContent.GetPropertyString("context");
-					String streamName = TestContent.GetPropertyString("stream1");
+		//url format: "\(host)\(portURI)/as/\(version)/streams/stream/\(nodeGroup)/publish/\(context)/\(streamName)"
+		String host = TestContent.GetPropertyString("host");
+		String version = TestContent.GetPropertyString("sm_version");
+		String nodeGroup = TestContent.GetPropertyString("sm_nodegroup");
+		String context = TestContent.GetPropertyString("context");
+		String streamName = TestContent.GetPropertyString("stream1");
 
-					String url = String.format("https://%s/as/%s/streams/stream/%s/subscribe/%s/%s",
-						host,
-						version,
-						nodeGroup,
-						context,
-						streamName);
+		String url = String.format("https://%s/as/%s/streams/stream/%s/subscribe/%s/%s",
+			host,
+			version,
+			nodeGroup,
+			context,
+			streamName);
 
-                    HttpClient httpClient = new DefaultHttpClient();
-                    HttpResponse response = httpClient.execute(new HttpGet(url));
-                    StatusLine statusLine = response.getStatusLine();
+		getEdgeAndSubscribe(url, streamName);
 
-                    if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
-                        ByteArrayOutputStream out = new ByteArrayOutputStream();
-                        response.getEntity().writeTo(out);
-                        String responseString = out.toString();
-                        out.close();
+        return view;
+    }
+
+	protected void getEdgeAndSubscribe(final String url, final String streamName) {
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					HttpClient httpClient = new DefaultHttpClient();
+					HttpResponse response = httpClient.execute(new HttpGet(url));
+					StatusLine statusLine = response.getStatusLine();
+
+					if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
+						ByteArrayOutputStream out = new ByteArrayOutputStream();
+						response.getEntity().writeTo(out);
+						String responseString = out.toString();
+						out.close();
 
 						JSONArray edges = new JSONArray(responseString);
 						JSONObject data = edges.getJSONObject(0);
 						final String outURL = data.getString("serverAddress");
 
-                        if( !outURL.isEmpty() ){
-                            getActivity().runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    subscribeToManager(outURL);
-                                }
-                            });
-                        }
-                        else {
-                            System.out.println("Server address not returned");
-                        }
-                    }
-                    else{
-                        response.getEntity().getContent().close();
-                        throw new IOException(statusLine.getReasonPhrase());
-                    }
+						if( !outURL.isEmpty() ){
+							getActivity().runOnUiThread(new Runnable() {
+								@Override
+								public void run() {
+									subscribeToManager(outURL, streamName);
+								}
+							});
+						}
+						else {
+							System.out.println("Server address not returned");
+						}
+					}
+					else{
+						response.getEntity().getContent().close();
+						throw new IOException(statusLine.getReasonPhrase());
+					}
 
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-            }
-        }).start();
+				}catch (Exception e){
+					e.printStackTrace();
+				}
+			}
+		}).start();
+	}
 
-        return view;
-    }
-
-    protected void subscribeToManager( String url ){
+    protected void subscribeToManager( String edge, String streamName ){
 
         //Create the configuration from the tests.xml
         R5Configuration config = new R5Configuration(R5StreamProtocol.RTSP,
-                url,
+				edge,
                 TestContent.GetPropertyInt("port"),
                 TestContent.GetPropertyString("context"),
                 TestContent.GetPropertyFloat("subscribe_buffer_time"));
@@ -161,7 +165,7 @@ public class SubscribeStreamManagerTest extends SubscribeTest {
 
         display.showDebugView(TestContent.GetPropertyBool("debug_view"));
 
-        subscribe.play(TestContent.GetPropertyString("stream1"), TestContent.GetPropertyBool("hwAccel_on"));
+        subscribe.play(streamName, TestContent.GetPropertyBool("hwAccel_on"));
 
         edgeShow = new TextView(display.getContext());
         FrameLayout.LayoutParams position = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.BOTTOM);
@@ -169,7 +173,7 @@ public class SubscribeStreamManagerTest extends SubscribeTest {
 
         ((FrameLayout)display.getParent()).addView(edgeShow);
 
-        edgeShow.setText("Connected to: " + url, TextView.BufferType.NORMAL);
+        edgeShow.setText("Connected to: " + edge, TextView.BufferType.NORMAL);
         edgeShow.setBackgroundColor(Color.LTGRAY);
     }
 }

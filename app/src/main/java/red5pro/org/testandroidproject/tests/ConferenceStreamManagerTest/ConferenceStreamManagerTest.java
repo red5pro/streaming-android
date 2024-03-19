@@ -91,7 +91,7 @@ public class ConferenceStreamManagerTest extends ConferenceTest {
 	@Override
 	public void publish() {
 		final String context = TestContent.GetPropertyString("context") + "/" + roomName;
-		requestServer(pubName, context, "broadcast",  new ConferenceStreamManagerTest.StreamURLDelegate() {
+		requestServer(pubName, context, "publish",  new ConferenceStreamManagerTest.StreamURLDelegate() {
 			@Override
 			public void passURL(String url) {
 				config.setHost(url);
