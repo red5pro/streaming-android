@@ -396,6 +396,7 @@ public class PublishStreamManagerTranscodeTest extends PublishTest implements
                 TestContent.GetPropertyFloat("publish_buffer_time"));
         config.setLicenseKey(TestContent.GetPropertyString("license_key"));
         config.setBundleID(getActivity().getPackageName());
+		config.setParameters("transcode=true;");
 
 		String params = TestContent.getConnectionParams();
 		if (params != null) {

@@ -198,6 +198,7 @@ private void publishToManager(String url, PublishTranscoderData.StreamVariant va
             TestContent.GetPropertyFloat("publish_buffer_time"));
     config.setLicenseKey(TestContent.GetPropertyString("license_key"));
     config.setBundleID(getActivity().getPackageName());
+    config.setParameters("transcode=true;");
 ...
 }
 ```
