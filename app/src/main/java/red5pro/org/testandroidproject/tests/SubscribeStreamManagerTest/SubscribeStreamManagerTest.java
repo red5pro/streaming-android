@@ -70,7 +70,7 @@ public class SubscribeStreamManagerTest extends SubscribeTest {
 
         display = (R5VideoView) view.findViewById(R.id.videoView);
 
-		//url format: "\(host)\(portURI)/as/\(version)/streams/stream/\(nodeGroup)/publish/\(context)/\(streamName)"
+		//url format: "\(host)\(portURI)/as/\(version)/streams/stream/\(nodeGroup)/subscribe/\(context)/\(streamName)"
 		String host = TestContent.GetPropertyString("host");
 		String version = TestContent.GetPropertyString("sm_version");
 		String nodeGroup = TestContent.GetPropertyString("sm_nodegroup");

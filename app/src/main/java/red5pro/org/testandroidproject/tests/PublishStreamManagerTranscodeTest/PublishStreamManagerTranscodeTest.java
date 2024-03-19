@@ -220,7 +220,8 @@ public class PublishStreamManagerTranscodeTest extends PublishTest implements
 									@Override
 									public void run() {
 										transcoderForm.setVisibility(View.INVISIBLE);
-										getOriginAndPublish(transcoderData.getVariantByLevel(1));
+										String rootGuid = transcoderData.streamGuid;
+										getOriginAndPublish(rootGuid, transcoderData.getVariantByLevel(1));
 									}
 								});
 							} else {
@@ -291,7 +292,7 @@ public class PublishStreamManagerTranscodeTest extends PublishTest implements
 
     }
 
-    private void getOriginAndPublish (final PublishTranscoderData.StreamVariant variant) {
+    private void getOriginAndPublish (final String streamGuid, final PublishTranscoderData.StreamVariant variant) {
 
         final Context context = this.getActivity();
 
@@ -302,15 +303,12 @@ public class PublishStreamManagerTranscodeTest extends PublishTest implements
 					String host = TestContent.GetPropertyString("host");
 					String version = TestContent.GetPropertyString("sm_version");
 					String nodeGroup = TestContent.GetPropertyString("sm_nodegroup");
-					String appContext = TestContent.GetPropertyString("context");
-					String streamName = TestContent.GetPropertyString("stream1");
 
-					String url = String.format("https://%s/as/%s/streams/stream/%s/publish/%s/%s",
+					String url = String.format("https://%s/as/%s/streams/stream/%s/publish/%s",
 						host,
 						version,
 						nodeGroup,
-						appContext,
-						streamName);
+						streamGuid);
 
                     HttpClient httpClient = new DefaultHttpClient();
                     HttpResponse response = httpClient.execute(new HttpGet(url));
