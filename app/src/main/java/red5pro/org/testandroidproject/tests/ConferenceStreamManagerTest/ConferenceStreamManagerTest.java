@@ -9,6 +9,7 @@ import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
@@ -31,7 +32,12 @@ public class ConferenceStreamManagerTest extends ConferenceTest {
 		}, 2000);
 	}
 
-	private void requestServer(final String streamName, final String context, final String action, final ConferenceStreamManagerTest.StreamURLDelegate starter){
+	private void requestServer(
+		final String streamName,
+		final String context,
+		final String action,
+		final ConferenceStreamManagerTest.StreamURLDelegate starter) {
+
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -41,13 +47,17 @@ public class ConferenceStreamManagerTest extends ConferenceTest {
 					// are cleaned up before stream could run
 					Thread.sleep(1000);
 
-					//url format: https://{streammanagerhost}:{port}/streammanager/api/2.0/event/{scopeName}/{streamName}?action=broadcast
-					String port = TestContent.getFormattedPortSetting(TestContent.GetPropertyString("server_port"));
+					//url format: "\(host)\(portURI)/as/\(version)/streams/stream/\(nodeGroup)/\(action)/\(context)/\(streamName)"
+					String host = TestContent.GetPropertyString("host");
+					String nodeGroup = TestContent.GetPropertyString("sm_nodegroup");
 					String version = TestContent.GetPropertyString("sm_version");
-					String protocol = (port.isEmpty() || port.equals("443")) ? "https" : "http";
-					String url = protocol + "://" +
-							TestContent.GetPropertyString("host") + port + "/streammanager/api/" + version + "/event/" +
-							context + "/" + streamName + "?action=" + action;
+					String url = String.format("https://%s/as/%s/streams/stream/%s/%s/%s/%s",
+						host,
+						version,
+						nodeGroup,
+						action,
+						context,
+						streamName);
 
 					HttpClient httpClient = new DefaultHttpClient();
 					HttpResponse response = httpClient.execute(new HttpGet(url));
@@ -59,7 +69,8 @@ public class ConferenceStreamManagerTest extends ConferenceTest {
 						String responseString = out.toString();
 						out.close();
 
-						JSONObject data = new JSONObject(responseString);
+						JSONArray origins = new JSONArray(responseString);
+						JSONObject data = origins.getJSONObject(0);
 						final String outURL = data.getString("serverAddress");
 
 						if( !outURL.isEmpty() ){
