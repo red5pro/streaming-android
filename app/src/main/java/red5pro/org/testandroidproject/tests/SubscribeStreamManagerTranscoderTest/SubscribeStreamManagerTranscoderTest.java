@@ -56,8 +56,17 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Arrays;
+import java.util.Base64;
+import java.util.List;
 
 import red5pro.org.testandroidproject.R;
 import red5pro.org.testandroidproject.tests.SubscribeStreamManagerTest.SubscribeStreamManagerTest;
@@ -75,93 +84,155 @@ public class SubscribeStreamManagerTranscoderTest extends SubscribeStreamManager
         display = (R5VideoView) view.findViewById(R.id.videoView);
         buttonContainer = (ViewGroup) view.findViewById(R.id.buttonContainer);
 
-        requestProvisions(TestContent.GetPropertyString("stream1"));
+		String context = TestContent.GetPropertyString("context");
+		String streamName = TestContent.GetPropertyString("stream1");
+
+		authenticateAndRequestProvisions(String.format("%s/%s", context, streamName));
 
         return view;
 
     }
 
-    protected void requestProvisions (final String streamNameGUID) {
+	protected void authenticateAndRequestProvisions(final String streamNameGUID) {
+		final Context context = this.getActivity();
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+
+					String host = TestContent.GetPropertyString("host");
+					String username = TestContent.GetPropertyString("sm_username");
+					String password = TestContent.GetPropertyString("sm_password");
+
+					String urlStr = String.format("https://%s/as/v1/auth/login", host);
+					String creds = String.format("%s:%s", username, password);
+					String token = String.format("Basic %s", Base64.getEncoder().encodeToString(creds.getBytes()));
+
+					URL url = new URL(urlStr);
+					HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+					httpURLConnection.setDoOutput(true);
+					httpURLConnection.setDoInput(true);
+					httpURLConnection.setChunkedStreamingMode(0);
+					httpURLConnection.setRequestProperty("Authorization", token);
+					httpURLConnection.setRequestProperty("Accept", "application/json");
+					httpURLConnection.setRequestProperty("Content-type", "application/json");
+					httpURLConnection.setRequestMethod("PUT");
+
+					InputStream in = new BufferedInputStream(httpURLConnection.getInputStream());
+					BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+					StringBuilder result = new StringBuilder();
+					String line = null;
+					try {
+						while ((line = reader.readLine()) != null) {
+							result.append(line + "\n");
+						}
+						final JSONObject jsonObject = new JSONObject(result.toString());
+						requestProvisions(jsonObject.getString("token"), streamNameGUID);
+
+					} catch (Exception e) {
+						throw e;
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+					final String message = e.getMessage();
+					getActivity().runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+
+							try {
+								AlertDialog alertDialog = new AlertDialog.Builder(context).create();
+								alertDialog.setTitle("Error");
+								alertDialog.setMessage(message);
+								alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+									new DialogInterface.OnClickListener() {
+										public void onClick(DialogInterface dialog, int which) {
+											dialog.dismiss();
+										}
+									}
+
+								);
+								alertDialog.show();
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						}
+					});
+				}
+			}
+		}).start();
+	}
+
+    protected void requestProvisions (final String authToken, final String streamNameGUID) {
         final Context context = this.getActivity();
 
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try{
-                    //url format: https://{streammanagerhost}:{port}/streammanager/api/2.0/admin/event/meta/{scopeName}/{streamName}?action=subscribe
-                    String port = TestContent.getFormattedPortSetting(TestContent.GetPropertyString("server_port"));
-                    String version = TestContent.GetPropertyString("sm_version");
-                    String protocol = (port.isEmpty() || port.equals("443")) ? "https" : "http";
-                    String token = TestContent.GetPropertyString("sm_access_token");
-                    String url = protocol + "://" +
-                            TestContent.GetPropertyString("host") + port + "/streammanager/api/" + version +
-                            "/admin/event/meta/" +
-                            TestContent.GetPropertyString("context") + "/" +
-                            streamNameGUID + "?action=subscribe&accessToken=" + token;
+                    //url format: `https://${host}/as/${version}/streams/provision/${nodeGroup}/${streamGuid}`
+					String host = TestContent.GetPropertyString("host");
+					String version = TestContent.GetPropertyString("sm_version");
+					String nodeGroup = TestContent.GetPropertyString("sm_nodegroup");
+					String url = String.format("https://%s/as/%s/streams/provision/%s/%s", host, version, nodeGroup, streamNameGUID);
 
-                    HttpClient httpClient = new DefaultHttpClient();
-                    HttpResponse response = httpClient.execute(new HttpGet(url));
-                    StatusLine statusLine = response.getStatusLine();
+					URL url1 = new URL(url);
+					HttpURLConnection httpURLConnection = (HttpURLConnection) url1.openConnection();
+					httpURLConnection.setDoOutput(false);
+					httpURLConnection.setDoInput(true);
+					httpURLConnection.setChunkedStreamingMode(0);
+					httpURLConnection.setRequestProperty("Authorization", "Bearer " + authToken);
+					httpURLConnection.setRequestProperty("Accept", "application/json");
+					httpURLConnection.setRequestProperty("Content-type", "application/json");
+					httpURLConnection.setRequestMethod("GET");
 
-                    if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
-                        ByteArrayOutputStream out = new ByteArrayOutputStream();
-                        response.getEntity().writeTo(out);
-                        String responseString = out.toString();
-                        out.close();
+					InputStream in = new BufferedInputStream(httpURLConnection.getInputStream());
+					BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+					StringBuilder result = new StringBuilder();
+					String line = null;
+					try {
+						while ((line = reader.readLine()) != null) {
+							result.append(line + "\n");
+						}
+						final JSONObject jsonObject = new JSONObject(result.toString());
+						final JSONArray streams = jsonObject.getJSONArray("streams");
+						getActivity().runOnUiThread(new Runnable() {
+							@Override
+							public void run() {
+								showStreamList(streams);
+							}
+						});
 
-                        final JSONObject json = new JSONObject(responseString);
-                        final JSONObject data = json.getJSONObject("data");
-                        final JSONObject meta = data.getJSONObject("meta");
-                        final JSONArray streamList = meta.getJSONArray("stream");
+					} catch (Exception e) {
+						throw e;
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+					final String message = e.getMessage();
+					getActivity().runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
 
-                        if( streamList != null ){
-                            getActivity().runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    showStreamList(streamList);
-                                }
-                            });
-                        } else {
-                            System.out.println("Provisions not returned");
-                        }
-                    } else {
-                        ByteArrayOutputStream out = new ByteArrayOutputStream();
-                        response.getEntity().writeTo(out);
-                        String responseString = out.toString();
-                        out.close();
+							try {
+								AlertDialog alertDialog = new AlertDialog.Builder(context).create();
+								alertDialog.setTitle("Error");
+								alertDialog.setMessage(message);
+								alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+									new DialogInterface.OnClickListener() {
+										public void onClick(DialogInterface dialog, int which) {
+											dialog.dismiss();
+										}
+									}
 
-                        final JSONObject j = new JSONObject(responseString);
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-
-                                try {
-                                    AlertDialog alertDialog = new AlertDialog.Builder(context).create();
-                                    alertDialog.setTitle("Error");
-                                    alertDialog.setMessage(j.getString("errorMessage"));
-                                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                                            new DialogInterface.OnClickListener() {
-                                                public void onClick(DialogInterface dialog, int which) {
-                                                    dialog.dismiss();
-                                                }
-                                            }
-
-                                    );
-                                    alertDialog.show();
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        });
-                        response.getEntity().getContent().close();
-                        throw new IOException(statusLine.getReasonPhrase());
-                    }
-
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-            }
-        }).start();
+								);
+								alertDialog.show();
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						}
+					});
+				}
+			}
+		}).start();
 
     }
 
@@ -173,8 +244,8 @@ public class SubscribeStreamManagerTranscoderTest extends SubscribeStreamManager
             @Override
             public void onClick(View v) {
                 final Button btn = (Button)v;
-                final String name = String.valueOf(btn.getText());
-                startSubscriber(name);
+                final String streamGuid = String.valueOf(btn.getText());
+                startSubscriber(streamGuid);
                 buttonContainer.removeAllViews();
             }
 
@@ -182,7 +253,7 @@ public class SubscribeStreamManagerTranscoderTest extends SubscribeStreamManager
         for (int i = 0; i < streamList.length(); i++) {
             try {
                 JSONObject stream = streamList.getJSONObject(i);
-                String name = stream.getString("name");
+                String name = stream.getString("streamGuid");
                 Button btn = new Button(context);
                 btn.setText(name);
                 btn.setLayoutParams(new TableLayout.LayoutParams(
@@ -198,127 +269,22 @@ public class SubscribeStreamManagerTranscoderTest extends SubscribeStreamManager
 
     }
 
-    protected void startSubscriber (final String streamName) {
-        final Context context = this.getActivity();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try{
-                    //url format: https://{streammanagerhost}:{port}/streammanager/api/2.0/event/{scopeName}/{streamName}?action=subscribe
-                    String port = TestContent.getFormattedPortSetting(TestContent.GetPropertyString("server_port"));
-                    String version = TestContent.GetPropertyString("sm_version");
-                    String protocol = (port.isEmpty() || port.equals("443")) ? "https" : "http";
-                    String url = protocol + "://" +
-                            TestContent.GetPropertyString("host") + port + "/streammanager/api/" + version + "/event/" +
-                            TestContent.GetPropertyString("context") + "/" +
-                            streamName + "?action=subscribe";
+    protected void startSubscriber (final String streamGuid) {
 
-                    HttpClient httpClient = new DefaultHttpClient();
-                    HttpResponse response = httpClient.execute(new HttpGet(url));
-                    StatusLine statusLine = response.getStatusLine();
+		//url format: "\(host)\(portURI)/as/\(version)/streams/stream/\(nodeGroup)/publish/\(context)/\(streamName)"
+		String host = TestContent.GetPropertyString("host");
+		String version = TestContent.GetPropertyString("sm_version");
+		String nodeGroup = TestContent.GetPropertyString("sm_nodegroup");
+		List<String> paths = Arrays.asList(streamGuid.split("/"));
+		String streamName = paths.get(paths.size() - 1);
 
-                    if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
-                        ByteArrayOutputStream out = new ByteArrayOutputStream();
-                        response.getEntity().writeTo(out);
-                        String responseString = out.toString();
-                        out.close();
+		String url = String.format("https://%s/as/%s/streams/stream/%s/subscribe/%s",
+			host,
+			version,
+			nodeGroup,
+			streamGuid);
 
-                        JSONObject data = new JSONObject(responseString);
-                        final String outURL = data.getString("serverAddress");
-
-                        if( !outURL.isEmpty() ){
-                            getActivity().runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    subscribeToManager(outURL, streamName);
-                                }
-                            });
-                        } else {
-                            System.out.println("Server address not returned");
-                        }
-                    } else{
-                        ByteArrayOutputStream out = new ByteArrayOutputStream();
-                        response.getEntity().writeTo(out);
-                        String responseString = out.toString();
-                        out.close();
-
-                        final JSONObject j = new JSONObject(responseString);
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-
-                                try {
-                                    AlertDialog alertDialog = new AlertDialog.Builder(context).create();
-                                    alertDialog.setTitle("Error");
-                                    alertDialog.setMessage(j.getString("errorMessage"));
-                                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                                            new DialogInterface.OnClickListener() {
-                                                public void onClick(DialogInterface dialog, int which) {
-                                                    dialog.dismiss();
-                                                }
-                                            }
-
-                                    );
-                                    alertDialog.show();
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        });
-                        response.getEntity().getContent().close();
-                        throw new IOException(statusLine.getReasonPhrase());
-                    }
-
-                } catch (Exception e){
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-    }
-
-    protected void subscribeToManager( String url, String name ){
-
-        //Create the configuration from the tests.xml
-        R5Configuration config = new R5Configuration(R5StreamProtocol.RTSP,
-                url,
-                TestContent.GetPropertyInt("port"),
-                TestContent.GetPropertyString("context"),
-                TestContent.GetPropertyFloat("subscribe_buffer_time"));
-        config.setLicenseKey(TestContent.GetPropertyString("license_key"));
-        config.setBundleID(getActivity().getPackageName());
-
-		String params = TestContent.getConnectionParams();
-		if (params != null) {
-			config.setParameters(params);
-		}
-
-        R5Connection connection = new R5Connection(config);
-
-        //setup a new stream using the connection
-        subscribe = new R5Stream(connection);
-        subscribe.setListener(this);
-
-        subscribe.audioController = new R5AudioController();
-        subscribe.audioController.sampleRate = TestContent.GetPropertyInt("sample_rate");
-
-        //show all logging
-        subscribe.setLogLevel(R5Stream.LOG_LEVEL_DEBUG);
-
-        //find the view and attach the stream
-        display.attachStream(subscribe);
-
-        display.showDebugView(TestContent.GetPropertyBool("debug_view"));
-
-        subscribe.play(name, TestContent.GetPropertyBool("hwAccel_on"));
-
-        edgeShow = new TextView(display.getContext());
-        FrameLayout.LayoutParams position = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.BOTTOM);
-        edgeShow.setLayoutParams(position);
-
-        ((FrameLayout)display.getParent()).addView(edgeShow);
-
-        edgeShow.setText("Connected to: " + url, TextView.BufferType.NORMAL);
-        edgeShow.setBackgroundColor(Color.LTGRAY);
+		getEdgeAndSubscribe(url, streamName);
     }
 
 }

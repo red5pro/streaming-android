@@ -119,39 +119,26 @@ public class PublishTranscoderForm {
         return values;
     }
 
-    public HashMap<String, Integer> getVariantPropertyMap (ArrayList<Integer> values) {
-        HashMap<String, Integer> props = new HashMap<>();
-        props.put("videoBR", values.get(0));
-        props.put("videoWidth", values.get(1));
-        props.put("videoHeight", values.get(2));
-        return props;
+    public PublishTranscoderData.VideoParams getVariantPropertyMap (ArrayList<Integer> values) {
+		return new PublishTranscoderData.VideoParams(values.get(1), values.get(2), values.get(0));
     }
 
-    public HashMap<String, Object> getHighVariant (String streamName, int order) {
+    public PublishTranscoderData.StreamVariant getHighVariant (String streamGuid, int order) {
         ArrayList<Integer> high = getHighFormValues();
-        HashMap<String, Object> variant = new HashMap<>();
-        variant.put("name", streamName + "_" + order);
-        variant.put("level", order);
-        variant.put("properties", getVariantPropertyMap(high));
-        return  variant;
+		PublishTranscoderData.StreamVariant variant = new PublishTranscoderData.StreamVariant(streamGuid, order, getVariantPropertyMap(high));
+		return variant;
     }
 
-    public HashMap<String, Object> getMediumVariant (String streamName, int order) {
-        ArrayList<Integer> high = getMediumFormValues();
-        HashMap<String, Object> variant = new HashMap<>();
-        variant.put("name", streamName + "_" + order);
-        variant.put("level", order);
-        variant.put("properties", getVariantPropertyMap(high));
-        return  variant;
+    public PublishTranscoderData.StreamVariant getMediumVariant (String streamName, int order) {
+        ArrayList<Integer> medium = getMediumFormValues();
+		PublishTranscoderData.StreamVariant variant = new PublishTranscoderData.StreamVariant(streamName, order, getVariantPropertyMap(medium));
+		return variant;
     }
 
-    public HashMap<String, Object> getLowVariant (String streamName, int order) {
-        ArrayList<Integer> high = getLowFormValues();
-        HashMap<String, Object> variant = new HashMap<>();
-        variant.put("name", streamName + "_" + order);
-        variant.put("level", order);
-        variant.put("properties", getVariantPropertyMap(high));
-        return variant;
+    public PublishTranscoderData.StreamVariant getLowVariant (String streamName, int order) {
+        ArrayList<Integer> low = getLowFormValues();
+		PublishTranscoderData.StreamVariant variant = new PublishTranscoderData.StreamVariant(streamName, order, getVariantPropertyMap(low));
+		return variant;
     }
 
     public interface PublishTranscoderDelegate {

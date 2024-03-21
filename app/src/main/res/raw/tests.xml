@@ -19,9 +19,12 @@
         <record_mode>Live</record_mode>
         <sample_rate>44100</sample_rate>
         <fps>15</fps>
-        <sm_version>4.0</sm_version>
+        <sm_version>v1</sm_version>
+		<sm_username>admin</sm_username>
+		<sm_password>xyz123</sm_password>
+		<sm_nodegroup>allinone-oci-1</sm_nodegroup>
         <sm_access_token>xyz123</sm_access_token>
-		<conference_host>ws://10.0.0.75:8001</conference_host>
+		<conference_host>ws://10.0.0.118:8001</conference_host>
     </Properties>
     <Tests>
 
@@ -318,7 +321,7 @@
                 <med_width>640</med_width>
                 <med_height>360</med_height>
                 <low_bitrate>400000</low_bitrate>
-                <low_width>320?</low_width>
+                <low_width>320</low_width>
                 <low_height>270</low_height>
             </Properties>
 

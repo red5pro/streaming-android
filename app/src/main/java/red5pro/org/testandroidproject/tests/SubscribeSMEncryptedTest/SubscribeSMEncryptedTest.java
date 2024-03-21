@@ -43,11 +43,11 @@ import red5pro.org.testandroidproject.tests.TestContent;
 public class SubscribeSMEncryptedTest extends SubscribeStreamManagerTest {
 
     @Override
-    protected void subscribeToManager(String url) {
+    protected void subscribeToManager(String edge, String streamName) {
 
         //Create the configuration from the tests.xml
         R5Configuration config = new R5Configuration(R5StreamProtocol.SRTP,
-                url,
+				edge,
                 TestContent.GetPropertyInt("port"),
                 TestContent.GetPropertyString("context"),
                 TestContent.GetPropertyFloat("subscribe_buffer_time"));
@@ -76,7 +76,7 @@ public class SubscribeSMEncryptedTest extends SubscribeStreamManagerTest {
 
         display.showDebugView(TestContent.GetPropertyBool("debug_view"));
 
-        subscribe.play(TestContent.GetPropertyString("stream1"), TestContent.GetPropertyBool("hwAccel_on"));
+        subscribe.play(streamName, TestContent.GetPropertyBool("hwAccel_on"));
 
         edgeShow = new TextView(display.getContext());
         FrameLayout.LayoutParams position = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.BOTTOM);
@@ -84,7 +84,7 @@ public class SubscribeSMEncryptedTest extends SubscribeStreamManagerTest {
 
         ((FrameLayout)display.getParent()).addView(edgeShow);
 
-        edgeShow.setText("Connected to: " + url, TextView.BufferType.NORMAL);
+        edgeShow.setText("Connected to: " + edge, TextView.BufferType.NORMAL);
         edgeShow.setBackgroundColor(Color.LTGRAY);
     }
 }

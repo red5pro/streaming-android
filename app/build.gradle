@@ -4,7 +4,7 @@ android {
     buildToolsVersion '19.1.0'
     defaultConfig {
         applicationId "red5pro.org.testandroidproject"
-        minSdkVersion 23
+        minSdkVersion 26
         targetSdkVersion 30
         versionCode 9000
         versionName "10.9.0.0"
