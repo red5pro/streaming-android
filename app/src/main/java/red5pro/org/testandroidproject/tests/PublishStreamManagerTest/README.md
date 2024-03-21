@@ -11,32 +11,42 @@ With the Stream Manager, our configuration IP will be used similarly for publish
 
 ### Setup
 
-In order to publish, you first need to connect to the origin server's Stream Manager. The Stream Manager will know which edges are active and provide the one that needs to be published to.
+In order to publish, you first need to connect to the Origin server of your deployment. The Stream Manager will know which edges are active and provide the one that needs to be published to.
 
 ```Java
-String url = "https://" +
-  TestContent.GetPropertyString("host") + "/streammanager/api/3.1/event/" +
-  TestContent.GetPropertyString("context") + "/" +
-  TestContent.GetPropertyString("stream1") + "?action=broadcast";
+// url format: "\(host)\(portURI)/as/\(version)/streams/stream/\(nodeGroup)/publish/\(context)/\(streamName)"
+String host = TestContent.GetPropertyString("host");
+String version = TestContent.GetPropertyString("sm_version");
+String nodeGroup = TestContent.GetPropertyString("sm_nodegroup");
+String context = TestContent.GetPropertyString("context");
+String streamName = TestContent.GetPropertyString("stream1");
 
+String url = String.format("https://%s/as/%s/streams/stream/%s/publish/%s/%s",
+    host,
+    version,
+    nodeGroup,
+    context,
+    streamName);
 HttpClient httpClient = new DefaultHttpClient();
 HttpResponse response = httpClient.execute(new HttpGet(url));
 StatusLine statusLine = response.getStatusLine();
 
 if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
-  ByteArrayOutputStream out = new ByteArrayOutputStream();
-  response.getEntity().writeTo(out);
-  String responseString = out.toString();
-  out.close();
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    response.getEntity().writeTo(out);
+    String responseString = out.toString();
+    out.close();
+
+    JSONArray origins = new JSONArray(responseString);
+    JSONObject data = origins.getJSONObject(0);
+    final String outURL = data.getString("serverAddress");
+}
 ```
 
-[PublishStreamManagerTest.java #46](PublishStreamManagerTest.java#L46)
-
-The service returns a json object with the information needed to connect to publish.
+The service returns a JSON array of Origin nodes available to connect to; in typical deployments, this will be of a length of one.
 
 ```Java
-  JSONObject data = new JSONObject(responseString);
-  String outURL = data.getString("serverAddress");
+JSONArray origins = new JSONArray(responseString);
+JSONObject data = origins.getJSONObject(0);
+final String outURL = data.getString("serverAddress");
 ```
-
-[PublishStreamManagerTest.java #63](PublishStreamManagerTest.java#L63)
