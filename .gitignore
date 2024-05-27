@@ -22,3 +22,6 @@ hs_err_pid*
 /build
 /.idea/caches
 /.idea/codeStyles
+/.idea/copilot
+/.idea/deploymentTargetDropDown.xml
+/.idea/migrations.xml
