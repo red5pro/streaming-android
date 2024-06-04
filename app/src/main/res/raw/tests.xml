@@ -330,6 +330,49 @@
 
         </Test>
 
+		<Test title="Publish - Stream Manager V1">
+
+			<description>A publish example that connects to a cluster server with the Stream Manager 1.0.</description>
+
+			<Properties>
+			</Properties>
+
+			<name>Publish - Stream Manager V1</name>
+			<class>PublishStreamManagerTest_SM1</class>
+		</Test>
+
+		<Test title="Publish - Stream Manager Encrypted V1">
+
+			<description>A publish example that connects to a cluster server with the Stream Manager 1.0 using SRTP encryption.</description>
+
+			<Properties>
+			</Properties>
+
+			<name>Publish - Stream Manager Encrypted V1</name>
+			<class>PublishSMEncryptedTest_SM1</class>
+		</Test>
+
+		<Test title="Publish - Stream Manager Transcoder V1">
+
+			<description>A publish example that uses transcoding broadcast over Stream Manager 1.0.</description>
+
+			<Properties>
+				<high_bitrate>1500000</high_bitrate>
+				<high_width>1280</high_width>
+				<high_height>720</high_height>
+				<med_bitrate>600000</med_bitrate>
+				<med_width>640</med_width>
+				<med_height>360</med_height>
+				<low_bitrate>400000</low_bitrate>
+				<low_width>320</low_width>
+				<low_height>270</low_height>
+			</Properties>
+
+			<name>Publish - Stream Manager Transcoder V1</name>
+			<class>PublishStreamManagerTranscodeTest_SM1</class>
+
+		</Test>
+
         <Test title="Shared Objects">
 
             <description>Stream and chat example with shared objects.</description>
@@ -566,6 +609,39 @@
             <name>Subscribe - Stream Manager Transcoder</name>
             <class>SubscribeStreamManagerTranscoderTest</class>
         </Test>
+
+		<Test title="Subscribe - Stream Manager V1">
+
+			<description>A subscribe example that connects to a cluster server with the Stream Manager 1.0.</description>
+
+			<Properties>
+			</Properties>
+
+			<name>Subscribe - Stream Manager V1</name>
+			<class>SubscribeStreamManagerTest_SM1</class>
+		</Test>
+
+		<Test title="Subscribe - Stream Manager Encrypted V1">
+
+			<description>A subscribe example that connects to a cluster server with the Stream Manager 1.0 using SRTP encryption.</description>
+
+			<Properties>
+			</Properties>
+
+			<name>Subscribe - Stream Manager Encrypted V1</name>
+			<class>SubscribeSMEncryptedTest_SM1</class>
+		</Test>
+
+		<Test title="Subscribe - Stream Manager Transcoder V1">
+
+			<description>A subscribe example that connects to a cluster server with the Stream Manager 1.0 using ABR.</description>
+
+			<Properties>
+			</Properties>
+
+			<name>Subscribe - Stream Manager Transcoder V1</name>
+			<class>SubscribeStreamManagerTranscoderTest_SM1</class>
+		</Test>
 
         <Test title="Subscribe - Two Stream">
 
