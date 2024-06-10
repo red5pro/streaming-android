@@ -2,7 +2,7 @@
     <Properties>
         <bitrate>750</bitrate>
         <host>0.0.0.0</host>
-        <server_port>5080</server_port>
+        <server_port>443</server_port>
         <license_key></license_key>
         <publish_buffer_time>0.5</publish_buffer_time>
         <subscribe_buffer_time>0.5</subscribe_buffer_time>
@@ -22,7 +22,7 @@
         <sm_version>v1</sm_version>
 		<sm_username>admin</sm_username>
 		<sm_password>xyz123</sm_password>
-		<sm_nodegroup>allinone-oci-1</sm_nodegroup>
+		<sm_nodegroup>all-in-one</sm_nodegroup>
         <sm_access_token>xyz123</sm_access_token>
 		<conference_host>ws://10.0.0.118:8001</conference_host>
     </Properties>
