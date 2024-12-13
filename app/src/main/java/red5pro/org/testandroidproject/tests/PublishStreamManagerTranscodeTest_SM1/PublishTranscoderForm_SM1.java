@@ -23,7 +23,7 @@
 // WHETHER IN  AN  ACTION  OF  CONTRACT,  TORT  OR  OTHERWISE,  ARISING  FROM,  OUT  OF  OR  IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-package red5pro.org.testandroidproject.tests.PublishStreamManagerTranscodeTest;
+package red5pro.org.testandroidproject.tests.PublishStreamManagerTranscodeTest_SM1;
 
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +36,7 @@ import java.util.HashMap;
 import red5pro.org.testandroidproject.R;
 import red5pro.org.testandroidproject.tests.TestContent;
 
-public class PublishTranscoderForm {
+public class PublishTranscoderForm_SM1 {
 
     public PublishTranscoderDelegate delegate;
     public ViewGroup view;
@@ -52,7 +52,7 @@ public class PublishTranscoderForm {
     public EditText lowWidth;
     public EditText lowHeight;
 
-    public PublishTranscoderForm (ViewGroup view, final PublishTranscoderDelegate delegate) {
+    public PublishTranscoderForm_SM1(ViewGroup view, final PublishTranscoderDelegate delegate) {
         this.view = view;
         this.delegate = delegate;
         this.submitButton = this.view.findViewById(R.id.submit_button);
@@ -66,7 +66,7 @@ public class PublishTranscoderForm {
         this.lowWidth = (EditText)this.view.findViewById(R.id.low_width);
         this.lowHeight = (EditText)this.view.findViewById(R.id.low_height);
 
-        final PublishTranscoderForm self = this;
+        final PublishTranscoderForm_SM1 self = this;
         this.submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -119,29 +119,42 @@ public class PublishTranscoderForm {
         return values;
     }
 
-    public PublishTranscoderData.VideoParams getVariantPropertyMap (ArrayList<Integer> values) {
-		return new PublishTranscoderData.VideoParams(values.get(1), values.get(2), values.get(0));
+    public HashMap<String, Integer> getVariantPropertyMap (ArrayList<Integer> values) {
+        HashMap<String, Integer> props = new HashMap<>();
+        props.put("videoBR", values.get(0));
+        props.put("videoWidth", values.get(1));
+        props.put("videoHeight", values.get(2));
+        return props;
     }
 
-    public PublishTranscoderData.StreamVariant getHighVariant (String streamGuid, int order) {
+    public HashMap<String, Object> getHighVariant (String streamName, int order) {
         ArrayList<Integer> high = getHighFormValues();
-		PublishTranscoderData.StreamVariant variant = new PublishTranscoderData.StreamVariant(streamGuid, order, getVariantPropertyMap(high));
-		return variant;
+        HashMap<String, Object> variant = new HashMap<>();
+        variant.put("name", streamName + "_" + order);
+        variant.put("level", order);
+        variant.put("properties", getVariantPropertyMap(high));
+        return  variant;
     }
 
-    public PublishTranscoderData.StreamVariant getMediumVariant (String streamName, int order) {
-        ArrayList<Integer> medium = getMediumFormValues();
-		PublishTranscoderData.StreamVariant variant = new PublishTranscoderData.StreamVariant(streamName, order, getVariantPropertyMap(medium));
-		return variant;
+    public HashMap<String, Object> getMediumVariant (String streamName, int order) {
+        ArrayList<Integer> high = getMediumFormValues();
+        HashMap<String, Object> variant = new HashMap<>();
+        variant.put("name", streamName + "_" + order);
+        variant.put("level", order);
+        variant.put("properties", getVariantPropertyMap(high));
+        return  variant;
     }
 
-    public PublishTranscoderData.StreamVariant getLowVariant (String streamName, int order) {
-        ArrayList<Integer> low = getLowFormValues();
-		PublishTranscoderData.StreamVariant variant = new PublishTranscoderData.StreamVariant(streamName, order, getVariantPropertyMap(low));
-		return variant;
+    public HashMap<String, Object> getLowVariant (String streamName, int order) {
+        ArrayList<Integer> high = getLowFormValues();
+        HashMap<String, Object> variant = new HashMap<>();
+        variant.put("name", streamName + "_" + order);
+        variant.put("level", order);
+        variant.put("properties", getVariantPropertyMap(high));
+        return variant;
     }
 
     public interface PublishTranscoderDelegate {
-        public void onProvisionSubmit(PublishTranscoderForm form);
+        public void onProvisionSubmit(PublishTranscoderForm_SM1 form);
     }
 }

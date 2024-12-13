@@ -23,7 +23,7 @@
 // WHETHER IN  AN  ACTION  OF  CONTRACT,  TORT  OR  OTHERWISE,  ARISING  FROM,  OUT  OF  OR  IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-package red5pro.org.testandroidproject.tests.PublishStreamManagerTest;
+package red5pro.org.testandroidproject.tests.PublishStreamManagerTest_SM1;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -48,7 +48,6 @@ import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
@@ -61,7 +60,7 @@ import red5pro.org.testandroidproject.tests.TestContent;
 /**
  * Created by davidHeimann on 4/8/16.
  */
-public class PublishStreamManagerTest extends PublishTest {
+public class PublishStreamManagerTest_SM1 extends PublishTest {
     protected TextView edgeShow;
 
     @Override
@@ -75,20 +74,15 @@ public class PublishStreamManagerTest extends PublishTest {
             @Override
             public void run() {
                 try{
-                    // url format: "\(host)\(portURI)/as/\(version)/streams/stream/\(nodeGroup)/publish/\(context)/\(streamName)"
-					String host = TestContent.GetPropertyString("host");
-                    String version = TestContent.GetPropertyString("sm_version");
-					String nodeGroup = TestContent.GetPropertyString("sm_nodegroup");
-					String context = TestContent.GetPropertyString("context");
-					String streamName = TestContent.GetPropertyString("stream1");
+                    //url format: https://{streammanagerhost}:{port}/streammanager/api/2.0/event/{scopeName}/{streamName}?action=broadcast
+                    String port = TestContent.getFormattedPortSetting(TestContent.GetPropertyString("server_port"));
+                    String protocol = (port.isEmpty() || port.equals("443")) ? "https" : "http";
+                    String url = protocol + "://" +
+                            TestContent.GetPropertyString("host") + port + "/streammanager/api/4.0/event/" +
+                            TestContent.GetPropertyString("context") + "/" +
+                            TestContent.GetPropertyString("stream1") + "?action=broadcast";
 
-					String url = String.format("https://%s/as/%s/streams/stream/%s/publish/%s/%s",
-						host,
-						version,
-						nodeGroup,
-						context,
-						streamName);
-					HttpClient httpClient = new DefaultHttpClient();
+                    HttpClient httpClient = new DefaultHttpClient();
                     HttpResponse response = httpClient.execute(new HttpGet(url));
                     StatusLine statusLine = response.getStatusLine();
 
@@ -98,8 +92,7 @@ public class PublishStreamManagerTest extends PublishTest {
                         String responseString = out.toString();
                         out.close();
 
-						JSONArray origins = new JSONArray(responseString);
-						JSONObject data = origins.getJSONObject(0);
+                        JSONObject data = new JSONObject(responseString);
                         final String outURL = data.getString("serverAddress");
 
                         if( !outURL.isEmpty() ){

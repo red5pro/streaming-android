@@ -23,7 +23,7 @@
 // WHETHER IN  AN  ACTION  OF  CONTRACT,  TORT  OR  OTHERWISE,  ARISING  FROM,  OUT  OF  OR  IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-package red5pro.org.testandroidproject.tests.SubscribeSMEncryptedTest;
+package red5pro.org.testandroidproject.tests.SubscribeSMEncryptedTest_SM1;
 
 import android.graphics.Color;
 import android.view.Gravity;
@@ -37,17 +37,17 @@ import com.red5pro.streaming.R5StreamProtocol;
 import com.red5pro.streaming.config.R5Configuration;
 import com.red5pro.streaming.media.R5AudioController;
 
-import red5pro.org.testandroidproject.tests.SubscribeStreamManagerTest.SubscribeStreamManagerTest;
+import red5pro.org.testandroidproject.tests.SubscribeStreamManagerTest_SM1.SubscribeStreamManagerTest_SM1;
 import red5pro.org.testandroidproject.tests.TestContent;
 
-public class SubscribeSMEncryptedTest extends SubscribeStreamManagerTest {
+public class SubscribeSMEncryptedTest_SM1 extends SubscribeStreamManagerTest_SM1 {
 
     @Override
-    protected void subscribeToManager(String edge, String streamName) {
+    protected void subscribeToManager(String url) {
 
         //Create the configuration from the tests.xml
         R5Configuration config = new R5Configuration(R5StreamProtocol.SRTP,
-				edge,
+                url,
                 TestContent.GetPropertyInt("port"),
                 TestContent.GetPropertyString("context"),
                 TestContent.GetPropertyFloat("subscribe_buffer_time"));
@@ -76,7 +76,7 @@ public class SubscribeSMEncryptedTest extends SubscribeStreamManagerTest {
 
         display.showDebugView(TestContent.GetPropertyBool("debug_view"));
 
-        subscribe.play(streamName, TestContent.GetPropertyBool("hwAccel_on"));
+        subscribe.play(TestContent.GetPropertyString("stream1"), TestContent.GetPropertyBool("hwAccel_on"));
 
         edgeShow = new TextView(display.getContext());
         FrameLayout.LayoutParams position = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.BOTTOM);
@@ -84,7 +84,7 @@ public class SubscribeSMEncryptedTest extends SubscribeStreamManagerTest {
 
         ((FrameLayout)display.getParent()).addView(edgeShow);
 
-        edgeShow.setText("Connected to: " + edge, TextView.BufferType.NORMAL);
+        edgeShow.setText("Connected to: " + url, TextView.BufferType.NORMAL);
         edgeShow.setBackgroundColor(Color.LTGRAY);
     }
 }

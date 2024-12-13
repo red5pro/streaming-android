@@ -23,78 +23,41 @@
 // WHETHER IN  AN  ACTION  OF  CONTRACT,  TORT  OR  OTHERWISE,  ARISING  FROM,  OUT  OF  OR  IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-package red5pro.org.testandroidproject.tests.PublishStreamManagerTranscodeTest;
+package red5pro.org.testandroidproject.tests.PublishStreamManagerTranscodeTest_SM1;
 
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 
-public class PublishTranscoderData {
-	public String streamGuid;
-	public String messageType = "ProvisionCommand";
-	public Credentials credentials;
-	public List<StreamVariant> streams = new ArrayList<StreamVariant>();
+public class PublishTranscoderData_SM1 {
 
-	public static class Credentials {
-		public String username;
-		public String password;
+    public HashMap<String, Object> meta;
 
-		public Credentials(String user, String pass) {
-			username = user;
-			password = pass;
-		}
-	}
+    public PublishTranscoderData_SM1(ArrayList<HashMap<String, Object>> variants) {
 
-	public static class StreamVariant {
-		public String streamGuid;
-		public Integer abrLevel;
-		public VideoParams videoParams;
+        HashMap<String, String> authMap = new HashMap<>();
+        authMap.put("username", "");
+        authMap.put("password", "");
+        HashMap<String, Object> geoMap = new HashMap<>();
+        geoMap.put("regions", new ArrayList<>(Arrays.asList("US", "UK")));
+        geoMap.put("restricted", false);
 
-		public StreamVariant(String guid, Integer abr, VideoParams params) {
-			streamGuid = guid;
-			abrLevel = abr;
-			videoParams = params;
-		}
-	}
 
-	public static class VideoParams {
-		public Integer videoWidth;
-		public Integer videoHeight;
-		public Integer videoBitRate;
+        meta = new HashMap<>();
+        meta.put("authentication", authMap);
+        meta.put("georules", geoMap);
+        meta.put("stream", variants);
+        meta.put("qos", 3);
 
-		public VideoParams(Integer width, Integer height, Integer bitRate) {
-			videoWidth = width;
-			videoHeight = height;
-			videoBitRate = bitRate;
-		}
-	}
+    }
 
-    public PublishTranscoderData (String streamGuid) {
-		this.streamGuid = streamGuid;
-	}
-
-	public PublishTranscoderData (String streamGuid, List<StreamVariant> streams) {
-		this.streamGuid = streamGuid;
-		this.streams = streams;
-	}
-
-	public StreamVariant getVariantByLevel (int level) {
-		for(int i = 0; i < streams.size(); i++) {
-			StreamVariant variant = streams.get(i);
-			if (variant.abrLevel == level) {
-				return variant;
-			}
-		}
-		return null;
-	}
-
-    public StreamVariant getVariantByName (String streamGuid) {
-        for(int i = 0; i < streams.size(); i++) {
-            StreamVariant variant = streams.get(i);
-            if (variant.streamGuid.equals(streamGuid)) {
+    public HashMap<String, Object> getVariantByName (String name) {
+        ArrayList<HashMap<String, Object>> variants = (ArrayList<HashMap<String, Object>>)this.meta.get("stream");
+        for(int i = 0; i < variants.size(); i++) {
+            HashMap<String, Object> variant = variants.get(i);
+            if (variant.get("name").equals(name)) {
                 return variant;
             }
         }

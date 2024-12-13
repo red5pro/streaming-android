@@ -23,13 +23,10 @@
 // WHETHER IN  AN  ACTION  OF  CONTRACT,  TORT  OR  OTHERWISE,  ARISING  FROM,  OUT  OF  OR  IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-package red5pro.org.testandroidproject.tests.PublishStreamManagerTest;
+package red5pro.org.testandroidproject.tests.PublishSMEncryptedTest_SM1;
 
 import android.graphics.Color;
-import android.os.Bundle;
 import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -40,97 +37,16 @@ import com.red5pro.streaming.R5StreamProtocol;
 import com.red5pro.streaming.config.R5Configuration;
 import com.red5pro.streaming.source.R5Camera;
 import com.red5pro.streaming.source.R5Microphone;
-import com.red5pro.streaming.view.R5VideoView;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.StatusLine;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-
-import red5pro.org.testandroidproject.R;
-import red5pro.org.testandroidproject.tests.PublishTest.PublishTest;
+import red5pro.org.testandroidproject.tests.PublishStreamManagerTest_SM1.PublishStreamManagerTest_SM1;
 import red5pro.org.testandroidproject.tests.TestContent;
 
-/**
- * Created by davidHeimann on 4/8/16.
- */
-public class PublishStreamManagerTest extends PublishTest {
-    protected TextView edgeShow;
+public class PublishSMEncryptedTest_SM1 extends PublishStreamManagerTest_SM1 {
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        View rootView = inflater.inflate(R.layout.publish_test, container, false);
-
-        preview = (R5VideoView)rootView.findViewById(R.id.videoPreview);
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try{
-                    // url format: "\(host)\(portURI)/as/\(version)/streams/stream/\(nodeGroup)/publish/\(context)/\(streamName)"
-					String host = TestContent.GetPropertyString("host");
-                    String version = TestContent.GetPropertyString("sm_version");
-					String nodeGroup = TestContent.GetPropertyString("sm_nodegroup");
-					String context = TestContent.GetPropertyString("context");
-					String streamName = TestContent.GetPropertyString("stream1");
-
-					String url = String.format("https://%s/as/%s/streams/stream/%s/publish/%s/%s",
-						host,
-						version,
-						nodeGroup,
-						context,
-						streamName);
-					HttpClient httpClient = new DefaultHttpClient();
-                    HttpResponse response = httpClient.execute(new HttpGet(url));
-                    StatusLine statusLine = response.getStatusLine();
-
-                    if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
-                        ByteArrayOutputStream out = new ByteArrayOutputStream();
-                        response.getEntity().writeTo(out);
-                        String responseString = out.toString();
-                        out.close();
-
-						JSONArray origins = new JSONArray(responseString);
-						JSONObject data = origins.getJSONObject(0);
-                        final String outURL = data.getString("serverAddress");
-
-                        if( !outURL.isEmpty() ){
-                            getActivity().runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    publishToManager(outURL);
-                                }
-                            });
-                        }
-                        else {
-                            System.out.println("Server address not returned");
-                        }
-                    }
-                    else{
-                        response.getEntity().getContent().close();
-                        throw new IOException(statusLine.getReasonPhrase());
-                    }
-
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-
-        return rootView;
-    }
-
     protected void publishToManager( String url ){
 
-        R5Configuration config = new R5Configuration(R5StreamProtocol.RTSP,
+        R5Configuration config = new R5Configuration(R5StreamProtocol.SRTP,
                 url,
                 TestContent.GetPropertyInt("port"),
                 TestContent.GetPropertyString("context"),
@@ -162,7 +78,6 @@ public class PublishStreamManagerTest extends PublishTest {
             camera = new R5Camera(cam, TestContent.GetPropertyInt("camera_width"), TestContent.GetPropertyInt("camera_height"));
             camera.setBitrate(TestContent.GetPropertyInt("bitrate"));
             camera.setOrientation(camOrientation);
-            camera.setFramerate(TestContent.GetPropertyInt("fps"));
         }
 
         if(TestContent.GetPropertyBool("audio_on")) {
