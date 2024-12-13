@@ -2,7 +2,7 @@
     <Properties>
         <bitrate>750</bitrate>
         <host>0.0.0.0</host>
-        <server_port>5080</server_port>
+        <server_port>443</server_port>
         <license_key></license_key>
         <publish_buffer_time>0.5</publish_buffer_time>
         <subscribe_buffer_time>0.5</subscribe_buffer_time>
@@ -19,9 +19,12 @@
         <record_mode>Live</record_mode>
         <sample_rate>44100</sample_rate>
         <fps>15</fps>
-        <sm_version>4.0</sm_version>
+        <sm_version>v1</sm_version>
+		<sm_username>admin</sm_username>
+		<sm_password>xyz123</sm_password>
+		<sm_nodegroup>all-in-one</sm_nodegroup>
         <sm_access_token>xyz123</sm_access_token>
-		<conference_host>ws://10.0.0.75:8001</conference_host>
+		<conference_host>ws://10.0.0.118:8001</conference_host>
     </Properties>
     <Tests>
 
@@ -318,7 +321,7 @@
                 <med_width>640</med_width>
                 <med_height>360</med_height>
                 <low_bitrate>400000</low_bitrate>
-                <low_width>320?</low_width>
+                <low_width>320</low_width>
                 <low_height>270</low_height>
             </Properties>
 
@@ -326,6 +329,49 @@
             <class>PublishStreamManagerTranscodeTest</class>
 
         </Test>
+
+		<Test title="Publish - Stream Manager V1">
+
+			<description>A publish example that connects to a cluster server with the Stream Manager 1.0.</description>
+
+			<Properties>
+			</Properties>
+
+			<name>Publish - Stream Manager V1</name>
+			<class>PublishStreamManagerTest_SM1</class>
+		</Test>
+
+		<Test title="Publish - Stream Manager Encrypted V1">
+
+			<description>A publish example that connects to a cluster server with the Stream Manager 1.0 using SRTP encryption.</description>
+
+			<Properties>
+			</Properties>
+
+			<name>Publish - Stream Manager Encrypted V1</name>
+			<class>PublishSMEncryptedTest_SM1</class>
+		</Test>
+
+		<Test title="Publish - Stream Manager Transcoder V1">
+
+			<description>A publish example that uses transcoding broadcast over Stream Manager 1.0.</description>
+
+			<Properties>
+				<high_bitrate>1500000</high_bitrate>
+				<high_width>1280</high_width>
+				<high_height>720</high_height>
+				<med_bitrate>600000</med_bitrate>
+				<med_width>640</med_width>
+				<med_height>360</med_height>
+				<low_bitrate>400000</low_bitrate>
+				<low_width>320</low_width>
+				<low_height>270</low_height>
+			</Properties>
+
+			<name>Publish - Stream Manager Transcoder V1</name>
+			<class>PublishStreamManagerTranscodeTest_SM1</class>
+
+		</Test>
 
         <Test title="Shared Objects">
 
@@ -563,6 +609,39 @@
             <name>Subscribe - Stream Manager Transcoder</name>
             <class>SubscribeStreamManagerTranscoderTest</class>
         </Test>
+
+		<Test title="Subscribe - Stream Manager V1">
+
+			<description>A subscribe example that connects to a cluster server with the Stream Manager 1.0.</description>
+
+			<Properties>
+			</Properties>
+
+			<name>Subscribe - Stream Manager V1</name>
+			<class>SubscribeStreamManagerTest_SM1</class>
+		</Test>
+
+		<Test title="Subscribe - Stream Manager Encrypted V1">
+
+			<description>A subscribe example that connects to a cluster server with the Stream Manager 1.0 using SRTP encryption.</description>
+
+			<Properties>
+			</Properties>
+
+			<name>Subscribe - Stream Manager Encrypted V1</name>
+			<class>SubscribeSMEncryptedTest_SM1</class>
+		</Test>
+
+		<Test title="Subscribe - Stream Manager Transcoder V1">
+
+			<description>A subscribe example that connects to a cluster server with the Stream Manager 1.0 using ABR.</description>
+
+			<Properties>
+			</Properties>
+
+			<name>Subscribe - Stream Manager Transcoder V1</name>
+			<class>SubscribeStreamManagerTranscoderTest_SM1</class>
+		</Test>
 
         <Test title="Subscribe - Two Stream">
 
