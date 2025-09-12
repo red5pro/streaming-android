@@ -1,4 +1,3 @@
-//
 // Copyright © 2015 Infrared5, Inc. All rights reserved.
 //
 // The accompanying code comprising examples for use solely in conjunction with Red5 Pro (the "Example Code")
@@ -25,13 +24,12 @@
 //
 package red5pro.org.testandroidproject;
 
-import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
-import android.app.Fragment;
+import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 
 import com.red5pro.streaming.R5Stream;
 
@@ -41,17 +39,15 @@ import red5pro.org.testandroidproject.tests.TestContent;
  * A fragment representing a single Test detail screen.
  * This fragment is contained in a {@link TestListActivity}
  */
-public class TestDetailFragment extends Fragment {
-    /**
-     * The fragment argument representing the item ID that this fragment
-     * represents.
-     */
-    public static final String ARG_ITEM_ID = "item_id";
-
-    /**
-     * The dummy content this fragment is presenting.
-     */
-    private TestContent mItem;
+public class TestDetailFragment extends Fragment { // Changed to androidx.fragment.app.Fragment
+	/**
+	 * The fragment argument representing the item ID that this fragment
+	 * represents.
+	 */
+	public static final String ARG_ITEM_ID = "item_id";    /**
+	 * The dummy content this fragment is presenting.
+	 */
+	private TestContent mItem; // Consider if this is still needed or how it's initialized
 
 	/**
 	 * A dummy implementation of the {@link TestListFragment.Callbacks} interface that does
@@ -69,77 +65,78 @@ public class TestDetailFragment extends Fragment {
 	 */
 	protected TestListFragment.Callbacks mCallbacks = sDummyCallbacks;
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
-    public TestDetailFragment() {
-    }
+	/**
+	 * Mandatory empty constructor for the fragment manager to instantiate the
+	 * fragment (e.g. upon screen orientation changes).
+	 */
+	public TestDetailFragment() {
+	}
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 
-        if (getArguments().containsKey(ARG_ITEM_ID)) {
-            // Load the dummy content specified by the fragment
-            // arguments. In a real-world scenario, use a Loader
-            // to load content from a content provider.
+		if (getArguments() != null && getArguments().containsKey(ARG_ITEM_ID)) {
+			// Load the dummy content specified by the fragment
+			// arguments. In a real-world scenario, use a Loader
+			// to load content from a content provider.
 
+			// mItem = TestContent.ITEM_MAP.get(getArguments().getString(ARG_ITEM_ID));
+			// Load the Actual test for this TestItem using the Class property of the XML file
+		}
+	}
 
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+							 Bundle savedInstanceState) {
+		View rootView = inflater.inflate(R.layout.fragment_test_detail, container, false);
 
-            //mItem = TestContent.ITEM_MAP.get(getArguments().getString(ARG_ITEM_ID));
-            //Load the Actual test for this TestItem using the Class property of the XML file
+		// Show the dummy content as text in a TextView.
+		// POPULATE THE VIEW!!!
 
+		return rootView;
+	}
 
-        }
+	public Boolean isPublisherTest () {
+		return false;
+	}
 
+	public Boolean shouldClean() {
+		return true;
+	}
 
-    }
+	public R5Stream.RecordType getPublishRecordType () {
+		// It's safer to use getArguments() to retrieve properties
+		// if they are passed during fragment creation.
+		// Assuming TestContent.GetPropertyString is a static helper that's still relevant.
+		String type = TestContent.GetPropertyString("record_mode");
+		if ("Record".equals(type)) { // Use equals for string comparison
+			return R5Stream.RecordType.Record;
+		} else if ("Append".equals(type)) {
+			return R5Stream.RecordType.Append;
+		}
+		return R5Stream.RecordType.Live;
+	}
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_test_detail, container, false);
-
-        // Show the dummy content as text in a TextView.
-
-        //POPULATE THE VIEW!!!
-
-
-        return rootView;
-    }
-
-    public Boolean isPublisherTest () {
-        return false;
-    }
-    public Boolean shouldClean() {
-        return true;
-    }
-    public R5Stream.RecordType getPublishRecordType () {
-        String type = TestContent.GetPropertyString("record_mode");
-        if (type.equals("Record")) {
-            return R5Stream.RecordType.Record;
-        } else if (type.equals("Append")) {
-            return R5Stream.RecordType.Append;
-        }
-        return R5Stream.RecordType.Live;
-    }
-
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
+	@Override
+	public void onAttach(Context context) { // Changed signature to use Context
+		super.onAttach(context);
 
 		// Activities containing this fragment must implement its callbacks.
-		if (!(activity instanceof TestListFragment.Callbacks)) {
-			throw new IllegalStateException("Activity must implement fragment's callbacks.");
+		if (context instanceof TestListFragment.Callbacks) {
+			mCallbacks = (TestListFragment.Callbacks) context;
+		} else {
+			// Consider logging a warning or throwing an exception if the context
+			// is not guaranteed to implement the callbacks.
+			// For example, if this fragment can be hosted by different activities.
+			throw new IllegalStateException(context.toString()
+				+ " must implement TestListFragment.Callbacks");
 		}
-
-		mCallbacks = (TestListFragment.Callbacks) activity;
 	}
 
 	@Override
 	public void onDetach() {
 		super.onDetach();
-
 		// Reset the active callbacks interface to the dummy implementation.
 		mCallbacks = sDummyCallbacks;
 	}
