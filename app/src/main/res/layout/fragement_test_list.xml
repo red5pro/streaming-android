@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
+
+	<ListView
+		android:id="@+id/test_list_view"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:choiceMode="singleChoice" />
+	<!-- android:choiceMode is important for the setActivateOnItemClick functionality -->
+
+	<!-- You could also add an empty view here for when the list is empty -->
+	<!-- <TextView
+		android:id="@+id/empty_list_view"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:gravity="center"
+		android:text="No items available."
+		android:visibility="gone"/> -->
+</FrameLayout>

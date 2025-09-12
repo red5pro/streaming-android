@@ -28,7 +28,11 @@ package red5pro.org.testandroidproject;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
-import android.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
@@ -66,8 +70,8 @@ import red5pro.org.testandroidproject.tests.PublishTest.PublishTest;
  * {@link TestListFragment.Callbacks} interface
  * to listen for item selections.
  */
-public class TestListActivity extends Activity
-        implements TestListFragment.Callbacks, PublishTestListener, ActivityCompat.OnRequestPermissionsResultCallback {
+public class TestListActivity extends AppCompatActivity
+        implements TestListFragment.Callbacks, PublishTestListener {
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -76,70 +80,66 @@ public class TestListActivity extends Activity
     private boolean mTwoPane;
     private TestDetailFragment fragment = null;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_test_list);
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_test_list);
 
-        if (findViewById(R.id.test_detail_container) != null) {
-            // The detail container view will be present only in the
-            // large-screen layouts (res/values-large and
-            // res/values-sw600dp). If this view is present, then the
-            // activity should be in two-pane mode.
-            mTwoPane = true;
+		FragmentManager fm = getSupportFragmentManager(); // Use AndroidX FragmentManager
 
-            // In two-pane mode, list items should be given the
-            // 'activated' state when touched.
-            ((TestListFragment) getFragmentManager()
-                    .findFragmentById(R.id.test_list))
-                    .setActivateOnItemClick(true);
-        }
-        else {
-            TestListFragment frag = new TestListFragment();
+		if (findViewById(R.id.test_detail_container) != null) {
+			// The detail container view will be present only in the
+			// large-screen layouts (res/values-large and
+			// res/values-sw600dp). If this view is present, then the
+			// activity should be in two-pane mode.
+			mTwoPane = true;
 
-            getFragmentManager().beginTransaction()
-                    .replace(R.id.test_list_container, frag)
-                    .commit();
-        }
+			// In two-pane mode, list items should be given the
+			// 'activated' state when touched.
+			// Ensure TestListFragment is an androidx.fragment.app.Fragment
+			TestListFragment listFragment = (TestListFragment) fm.findFragmentById(R.id.test_list);
+			if (listFragment != null) {
+				listFragment.setActivateOnItemClick(true);
+			}
+		} else {
+			// Ensure TestListFragment is an androidx.fragment.app.Fragment
+			TestListFragment frag = new TestListFragment();
+			fm.beginTransaction()
+				.replace(R.id.test_list_container, frag)
+				.commit();
+		}
 
-        // TODO: If exposing deep links into your app, handle intents here.
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+			if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != PermissionChecker.PERMISSION_GRANTED
+				|| ContextCompat.checkSelfPermission(this, android.Manifest.permission.RECORD_AUDIO) != PermissionChecker.PERMISSION_GRANTED
+				|| ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PermissionChecker.PERMISSION_GRANTED) {
 
-        //onItemSelected("0");
+				fm.beginTransaction().addToBackStack(null).commit();
+				ActivityCompat.requestPermissions(this,
+					new String[]{
+						android.Manifest.permission.CAMERA,
+						android.Manifest.permission.RECORD_AUDIO,
+						android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+					}, 1337);
+			}
+		}
 
-    }
-
-    @Override
-    public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PermissionChecker.PERMISSION_GRANTED
-                    || ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PermissionChecker.PERMISSION_GRANTED
-                    || ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PermissionChecker.PERMISSION_GRANTED) {
-
-                getFragmentManager().beginTransaction().addToBackStack(null).commit();
-                ActivityCompat.requestPermissions(this,
-                        new String[]{
-                                android.Manifest.permission.CAMERA,
-                                android.Manifest.permission.RECORD_AUDIO,
-                                android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-                        }, 1337);
-            }
-        }
-
-        return super.onCreateView(parent, name, context, attrs);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {}
+	}
 
 	@Override
-	public void onAddConnectionParams () {
+	public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
+		return super.onCreateView(parent, name, context, attrs);
+	}
+
+	@Override
+	public void onAddConnectionParams() {
 		try {
-			getFragmentManager().beginTransaction()
-					.replace(R.id.test_list_container, new ParamTable())
-					.addToBackStack(null)
-					.commit();
-//			mIsParamsFragmentActive = true;
+			// Ensure ParamTable is an androidx.fragment.app.Fragment
+			getSupportFragmentManager().beginTransaction()
+				.replace(R.id.test_list_container, new ParamTable())
+				.addToBackStack(null) // This will add the transaction to the back stack
+				.setReorderingAllowed(true) // Recommended for optimal animations and transitions
+				.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -149,49 +149,37 @@ public class TestListActivity extends Activity
      * Callback method from {@link TestListFragment.Callbacks}
      * indicating that the item with the given ID was selected.
      */
-    @Override
-    public void onItemSelected(String id) {
+	@Override
+	public void onItemSelected(String id) {
+		int _id = Integer.parseInt(id);
+		TestContent.SetTestItem(_id);
+
+		Bundle arguments = new Bundle();
+		arguments.putString(TestDetailFragment.ARG_ITEM_ID, id);
+
+		if (fragment != null) {
+			// onBackPressed(); // This might have unintended side effects if the back stack isn't what you expect.
+		}
+
+		try {
+			String className = TestContent.ITEMS.get(_id).className;
+			Class<?> testClass = Class.forName("red5pro.org.testandroidproject.tests." + className + "." + className);
+			fragment = (TestDetailFragment) testClass.getConstructors()[0].newInstance();
+		} catch (Exception e) {
+			e.printStackTrace();
+			fragment = new TestDetailFragment();
+		}
+		fragment.setArguments(arguments);
+
+		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+		transaction.replace(mTwoPane ? R.id.test_detail_container : R.id.test_list_container, fragment);
+		transaction.addToBackStack(null);
+		transaction.setReorderingAllowed(true);
+		transaction.commit();
+	}
 
 
-        int _id = Integer.parseInt(id);
-
-        TestContent.SetTestItem( _id );
-
-        Bundle arguments = new Bundle();
-        arguments.putString(TestDetailFragment.ARG_ITEM_ID, id);
-
-        if( fragment != null )
-            onBackPressed();
-
-        try {
-            String className = TestContent.ITEMS.get( _id ).className;
-            Class testClass = Class.forName( "red5pro.org.testandroidproject.tests." + className + "." + className );
-            fragment = (TestDetailFragment)testClass.getConstructors()[0].newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
-            fragment = new TestDetailFragment();
-        }
-        fragment.setArguments(arguments);
-
-        if (mTwoPane) {
-            // In two-pane mode, show the detail view in this activity by
-            // adding or replacing the detail fragment using a
-            // fragment transaction.
-            getFragmentManager().beginTransaction()
-                    .replace(R.id.test_detail_container, fragment)
-                    .addToBackStack(null)
-                    .commit();
-
-        } else {
-            // In single-pane mode, replace the list with the fragment
-            getFragmentManager().beginTransaction()
-                    .replace(R.id.test_list_container, fragment)
-                    .addToBackStack(null)
-                    .commit();
-        }
-    }
-
-    @Override
+	@Override
     protected void onPause() {
         super.onPause();
 
@@ -258,14 +246,13 @@ public class TestListActivity extends Activity
         }
     }
 
-    @Override
-    public void onConfigurationChanged(Configuration config) {
-        Log.d("TestListActivity", "config changed.");
-        Fragment test = getFragmentManager().findFragmentByTag("test");
-        if (test != null) {
-            test.onConfigurationChanged(config);
-        }
-
-        super.onConfigurationChanged(config);
-    }
+	@Override
+	public void onConfigurationChanged(@NonNull Configuration newConfig) { // Added @NonNull
+		super.onConfigurationChanged(newConfig); // Call super
+		Log.d("TestListActivity", "config changed.");
+		Fragment testFragment = getSupportFragmentManager().findFragmentByTag("test"); // "test" is the tag
+		if (testFragment != null) {
+			testFragment.onConfigurationChanged(newConfig);
+		}
+	}
 }

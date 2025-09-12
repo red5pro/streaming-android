@@ -1,11 +1,11 @@
 apply plugin: 'com.android.application'
+
 android {
-    compileSdkVersion 30
-    buildToolsVersion '19.1.0'
-    defaultConfig {
+    compileSdkVersion 34
+	defaultConfig {
         applicationId "red5pro.org.testandroidproject"
         minSdkVersion 26
-        targetSdkVersion 30
+        targetSdkVersion 34
         versionCode 9000
         versionName "10.9.0.0"
     }
@@ -15,13 +15,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    lintOptions {
-        checkReleaseBuilds false
-        // Or, if you prefer, you can continue to check for errors in release builds,
-        // but continue the build even when errors are found:
-        abortOnError false
-    }
-//    productFlavors {
+	//    productFlavors {
 //
 //        armv7 {
 //            ndk {
@@ -36,10 +30,20 @@ android {
 ////        }
 //
 //    }
-    buildToolsVersion '28.0.3'
-    useLibrary  'org.apache.http.legacy'
+	useLibrary  'org.apache.http.legacy'
+	namespace 'red5pro.org.testandroidproject'
+	lint {
+		abortOnError false
+		checkReleaseBuilds false
+	}
 }
 dependencies {
+
+	def fragment_version = "1.8.9"
+	implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+	implementation 'androidx.appcompat:appcompat:1.7.1'
+	implementation "androidx.fragment:fragment:$fragment_version"
+
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 	implementation 'org.java-websocket:Java-WebSocket:1.5.2'
 	implementation 'ch.qos.logback:logback-classic:1.2.3'

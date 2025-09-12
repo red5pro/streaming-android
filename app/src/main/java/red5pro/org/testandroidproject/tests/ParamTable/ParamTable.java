@@ -1,6 +1,6 @@
 package red5pro.org.testandroidproject.tests.ParamTable;
 
-import android.app.Fragment;
+import androidx.fragment.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
