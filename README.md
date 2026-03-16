@@ -9,7 +9,7 @@ You will need a functional, running [Red5 Pro](https://www.red5.net/red5-pro/low
 > If you do not have a Red5 Pro account, sign up for 30 day trial [here](https://account.red5.net/register).
 
 ### Red5 Pro SDK License Key
-A [Red5 Pro SDK](https://www.red5.net/live-streaming-sdks/) License Key is required to use the iOS Mobile SDK [https://www.red5.net/live-streaming-sdks/]. If you already have a Red5 Pro Account, you can find your Red5 Pro SDK License Key at [https://account.red5pro.com/overview](https://account.red5pro.com/overview).
+A [Red5 Pro SDK](https://www.red5.net/live-streaming-sdks/) License Key is required to use the iOS Mobile SDK. If you already have a Red5 Pro Account, you can find your Red5 Pro SDK License Key at [https://account.red5pro.com/overview](https://account.red5pro.com/overview).
 
 > You will need to copy the `SDK License` into the `license_key` property field of the [tests.xml](https://github.com/red5pro/streaming-android/blob/master/app/src/main/res/raw/tests.xml) resource file.
 
