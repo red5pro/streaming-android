@@ -1,6 +1,8 @@
 # Red5 Pro Android Streaming Testbed (the Deprecated SDK)
 
-This repository uses a deprecated SDK, and newer SDKs are now available. Please visit [this page](https://www.red5.net/live-streaming-sdks/) and [this repository](https://github.com/red5pro/red5pro-android-testbed) for the latest versions.If you are an existing Red5 customer still using the deprecated SDK, you can continue to use this repository as a reference, but we recommend upgrading to the latest version. [Contact us](https://www.red5.net/contact/) if you have any questions. This repository contains a simple project with a number of examples that can be used for testing and reference.
+This repository uses a deprecated SDK, and newer SDKs are now available. Please visit [this page](https://www.red5.net/live-streaming-sdks/) and [this repository](https://github.com/red5pro/red5pro-android-testbed) for the latest versions. If you are an existing Red5 customer still using the deprecated SDK, you can continue to use this repository as a reference, but we recommend upgrading to the latest version. [Contact us](https://www.red5.net/contact/) if you have any questions. 
+
+This repository contains a simple project with a number of examples that can be used for testing and reference.
 
 ## Requirements
 
